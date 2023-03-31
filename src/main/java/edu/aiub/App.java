@@ -1,6 +1,7 @@
 package edu.aiub;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import edu.aiub.UI.AdminDashboard;
 import edu.aiub.UI.SplashScreen;
 
 import java.awt.*;
@@ -16,7 +17,8 @@ public class App
         Runnable runner = new Runnable() {
             @Override
             public void run() {
-                new SplashScreen();
+//                new SplashScreen();
+                new AdminDashboard();
             }
         };
         EventQueue.invokeLater(runner);

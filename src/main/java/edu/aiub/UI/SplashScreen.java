@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 
 public class SplashScreen extends JFrame {
     // Core Literals
-    final String loading_bg = "C:\\Users\\MDHASIBASKARI\\Desktop\\JAVA_SWING\\nms\\src\\main\\java\\static\\loading_bg.png";
+    final String splash_bg = "src/main/java/edu/aiub/static/splash_bg.png";
     final int width = 600, height = 350;
 
 
@@ -23,7 +23,7 @@ public class SplashScreen extends JFrame {
             public void paintComponent(Graphics g)
             {
                 super.paintComponent(g);
-                ImageIcon img = new ImageIcon(loading_bg);
+                ImageIcon img = new ImageIcon(splash_bg);
                 g.drawImage(img.getImage(), 0, 0, this.getWidth(), this.getHeight(), null);
             }
         };
