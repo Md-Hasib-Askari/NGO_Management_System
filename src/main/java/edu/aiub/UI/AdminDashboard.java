@@ -2,6 +2,7 @@ package edu.aiub.UI;
 
 import edu.aiub.essentials.ButtonHighlighter;
 import edu.aiub.essentials.ContactDialog;
+import edu.aiub.essentials.ImageResizer;
 import edu.aiub.essentials.TableColumnCenterizer;
 
 
@@ -203,8 +204,10 @@ public class AdminDashboard extends JFrame {
         noticeBtn = new JButton();
         settingsBtn = new JButton();
 
+//      Add Left Side Bar Buttons sequentially
         leftSidebarBtnList = new JButton[]{dashboardBtn, userBtn, taskBtn, inventoryBtn, vehicleBtn, bankBtn, noticeBtn, settingsBtn};
 
+//      Center Panel
         hideSidePanelBtn = new JButton();
         centerCardPanel = new JPanel();
         dashboardPanel = new JPanel();
@@ -241,6 +244,8 @@ public class AdminDashboard extends JFrame {
         volunteerPane = new JScrollPane();
         volunteerTable = new JTable();
         dashboardGreeting = new JLabel();
+
+//      Right Side Panel
         rightSidePanel = new JPanel();
         noticeHeaderPanel = new JPanel();
         noticeLabel = new JLabel();
@@ -268,6 +273,9 @@ public class AdminDashboard extends JFrame {
         setMinimumSize(new Dimension(1220, 790));
         setResizable(false);
         setLayout(null);
+        setTitle("NGO Management System");
+        setBackground(Color.WHITE);
+        setIconImage(new ImageResizer("src/main/java/edu/aiub/static/titleIcon.png", 16,16).getImage().getImage());
 
         leftSidePanel.setBackground(new Color(236, 240, 241));
         leftSidePanel.setMinimumSize(new Dimension(220, 790));
@@ -583,33 +591,10 @@ public class AdminDashboard extends JFrame {
         userPanel.setAutoscrolls(true);
         userPanel.setLayout(null);
 
-        userTable.setModel(new DefaultTableModel(
-                new Object [][] {
-                        {"1", "Hasib", "example@gmail.com", "13246546789", "12/2/22", "Staff", null},
-                        {"2", "A", null, null, null, null, null},
-                        {"3", "B", null, null, null, null, null},
-                        {"4", "C", null, null, null, null, null},
-                        {"5", "D", null, null, null, null, null}
-                },
-                new String [] {
-                        "ID", "Name", "Email", "Phone", "Registered On", "User Type", "Action"
-                }
-        ) {
-            Class[] types = new Class [] {
-                    String.class, String.class, String.class, String.class, String.class, String.class, Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                    false, false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        DefaultTableModel userTableModel = new DefaultTableModel();
+        userTableModel.setColumnIdentifiers(new String[]{"ID", "Name", "Email", "Phone", "Address", "User Type"});
+        userTableModel.addRow(new String[]{"1", "Hasib", "example@domain.com", "01700000000", "Dhaka, Bangladesh", "Admin"});
+        userTable.setModel(userTableModel);
         userScrollPane.setViewportView(userTable);
         if (userTable.getColumnModel().getColumnCount() > 0) {
             userTable.getColumnModel().getColumn(0).setPreferredWidth(10);
@@ -661,15 +646,15 @@ public class AdminDashboard extends JFrame {
         taskPanel.setAutoscrolls(true);
         taskPanel.setLayout(null);
 
-        DefaultTableModel userTableModel = new DefaultTableModel();
-        userTableModel.setColumnIdentifiers(new String[]{"ID", "Name", "Email", "Phone", "Registered On", "User Type", "Action"});
-        userTableModel.addRow(new String[]{"1", "Hasib", "example@domain.com", "13246546789", "12/2/22", "Staff", null});
-        userTableModel.addRow(new String[]{"2", "A", null, null, null, null, null});
-        userTableModel.addRow(new String[]{"3", "B", null, null, null, null, null});
-        userTableModel.addRow(new String[]{"4", "C", null, null, null, null, null});
-        userTableModel.addRow(new String[]{"5", "D", null, null, null, null, null});
+        DefaultTableModel userMainTableModel = new DefaultTableModel();
+        userMainTableModel.setColumnIdentifiers(new String[]{"ID", "Name", "Email", "Phone", "Registered On", "User Type", "Action"});
+        userMainTableModel.addRow(new String[]{"1", "Hasib", "example@domain.com", "13246546789", "12/2/22", "Staff", null});
+        userMainTableModel.addRow(new String[]{"2", "A", null, null, null, null, null});
+        userMainTableModel.addRow(new String[]{"3", "B", null, null, null, null, null});
+        userMainTableModel.addRow(new String[]{"4", "C", null, null, null, null, null});
+        userMainTableModel.addRow(new String[]{"5", "D", null, null, null, null, null});
 
-        userMainTable.setModel(userTableModel);
+        userMainTable.setModel(userMainTableModel);
         taskScrollPane.setViewportView(userMainTable);
         if (userMainTable.getColumnModel().getColumnCount() > 0) {
             userMainTable.getColumnModel().getColumn(0).setPreferredWidth(10);
