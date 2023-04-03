@@ -7,6 +7,8 @@ import edu.aiub.essentials.TableColumnCenterizer;
 
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -110,6 +112,7 @@ public class AdminDashboard extends JFrame {
     private JLabel task4;
     private JLabel task5;
     private JLabel task6;
+    private JScrollPane taskPane;
     private JPanel taskBodyPanel;
     private JButton taskBtn;
     private JPanel taskHeaderPanel;
@@ -295,6 +298,7 @@ public class AdminDashboard extends JFrame {
         notice6 = new JLabel();
         taskHeaderPanel = new JPanel();
         recentTaskLabel = new JLabel();
+        taskPane = new JScrollPane();
         taskBodyPanel = new JPanel();
         task1 = new JLabel();
         task2 = new JLabel();
@@ -968,7 +972,7 @@ public class AdminDashboard extends JFrame {
         // End of Transaction Panel
 
         // Start of Notice Panel
-        noticePanel.setBackground(new Color(255, 255, 255));
+//        noticePanel.setBackground(new Color(255, 255, 255));
         noticePanel.setLayout(null);
 
         noticeCountPane.setLayout(null);
@@ -1033,82 +1037,56 @@ public class AdminDashboard extends JFrame {
         noticeHeaderPanel.setMinimumSize(new Dimension(115, 50));
         noticeHeaderPanel.setLayout(null);
 
-        noticeLabel.setFont(new Font("Inter", 0, 18));
-        noticeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        noticeLabel.setText("Notice");
-        noticeLabel.setOpaque(true);
-        noticeLabel.setPreferredSize(new Dimension(115, 23));
+        noticeLabel.setIcon(new ImageIcon("src/main/java/edu/aiub/static/noticeHeader_bg.png"));
         noticeHeaderPanel.add(noticeLabel);
-        noticeLabel.setBounds(20, 20, 200, 30);
+        noticeLabel.setBounds(0, 0, 240, 50);
 
         rightSidePanel.add(noticeHeaderPanel);
-        noticeHeaderPanel.setBounds(10, 10, 240, 70);
+        noticeHeaderPanel.setBounds(10, 25, 240, 50);
 
 //      Notice Body
         noticeBodyPanel.setLayout(new BoxLayout(noticeBodyPanel, BoxLayout.Y_AXIS));
+        noticeBodyPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        noticeBodyPanel.setBackground(new Color(255, 255, 255));
         noticePanel.add(noticeBodyPanel);
 
-        rightSidePanel.add(noticePane);
         noticePane.setBounds(10, 80, 240, 250);
 //        noticeBodyPanel.setBounds(10, 10, 240, 250);
 
-        notice1.setText("Notice 1");
-        noticeBodyPanel.add(notice1);
+        for (int i = 0; i < 20; i++) {
+            AdminRightSidebarScrollPane.add(noticeBodyPanel, new JLabel("Notice " + i));
 
-        notice2.setText("Notice 1");
-        noticeBodyPanel.add(notice2);
-
-        notice3.setText("Notice 1");
-        noticeBodyPanel.add(notice3);
-
-        notice4.setText("Notice 1");
-        noticeBodyPanel.add(notice4);
-
-        notice5.setText("Notice 1");
-        noticeBodyPanel.add(notice5);
-
-        notice6.setText("Notice 1");
-        noticeBodyPanel.add(notice6);
+        }
 
         noticePane.setViewportView(noticeBodyPanel);
+        noticePane.setBorder(new LineBorder(new Color(255, 255, 255), 5, true));
+        rightSidePanel.add(noticePane);
 
 
         taskHeaderPanel.setMinimumSize(new Dimension(115, 50));
         taskHeaderPanel.setLayout(null);
 
-        recentTaskLabel.setFont(new Font("Inter", 0, 18));
-        recentTaskLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        recentTaskLabel.setText("New Tasks");
-        recentTaskLabel.setOpaque(true);
-        recentTaskLabel.setPreferredSize(new Dimension(115, 23));
+        recentTaskLabel.setIcon(new ImageIcon("src/main/java/edu/aiub/static/projectHeader_bg.png"));
         taskHeaderPanel.add(recentTaskLabel);
-        recentTaskLabel.setBounds(20, 20, 200, 30);
+        recentTaskLabel.setBounds(0, 0, 240, 50);
 
         rightSidePanel.add(taskHeaderPanel);
-        taskHeaderPanel.setBounds(10, 340, 240, 70);
+        taskHeaderPanel.setBounds(10, 355, 240, 50);
 
-        taskBodyPanel.setLayout(new GridLayout(9, 3));
+        taskBodyPanel.setLayout(new BoxLayout(taskBodyPanel, BoxLayout.Y_AXIS));
+        taskBodyPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        taskBodyPanel.setBackground(new Color(255, 255, 255));
+//        taskBodyPanel.setBounds(10, 410, 240, 280);
+        taskPane.add(taskBodyPanel);
 
-        task1.setText("Task 1");
-        taskBodyPanel.add(task1);
+        for (int i = 0; i < 20; i++) {
+            AdminRightSidebarScrollPane.add(taskBodyPanel, new JLabel("Task " + i));
+        }
 
-        task2.setText("Task 1");
-        taskBodyPanel.add(task2);
-
-        task3.setText("Task 1");
-        taskBodyPanel.add(task3);
-
-        task4.setText("Task 1");
-        taskBodyPanel.add(task4);
-
-        task5.setText("Task 1");
-        taskBodyPanel.add(task5);
-
-        task6.setText("Task 1");
-        taskBodyPanel.add(task6);
-
-        rightSidePanel.add(taskBodyPanel);
-        taskBodyPanel.setBounds(10, 410, 240, 280);
+        taskPane.setViewportView(taskBodyPanel);
+        taskPane.setBounds(10, 410, 240, 320);
+        taskPane.setBorder(new LineBorder(new Color(255, 255, 255), 5, true));
+        rightSidePanel.add(taskPane);
 
         getContentPane().add(rightSidePanel);
         rightSidePanel.setBounds(940, 0, 260, 740);

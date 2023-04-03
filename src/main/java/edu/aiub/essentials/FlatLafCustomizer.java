@@ -64,5 +64,9 @@ public class FlatLafCustomizer {
         UIManager.put("Table.alternateRowColor", new Color(44, 62, 80));
 
 
+//      ScrollPane
+        UIManager.put("ScrollPane.background", new Color(236, 240, 241));
+
+
     }
 }
