@@ -1,7 +1,5 @@
 package edu.aiub.essentials;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.*;
 
 public class ButtonHighlighter {
