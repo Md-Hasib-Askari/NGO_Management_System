@@ -21,8 +21,8 @@ public class App
         Runnable runner = new Runnable() {
             @Override
             public void run() {
-//                new SplashScreen();
-                new AdminDashboard();
+                new SplashScreen();
+//                new AdminDashboard();
 
             }
         };
