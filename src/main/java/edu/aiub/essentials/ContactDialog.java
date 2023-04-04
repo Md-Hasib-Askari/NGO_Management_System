@@ -21,7 +21,7 @@ public class ContactDialog extends JDialog {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(new ImageIcon("C:\\Users\\MDHASIBASKARI\\IdeaProjects\\nms\\src\\main\\java\\edu\\aiub\\static\\contactDialog_bg.png").getImage(), 0, 0, 286, 300, null);
+                g.drawImage(new ImageIcon("src\\main\\java\\edu\\aiub\\static\\contactDialog_bg.png").getImage(), 0, 0, 286, 300, null);
             }
         };
         panel.setLayout(null);

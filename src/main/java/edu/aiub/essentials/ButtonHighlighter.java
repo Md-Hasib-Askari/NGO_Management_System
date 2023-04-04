@@ -2,8 +2,8 @@ package edu.aiub.essentials;
 
 import javax.swing.*;
 
-public class ButtonHighlighter {
-    static String root = "C:\\Users\\MDHASIBASKARI\\IdeaProjects\\nms\\src\\main\\java\\edu\\aiub\\static\\leftSidebarBtn\\";
+public class ButtonHighlighter {	
+    static String root = "src\\main\\java\\edu\\aiub\\static\\leftSidebarBtn\\";
     static String[] btnDefaultIcons = new String[] {
             root + "dashboardBtn.png",
             root + "userBtn.png",

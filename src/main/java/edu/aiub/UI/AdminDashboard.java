@@ -143,7 +143,12 @@ public class AdminDashboard extends JFrame {
         userPanel = new JPanel();
         userScrollPane = new JScrollPane();
         userTable = new JTable();
-        userCountPanel = new JPanel();
+        userCountPanel = new JPanel() {
+            @Override
+            public void paintComponent(Graphics g) {
+                g.drawImage(new ImageIcon("src/main/java/edu/aiub/static/currentInfo_bg.png").getImage(), 0, 0,180,100, null);
+            }
+        };
         userCountLabel = new JLabel();
         userCountMainLabel = new JLabel();
         addUserBtn = new JButton();
@@ -152,14 +157,24 @@ public class AdminDashboard extends JFrame {
         taskPanel = new JPanel();
         taskScrollPane = new JScrollPane();
         userMainTable = new JTable();
-        taskCountPanel = new JPanel();
+        taskCountPanel = new JPanel() {
+            @Override
+            public void paintComponent(Graphics g) {
+                g.drawImage(new ImageIcon("src/main/java/edu/aiub/static/currentInfo_bg.png").getImage(), 0, 0,180,100, null);
+            }
+        };
         taskCountLabel = new JLabel();
         taskCountMainLabel = new JLabel();
         addTaskBtn = new JButton();
         taskMonthList = new JComboBox<>();
         taskYearList = new JComboBox<>();
         inventoryPanel = new JPanel();
-        inventoryCountPane = new JPanel();
+        inventoryCountPane = new JPanel() {
+            @Override
+            public void paintComponent(Graphics g) {
+                g.drawImage(new ImageIcon("src/main/java/edu/aiub/static/currentInfo_bg.png").getImage(), 0, 0,180,100, null);
+            }
+        };
         inventoryCountLabel = new JLabel();
         inventoryMainLabel = new JLabel();
         inventoryMonthList = new JComboBox<>();
@@ -168,7 +183,12 @@ public class AdminDashboard extends JFrame {
         inventoryScrollPane = new JScrollPane();
         inventoryTable = new JTable();
         vehiclePanel = new JPanel();
-        vehicleCountPane = new JPanel();
+        vehicleCountPane = new JPanel() {
+            @Override
+            public void paintComponent(Graphics g) {
+                g.drawImage(new ImageIcon("src/main/java/edu/aiub/static/currentInfo_bg.png").getImage(), 0, 0,180,100, null);
+            }
+        };
         vehicleCountLabel = new JLabel();
         vehicleMainLabel = new JLabel();
         vehicleMonthList = new JComboBox<>();
@@ -177,7 +197,12 @@ public class AdminDashboard extends JFrame {
         vehicleScrollPane = new JScrollPane();
         vehicleCenterTable = new JTable();
         bankPanel = new JPanel();
-        bankBalancePane = new JPanel();
+        bankBalancePane = new JPanel() {
+            @Override
+            public void paintComponent(Graphics g) {
+                g.drawImage(new ImageIcon("src/main/java/edu/aiub/static/currentInfo_bg.png").getImage(), 0, 0,180,100, null);
+            }
+        };
         bankBalanceLabel = new JLabel();
         bankMainLabel = new JLabel();
         bankMonthList = new JComboBox<>();
@@ -186,7 +211,12 @@ public class AdminDashboard extends JFrame {
         bankScrollPane = new JScrollPane();
         tnxTable = new JTable();
         noticePanel = new JPanel();
-        noticeCountPane = new JPanel();
+        noticeCountPane = new JPanel() {
+            @Override
+            public void paintComponent(Graphics g) {
+                g.drawImage(new ImageIcon("src/main/java/edu/aiub/static/currentInfo_bg.png").getImage(), 0, 0,180,100, null);
+            }
+        };
         noticeCountLabel = new JLabel();
         noticeMainLabel = new JLabel();
         noticeMonthList = new JComboBox<>();
@@ -563,38 +593,10 @@ public class AdminDashboard extends JFrame {
         runningTaskTab.setLayout(null);
 
         DefaultTableModel taskTableModel = new DefaultTableModel();
-        {
-            taskTableModel.setColumnIdentifiers(new String[]{"ID", "Task", "Started", "End"});
-            taskTableModel.addRow(new String[]{"1", "Task 1", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"2", "Task 2", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"3", "Task 3", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"4", "Task 4", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"5", "Task 5", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"6", "Task 6", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"7", "Task 7", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"8", "Task 8", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"9", "Task 9", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"10", "Task 10", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"11", "Task 11", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"12", "Task 12", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"13", "Task 13", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"14", "Task 14", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"15", "Task 15", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"16", "Task 16", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"17", "Task 17", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"18", "Task 18", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"19", "Task 19", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"20", "Task 20", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"21", "Task 21", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"22", "Task 22", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"23", "Task 23", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"24", "Task 24", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"25", "Task 25", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"26", "Task 26", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"27", "Task 27", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"28", "Task 28", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"29", "Task 29", "12:00", "12:30"});
-            taskTableModel.addRow(new String[]{"30", "Task 30", "12:00", "12:30"});
+
+        taskTableModel.setColumnIdentifiers(new String[]{"ID", "Task", "Started", "End"});
+        for (int i = 0; i<30; i++) {
+            taskTableModel.addRow(new String[]{Integer.toString(i+1), "Task "+i+1, "12:00", "12:30"});
         }
 
         taskTable.setModel(taskTableModel);
@@ -610,10 +612,11 @@ public class AdminDashboard extends JFrame {
 
         DefaultTableModel transactionTableModel = new DefaultTableModel();
         transactionTableModel.setColumnIdentifiers(new String[]{"ID", "Sender", "Amount", "Date", "Time"});
-        transactionTableModel.addRow(new String[]{"1", "Sender 1", "1000", "12/12/2021", "12:00"});
-        transactionTableModel.addRow(new String[]{"2", "Sender 2", "1000", "12/12/2021", "12:00"});
-        transactionTableModel.addRow(new String[]{"3", "Sender 3", "1000", "12/12/2021", "12:00"});
-        transactionTableModel.addRow(new String[]{"4", "Sender 4", "1000", "12/12/2021", "12:00"});
+
+        for (int i = 0; i<30; i++) {
+            transactionTableModel.addRow(new String[]{""+i+1, "Sender "+i+1, "1000", "12/12/2021", "12:00"});
+        }
+
         transactionTable.setModel(transactionTableModel);
         transactionPane.setViewportView(transactionTable);
         TableColumnCenterizer.centerTableColumn(transactionTable);
@@ -627,10 +630,10 @@ public class AdminDashboard extends JFrame {
 
         DefaultTableModel vehicleTableModel = new DefaultTableModel();
         vehicleTableModel.setColumnIdentifiers(new String[]{"ID", "Vehicle", "Driver", "Status"});
-        vehicleTableModel.addRow(new String[]{"1", "Vehicle 1", "Driver 1", "Available"});
-        vehicleTableModel.addRow(new String[]{"2", "Vehicle 2", "Driver 2", "Available"});
-        vehicleTableModel.addRow(new String[]{"3", "Vehicle 3", "Driver 3", "Available"});
-        vehicleTableModel.addRow(new String[]{"4", "Vehicle 4", "Driver 4", "Available"});
+
+        for (int i = 0; i<30; i++) {
+            vehicleTableModel.addRow(new String[]{""+i+1, "Vehicle "+i+1, "Driver 1", "Available"});
+        }
 
         vehicleTable.setModel(vehicleTableModel);
         vehiclePane.setViewportView(vehicleTable);
@@ -645,10 +648,11 @@ public class AdminDashboard extends JFrame {
 
         DefaultTableModel volunteerTableModel = new DefaultTableModel();
         volunteerTableModel.setColumnIdentifiers(new String[]{"ID", "Volunteer", "Task", "Status"});
-        volunteerTableModel.addRow(new String[]{"1", "Volunteer 1", "Task 1", "Available"});
-        volunteerTableModel.addRow(new String[]{"2", "Volunteer 2", "Task 2", "Available"});
-        volunteerTableModel.addRow(new String[]{"3", "Volunteer 3", "Task 3", "Available"});
-        volunteerTableModel.addRow(new String[]{"4", "Volunteer 4", "Task 4", "Available"});
+
+        for (int i = 0; i<30; i++) {
+            taskTableModel.addRow(new String[]{Integer.toString(i+1), "Task "+i+1, "12:00", "12:30"});
+            volunteerTableModel.addRow(new String[]{""+i+1, "Volunteer "+i+1, "Task 1", "Available"});
+        }
 
         volunteerTable.setModel(volunteerTableModel);
         volunteerPane.setViewportView(volunteerTable);
@@ -680,40 +684,40 @@ public class AdminDashboard extends JFrame {
         // End of Dashboard Panel ------------------------------------------------
 
         // Start of User Panel ---------------------------------------------------
-        userPanel.setBackground(new Color(255, 255, 255));
+//        userPanel.setBackground(new Color(255, 255, 255));
         userPanel.setAutoscrolls(true);
         userPanel.setLayout(null);
 
         DefaultTableModel userTableModel = new DefaultTableModel();
         userTableModel.setColumnIdentifiers(new String[]{"ID", "Name", "Email", "Phone", "Address", "User Type"});
-        userTableModel.addRow(new String[]{"1", "Hasib", "example@domain.com", "01700000000", "Dhaka, Bangladesh", "Admin"});
-        userTable.setModel(userTableModel);
-        userScrollPane.setViewportView(userTable);
-        if (userTable.getColumnModel().getColumnCount() > 0) {
-            userTable.getColumnModel().getColumn(0).setPreferredWidth(10);
-            userTable.getColumnModel().getColumn(2).setMinWidth(50);
-            userTable.getColumnModel().getColumn(2).setPreferredWidth(30);
-            userTable.getColumnModel().getColumn(5).setHeaderValue("User Type");
+
+        for (int i = 0; i<20; i++) {
+            userTableModel.addRow(new String[]{Integer.toString(i+1), "Hasib", "example@domain.com", "01700000000", "Dhaka, Bangladesh", "Admin"});
         }
 
+        userTable.setModel(userTableModel);
+        userScrollPane.setViewportView(userTable);
+
         userPanel.add(userScrollPane);
-        userScrollPane.setBounds(10, 160, 680, 530);
+        userScrollPane.setBounds(10, 160, 680, 575);
 
-        userCountPanel.setLayout(null);
+        userCountPanel.setLayout(new GridLayout(2,1));
+        userCountPanel.setBorder(new EmptyBorder(10,10,10,10));
 
+        userCountLabel.setIcon(new ImageIcon("src/main/java/edu/aiub/static/currentInfo_label.png"));
         userCountLabel.setText("Total Users");
         userCountPanel.add(userCountLabel);
-        userCountLabel.setBounds(10, 10, 100, 16);
 
-        userCountMainLabel.setFont(new Font("Segoe UI", 0, 36));
         userCountMainLabel.setText("22");
+        userCountMainLabel.setFont(new Font("Inter", Font.BOLD, 40));
         userCountPanel.add(userCountMainLabel);
-        userCountMainLabel.setBounds(10, 30, 100, 40);
+//        userCountPanel.setBackground(new Color(255, 255, 255));
+//        userCountMainLabel.setBounds(10, 30, 100, 40);
 
         userPanel.add(userCountPanel);
-        userCountPanel.setBounds(10, 20, 120, 80);
+        userCountPanel.setBounds(10, 20, 180, 100);
 
-        addUserBtn.setText("Add New User");
+        addUserBtn.setText("Add User");
         addUserBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
 //                addUserBtnActionPerformed(evt);
@@ -735,45 +739,36 @@ public class AdminDashboard extends JFrame {
         // End of User Panel -----------------------------------------------------
 
         // Start of Task Panel ---------------------------------------------------
-        taskPanel.setBackground(new Color(255, 255, 255));
+//        taskPanel.setBackground(new Color(255, 255, 255));
         taskPanel.setAutoscrolls(true);
         taskPanel.setLayout(null);
 
         DefaultTableModel userMainTableModel = new DefaultTableModel();
-        userMainTableModel.setColumnIdentifiers(new String[]{"ID", "Name", "Email", "Phone", "Registered On", "User Type", "Action"});
-        userMainTableModel.addRow(new String[]{"1", "Hasib", "example@domain.com", "13246546789", "12/2/22", "Staff", null});
-        userMainTableModel.addRow(new String[]{"2", "A", null, null, null, null, null});
-        userMainTableModel.addRow(new String[]{"3", "B", null, null, null, null, null});
-        userMainTableModel.addRow(new String[]{"4", "C", null, null, null, null, null});
-        userMainTableModel.addRow(new String[]{"5", "D", null, null, null, null, null});
-
+        userMainTableModel.setColumnIdentifiers(new String[]{"ID", "Project", "Location", "Start On", "Deadline", "Action"});
+        for (int i=0; i<30; i++) {
+            userMainTableModel.addRow(new String[]{""+i+1, "Food Distribution", "Rajshahi", "12/2/22", "5/6/22", null});
+        }
         userMainTable.setModel(userMainTableModel);
         taskScrollPane.setViewportView(userMainTable);
-        if (userMainTable.getColumnModel().getColumnCount() > 0) {
-            userMainTable.getColumnModel().getColumn(0).setPreferredWidth(10);
-            userMainTable.getColumnModel().getColumn(2).setMinWidth(50);
-            userMainTable.getColumnModel().getColumn(2).setPreferredWidth(30);
-            userMainTable.getColumnModel().getColumn(5).setHeaderValue("User Type");
-        }
 
         taskPanel.add(taskScrollPane);
         taskScrollPane.setBounds(10, 160, 680, 530);
 
-        taskCountPanel.setLayout(null);
+        taskCountPanel.setLayout(new GridLayout(2,1));
+        taskCountPanel.setBorder(new EmptyBorder(10,10,10,10));
 
         taskCountLabel.setText("Total Users");
+        taskCountLabel.setIcon(new ImageIcon("src/main/java/edu/aiub/static/currentInfo_label.png"));
         taskCountPanel.add(taskCountLabel);
-        taskCountLabel.setBounds(10, 10, 100, 16);
 
-        taskCountMainLabel.setFont(new Font("Segoe UI", 0, 36)); // NOI18N
+        taskCountMainLabel.setFont(new Font("Inter", Font.BOLD, 40));
         taskCountMainLabel.setText("22");
         taskCountPanel.add(taskCountMainLabel);
-        taskCountMainLabel.setBounds(10, 30, 100, 40);
 
         taskPanel.add(taskCountPanel);
-        taskCountPanel.setBounds(10, 20, 120, 80);
+        taskCountPanel.setBounds(10, 20, 180, 100);
 
-        addTaskBtn.setText("Add New Task");
+        addTaskBtn.setText("Add Task");
         addTaskBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
 //                addTaskBtnActionPerformed(evt);
@@ -794,22 +789,22 @@ public class AdminDashboard extends JFrame {
         // End of Task Panel -----------------------------------------------------
 
         // Start of Inventory Panel ----------------------------------------------
-        inventoryPanel.setBackground(new Color(255, 255, 255));
+//        inventoryPanel.setBackground(new Color(255, 255, 255));
         inventoryPanel.setLayout(null);
 
-        inventoryCountPane.setLayout(null);
+        inventoryCountPane.setLayout(new GridLayout(2,1));
+        inventoryCountPane.setBorder(new EmptyBorder(10,10,10,10));
 
         inventoryCountLabel.setText("Total Commodity");
+        inventoryCountLabel.setIcon(new ImageIcon("src/main/java/edu/aiub/static/currentInfo_label.png"));
         inventoryCountPane.add(inventoryCountLabel);
-        inventoryCountLabel.setBounds(10, 10, 100, 16);
 
-        inventoryMainLabel.setFont(new Font("Segoe UI", 0, 36)); // NOI18N
+        inventoryMainLabel.setFont(new Font("Inter", Font.BOLD, 40));
         inventoryMainLabel.setText("22");
         inventoryCountPane.add(inventoryMainLabel);
-        inventoryMainLabel.setBounds(10, 30, 100, 40);
 
         inventoryPanel.add(inventoryCountPane);
-        inventoryCountPane.setBounds(10, 20, 120, 80);
+        inventoryCountPane.setBounds(10, 20, 180, 100);
 
         inventoryMonthList.setModel(new DefaultComboBoxModel<>(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
         inventoryPanel.add(inventoryMonthList);
@@ -819,7 +814,7 @@ public class AdminDashboard extends JFrame {
         inventoryPanel.add(inventoryYearList);
         inventoryYearList.setBounds(350, 120, 110, 30);
 
-        addInventoryBtn.setText("Add New Commodity");
+        addInventoryBtn.setText("Add Commodity");
         addInventoryBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
 //                addInventoryBtnActionPerformed(evt);
@@ -828,35 +823,14 @@ public class AdminDashboard extends JFrame {
         inventoryPanel.add(addInventoryBtn);
         addInventoryBtn.setBounds(500, 60, 180, 40);
 
-        inventoryTable.setModel(new DefaultTableModel(
-                new Object [][] {
-                        {null, null, null, null, null, null}
-                },
-                new String [] {
-                        "ID", "Name", "Type", "Amount", "Price", "Action"
-                }
-        ) {
-            Class[] types = new Class [] {
-                    String.class, String.class, String.class, String.class, String.class, Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                    false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        inventoryScrollPane.setViewportView(inventoryTable);
-        if (inventoryTable.getColumnModel().getColumnCount() > 0) {
-            inventoryTable.getColumnModel().getColumn(0).setPreferredWidth(10);
-            inventoryTable.getColumnModel().getColumn(2).setMinWidth(50);
-            inventoryTable.getColumnModel().getColumn(2).setPreferredWidth(30);
+        DefaultTableModel inventoryTableModel = new DefaultTableModel();
+        inventoryTableModel.setColumnIdentifiers(new Object[] {"ID", "Commodity", "Type", "Quantity", "Price", "Action"});
+        for (int i=0; i<30; i++) {
+            inventoryTableModel.addRow(new String[] {""+i+1, "Rice "+i+1, "Food", "15KG", "1500", null});
         }
+        inventoryTable.setModel(inventoryTableModel);
+        inventoryScrollPane.setViewportView(inventoryTable);
+
 
         inventoryPanel.add(inventoryScrollPane);
         inventoryScrollPane.setBounds(10, 160, 680, 530);
@@ -865,22 +839,22 @@ public class AdminDashboard extends JFrame {
         // End of Inventory Panel ------------------------------------------------
 
         // Start of Vehicle Panel
-        vehiclePanel.setBackground(new Color(255, 255, 255));
+//        vehiclePanel.setBackground(new Color(255, 255, 255));
         vehiclePanel.setLayout(null);
 
-        vehicleCountPane.setLayout(null);
+        vehicleCountPane.setLayout(new GridLayout(2,1));
+        vehicleCountPane.setBorder(new EmptyBorder(10,10,10,10));
 
         vehicleCountLabel.setText("Total Vehicle");
+        vehicleCountLabel.setIcon(new ImageIcon("src/main/java/edu/aiub/static/currentInfo_label.png"));
         vehicleCountPane.add(vehicleCountLabel);
-        vehicleCountLabel.setBounds(10, 10, 100, 16);
 
-        vehicleMainLabel.setFont(new Font("Segoe UI", 0, 36)); // NOI18N
+        vehicleMainLabel.setFont(new Font("Inter", Font.BOLD, 40));
         vehicleMainLabel.setText("22");
         vehicleCountPane.add(vehicleMainLabel);
-        vehicleMainLabel.setBounds(10, 30, 100, 40);
 
         vehiclePanel.add(vehicleCountPane);
-        vehicleCountPane.setBounds(10, 20, 120, 80);
+        vehicleCountPane.setBounds(10, 20, 180, 100);
 
         vehicleMonthList.setModel(new DefaultComboBoxModel<>(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
         vehiclePanel.add(vehicleMonthList);
@@ -890,7 +864,7 @@ public class AdminDashboard extends JFrame {
         vehiclePanel.add(vehicleYearList);
         vehicleYearList.setBounds(350, 120, 110, 30);
 
-        addVehicleBtn.setText("Add New Vehicle");
+        addVehicleBtn.setText("Add Vehicle");
         addVehicleBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
 //                addVehicleBtnActionPerformed(evt);
@@ -899,9 +873,12 @@ public class AdminDashboard extends JFrame {
         vehiclePanel.add(addVehicleBtn);
         addVehicleBtn.setBounds(500, 60, 180, 40);
 
-        DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(new Object[]{"ID", "Name", "Type", "Amount", "Price", "Action"});
-        vehicleCenterTable.setModel(model);
+        DefaultTableModel vehicleMainTableModel = new DefaultTableModel();
+        vehicleMainTableModel.setColumnIdentifiers(new Object[]{"ID", "Model", "Availability", "Date", "Time", "Action"});
+        for (int i=0; i<30; i++) {
+            vehicleMainTableModel.addRow(new String[] {""+i+1, "Tata "+i+1, "Available", "15/02/22", "13:55", null});
+        }
+        vehicleCenterTable.setModel(vehicleMainTableModel);
 
 
         vehicleScrollPane.setViewportView(vehicleCenterTable);
@@ -918,22 +895,22 @@ public class AdminDashboard extends JFrame {
         // End of Vehicle Panel ------------------------------------------------
 
         // Start of Transaction Panel
-        bankPanel.setBackground(new Color(255, 255, 255));
+//        bankPanel.setBackground(new Color(255, 255, 255));
         bankPanel.setLayout(null);
 
-        bankBalancePane.setLayout(null);
+        bankBalancePane.setLayout(new GridLayout(2,1));
+        bankBalancePane.setBorder(new EmptyBorder(10,10,10,10));
 
         bankBalanceLabel.setText("Total Transactions");
+        bankBalanceLabel.setIcon(new ImageIcon("src/main/java/edu/aiub/static/currentInfo_label.png"));
         bankBalancePane.add(bankBalanceLabel);
-        bankBalanceLabel.setBounds(10, 10, 100, 16);
 
-        bankMainLabel.setFont(new Font("Segoe UI", 0, 36)); // NOI18N
+        bankMainLabel.setFont(new Font("Inter", Font.BOLD, 40));
         bankMainLabel.setText("22");
         bankBalancePane.add(bankMainLabel);
-        bankMainLabel.setBounds(10, 30, 100, 40);
 
         bankPanel.add(bankBalancePane);
-        bankBalancePane.setBounds(10, 20, 120, 80);
+        bankBalancePane.setBounds(10, 20, 180, 100);
 
         bankMonthList.setModel(new DefaultComboBoxModel<>(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
         bankPanel.add(bankMonthList);
@@ -943,7 +920,7 @@ public class AdminDashboard extends JFrame {
         bankPanel.add(bankYearList);
         bankYearList.setBounds(350, 120, 110, 30);
 
-        addTnxBtn.setText("Add New Transaction");
+        addTnxBtn.setText("Add Transaction");
         addTnxBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
 //                addTnxBtnActionPerformed(evt);
@@ -955,15 +932,15 @@ public class AdminDashboard extends JFrame {
 
 //      Transactions Table
         DefaultTableModel tnxTableModel = new DefaultTableModel();
-        tnxTableModel.setColumnIdentifiers(new Object[]{"ID", "Name", "Type", "Amount", "Price", "Action"});
+        tnxTableModel.setColumnIdentifiers(new Object[]{"ID", "Name", "Method", "Amount", "Date", "Time", "Action"});
+
+        for (int i=0; i<30; i++) {
+            tnxTableModel.addRow(new String[] {""+i+1, "Name "+i+1, "bKash", "5000", "15/02/22", "13:55", null});
+        }
+
         tnxTable.setModel(tnxTableModel);
 
         bankScrollPane.setViewportView(tnxTable);
-        if (tnxTable.getColumnModel().getColumnCount() > 0) {
-            tnxTable.getColumnModel().getColumn(0).setPreferredWidth(10);
-            tnxTable.getColumnModel().getColumn(2).setMinWidth(50);
-            tnxTable.getColumnModel().getColumn(2).setPreferredWidth(30);
-        }
 
         bankPanel.add(bankScrollPane);
         bankScrollPane.setBounds(10, 160, 680, 530);
@@ -975,19 +952,19 @@ public class AdminDashboard extends JFrame {
 //        noticePanel.setBackground(new Color(255, 255, 255));
         noticePanel.setLayout(null);
 
-        noticeCountPane.setLayout(null);
+        noticeCountPane.setLayout(new GridLayout(2,1));
+        noticeCountPane.setBorder(new EmptyBorder(10,10,10,10));
 
         noticeCountLabel.setText("Total Notice");
+        noticeCountLabel.setIcon(new ImageIcon("src/main/java/edu/aiub/static/currentInfo_label.png"));
         noticeCountPane.add(noticeCountLabel);
-        noticeCountLabel.setBounds(10, 10, 100, 16);
 
-        noticeMainLabel.setFont(new Font("Segoe UI", 0, 36)); // NOI18N
+        noticeMainLabel.setFont(new Font("Inter", Font.BOLD, 40));
         noticeMainLabel.setText("22");
         noticeCountPane.add(noticeMainLabel);
-        noticeMainLabel.setBounds(10, 30, 100, 40);
 
         noticePanel.add(noticeCountPane);
-        noticeCountPane.setBounds(10, 20, 120, 80);
+        noticeCountPane.setBounds(10, 20, 180, 100);
 
         noticeMonthList.setModel(new DefaultComboBoxModel<>(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
         noticePanel.add(noticeMonthList);
@@ -997,7 +974,7 @@ public class AdminDashboard extends JFrame {
         noticePanel.add(noticeYearList);
         noticeYearList.setBounds(350, 120, 110, 30);
 
-        addNoticeBtn.setText("Add New Notice");
+        addNoticeBtn.setText("Add Notice");
         addNoticeBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
 //                addNoticeBtnActionPerformed(evt);
@@ -1008,16 +985,15 @@ public class AdminDashboard extends JFrame {
 
 //      Notice Table
         DefaultTableModel noticeTableModel = new DefaultTableModel();
-        noticeTableModel.setColumnIdentifiers(new Object[]{"ID", "Name", "Type", "Amount", "Price", "Action"});
+        noticeTableModel.setColumnIdentifiers(new Object[]{"ID", "Notice", "Date", "Time", "Action"});
+
+        for (int i=0; i<30; i++) {
+            noticeTableModel.addRow(new String[] {""+i+1, "Notice "+i+1, "15/02/22", "13:55", null});
+        }
+
         noticeTable.setModel(noticeTableModel);
 
-
         noticeScrollPane.setViewportView(noticeTable);
-        if (noticeTable.getColumnModel().getColumnCount() > 0) {
-            noticeTable.getColumnModel().getColumn(0).setPreferredWidth(10);
-            noticeTable.getColumnModel().getColumn(2).setMinWidth(50);
-            noticeTable.getColumnModel().getColumn(2).setPreferredWidth(30);
-        }
 
         noticePanel.add(noticeScrollPane);
         noticeScrollPane.setBounds(10, 160, 680, 530);
@@ -1094,21 +1070,5 @@ public class AdminDashboard extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
-    }
-
-    private void settingsBtnActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void hideSidePanelBtnActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void noticeBtnActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void userBtnActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
     }
 }
