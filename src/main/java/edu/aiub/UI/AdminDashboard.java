@@ -1,32 +1,55 @@
 package edu.aiub.UI;
 
+import com.sun.tools.javac.util.Pair;
+import edu.aiub.UIComponents.ButtonRenderer;
+import edu.aiub.UIComponents.NoticeAddForm;
+import edu.aiub.UIComponents.TaskAddForm;
+import edu.aiub.database.Events;
+import edu.aiub.database.Notice;
 import edu.aiub.essentials.ButtonHighlighter;
 import edu.aiub.essentials.ContactDialog;
 import edu.aiub.essentials.ImageResizer;
 import edu.aiub.essentials.TableColumnCenterizer;
+import org.bson.Document;
 
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class AdminDashboard extends JFrame {
-    static JButton[] leftSidebarBtnList;
 
-    private CardLayout centerCardLayout;
-    private JButton contactBtn;
-    private JButton addInventoryBtn;
-    private JButton addNoticeBtn;
-    private JButton addTaskBtn;
-    private JButton addTnxBtn;
-    private JButton addUserBtn;
-    private JButton addVehicleBtn;
+    static JButton[] leftSidebarBtnList;
+    private static DefaultTableModel taskTableModel;
+    private static DefaultTableModel transactionTableModel;
+    private static DefaultTableModel vehicleTableModel;
+    private static DefaultTableModel volunteerTableModel;
+    private static DefaultTableModel userTableModel;
+    private static DefaultTableModel userMainTableModel;
+    private static DefaultTableModel inventoryTableModel;
+    private static DefaultTableModel vehicleMainTableModel;
+    private static DefaultTableModel noticeTableModel;
+    private static DefaultTableModel tnxTableModel;
+
+    private final CardLayout centerCardLayout;
+    private final JButton contactBtn;
+    private final JButton addInventoryBtn;
+    private final JButton addNoticeBtn;
+    private final JButton addTaskBtn;
+    private final JButton addTnxBtn;
+    private final JButton addUserBtn;
+    private final JButton addVehicleBtn;
     private JLabel bankBalanceLabel;
     private JPanel bankBalancePane;
     private JLabel bankMainLabel;
@@ -138,7 +161,8 @@ public class AdminDashboard extends JFrame {
     private JPanel vehicleInfoPanel;
     private JPanel userInfoPanel;
 
-    public AdminDashboard() {
+    public AdminDashboard(int centerCardIndex) {
+
         contactBtn = new JButton();
         userPanel = new JPanel();
         userScrollPane = new JScrollPane();
@@ -337,6 +361,9 @@ public class AdminDashboard extends JFrame {
         task5 = new JLabel();
         task6 = new JLabel();
 
+        ArrayList<Document> noticeFromDB = new Notice().getNotice();
+        ArrayList<Document> taskFromDB = new Events().getEvent();
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setFont(new Font("Inter", 0, 10));
         setPreferredSize(new Dimension(1220, 790));
@@ -356,9 +383,7 @@ public class AdminDashboard extends JFrame {
 //      Dashboard Button
         dashboardBtn.setBackground(new Color(46, 204, 113));
         dashboardBtn.setForeground(new Color(46, 204, 113));
-        dashboardBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/dashboardBtn_hover.png"));
         dashboardBtn.setBorder(null);
-        leftSidePanel.add(dashboardBtn);
         dashboardBtn.setBounds(20, 120, 200, 45);
         dashboardBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -370,7 +395,6 @@ public class AdminDashboard extends JFrame {
 //      User Button
         userBtn.setBackground(new Color(46, 204, 113));
         userBtn.setForeground(new Color(236, 240, 241));
-        userBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/userBtn.png"));
         userBtn.setBorder(null);
         userBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -378,15 +402,12 @@ public class AdminDashboard extends JFrame {
                 ButtonHighlighter.highlight(leftSidebarBtnList, userBtn);
             }
         });
-        leftSidePanel.add(userBtn);
         userBtn.setBounds(20, 170, 200, 45);
 
 //      Task Button
         taskBtn.setBackground(new Color(46, 204, 113));
         taskBtn.setForeground(new Color(236, 240, 241));
-        taskBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/taskBtn.png"));
         taskBtn.setBorder(null);
-        leftSidePanel.add(taskBtn);
         taskBtn.setBounds(20, 220, 200, 45);
         taskBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -398,9 +419,7 @@ public class AdminDashboard extends JFrame {
 //      Inventory Button
         inventoryBtn.setBackground(new Color(46, 204, 113));
         inventoryBtn.setForeground(new Color(236, 240, 241));
-        inventoryBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/inventoryBtn.png"));
         inventoryBtn.setBorder(null);
-        leftSidePanel.add(inventoryBtn);
         inventoryBtn.setBounds(20, 270, 200, 45);
         inventoryBtn.addActionListener(new ActionListener() {
             @Override
@@ -413,9 +432,7 @@ public class AdminDashboard extends JFrame {
 //      Vehicle Button
         vehicleBtn.setBackground(new Color(46, 204, 113));
         vehicleBtn.setForeground(new Color(236, 240, 241));
-        vehicleBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/vehicleBtn.png"));
         vehicleBtn.setBorder(null);
-        leftSidePanel.add(vehicleBtn);
         vehicleBtn.setBounds(20, 320, 200, 45);
         vehicleBtn.addActionListener(new ActionListener() {
             @Override
@@ -428,9 +445,7 @@ public class AdminDashboard extends JFrame {
 //      Bank Button
         bankBtn.setBackground(new Color(46, 204, 113));
         bankBtn.setForeground(new Color(236, 240, 241));
-        bankBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/bankBtn.png"));
         bankBtn.setBorder(null);
-        leftSidePanel.add(bankBtn);
         bankBtn.setBounds(20, 370, 200, 45);
         bankBtn.addActionListener(new ActionListener() {
             @Override
@@ -443,21 +458,19 @@ public class AdminDashboard extends JFrame {
 //      Notice Button
         noticeBtn.setBackground(new Color(46, 204, 113));
         noticeBtn.setForeground(new Color(236, 240, 241));
-        noticeBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/noticeBtn.png"));
         noticeBtn.setBorder(null);
         noticeBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 centerCardLayout.show(centerCardPanel, "noticePanel");
                 ButtonHighlighter.highlight(leftSidebarBtnList, noticeBtn);
+                noticeTableModel.fireTableDataChanged();
             }
         });
-        leftSidePanel.add(noticeBtn);
         noticeBtn.setBounds(20, 420, 200, 45);
 
 //      Settings Button
         settingsBtn.setBackground(new Color(46, 204, 113));
         settingsBtn.setForeground(new Color(236, 240, 241));
-        settingsBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/settingsBtn.png"));
         settingsBtn.setBorder(null);
         settingsBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -465,7 +478,6 @@ public class AdminDashboard extends JFrame {
                 ButtonHighlighter.highlight(leftSidebarBtnList, settingsBtn);
             }
         });
-        leftSidePanel.add(settingsBtn);
         settingsBtn.setBounds(20, 470, 200, 45);
 
 //      Contact Button
@@ -489,6 +501,65 @@ public class AdminDashboard extends JFrame {
 
             }
         });
+
+//      Left Side Panel Button Sequencing
+        final String imgRoot = "src/main/java/edu/aiub/static/leftSidebarBtn/";
+
+        final ArrayList<String> imgList = new ArrayList<>();
+        imgList.add(imgRoot + "dashboardBtn.png");
+        imgList.add(imgRoot + "userBtn.png");
+        imgList.add(imgRoot + "taskBtn.png");
+        imgList.add(imgRoot + "inventoryBtn.png");
+        imgList.add(imgRoot + "vehicleBtn.png");
+        imgList.add(imgRoot + "bankBtn.png");
+        imgList.add(imgRoot + "noticeBtn.png");
+        imgList.add(imgRoot + "settingsBtn.png");
+
+        final ArrayList<Pair<JButton, String>> imgHoverList = new ArrayList<>();
+        imgHoverList.add(new Pair<>(dashboardBtn, imgRoot + "dashboardBtn_hover" + ".png"));
+        imgHoverList.add(new Pair<>(userBtn, imgRoot + "userBtn_hover" + ".png"));
+        imgHoverList.add(new Pair<>(taskBtn, imgRoot + "taskBtn_hover" + ".png"));
+        imgHoverList.add(new Pair<>(inventoryBtn, imgRoot + "inventoryBtn_hover" + ".png"));
+        imgHoverList.add(new Pair<>(vehicleBtn, imgRoot + "vehicleBtn_hover" + ".png"));
+        imgHoverList.add(new Pair<>(bankBtn, imgRoot + "bankBtn_hover" + ".png"));
+        imgHoverList.add(new Pair<>(noticeBtn, imgRoot + "noticeBtn_hover" + ".png"));
+        imgHoverList.add(new Pair<>(settingsBtn, imgRoot + "settingsBtn_hover" + ".png"));
+
+        dashboardBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/dashboardBtn.png"));
+
+        userBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/userBtn.png"));
+
+        taskBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/taskBtn.png"));
+
+        inventoryBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/inventoryBtn.png"));
+
+        vehicleBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/vehicleBtn.png"));
+
+        bankBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/bankBtn.png"));
+
+        noticeBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/noticeBtn.png"));
+
+        settingsBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/settingsBtn.png"));
+
+        imgHoverList.get(centerCardIndex).fst.setIcon(new ImageIcon(imgHoverList.get(centerCardIndex).snd));
+
+        leftSidePanel.add(dashboardBtn);
+
+        leftSidePanel.add(userBtn);
+
+        leftSidePanel.add(taskBtn);
+
+        leftSidePanel.add(inventoryBtn);
+
+        leftSidePanel.add(vehicleBtn);
+
+        leftSidePanel.add(bankBtn);
+
+        leftSidePanel.add(noticeBtn);
+
+        leftSidePanel.add(settingsBtn);
+//      Left Side Panel Button Sequencing End
+
         leftSidePanel.add(contactBtn);
         contactBtn.setBounds(51, 640, 138, 34);
 
@@ -522,7 +593,14 @@ public class AdminDashboard extends JFrame {
         currentTaskCount.setFont(new Font("Inter", Font.BOLD, 35));
         currentTaskCount.setHorizontalAlignment(SwingConstants.CENTER);
         currentTaskCount.setVerticalAlignment(SwingConstants.TOP);
-        currentTaskCount.setText("06");
+
+        int taskCountFromDB = taskFromDB.size();
+        if (taskCountFromDB < 10) {
+            currentTaskCount.setText("0"+taskCountFromDB);
+        }
+        else
+            currentTaskCount.setText(""+taskCountFromDB);
+
         taskInfoPanel.add(currentTaskCount);
 
 //      Balance Info
@@ -592,11 +670,26 @@ public class AdminDashboard extends JFrame {
 //        RecentUpdates.setBackground(new Color(50, 255, 126));
         runningTaskTab.setLayout(null);
 
-        DefaultTableModel taskTableModel = new DefaultTableModel();
+        taskTableModel = new DefaultTableModel();
 
-        taskTableModel.setColumnIdentifiers(new String[]{"ID", "Task", "Started", "End"});
-        for (int i = 0; i<30; i++) {
-            taskTableModel.addRow(new String[]{Integer.toString(i+1), "Task "+i+1, "12:00", "12:30"});
+        taskTableModel.setColumnIdentifiers(new String[]{
+                "Event",
+                "Event Description",
+                "Event Location",
+                "Start",
+                "End"
+        });
+        for (int i = 0; i<taskCountFromDB; i++) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            String start = formatter.format(taskFromDB.get(i).get("start"));
+            String end = formatter.format(taskFromDB.get(i).get("end"));
+            taskTableModel.addRow(new Object[]{
+                taskFromDB.get(i).getString("event"),
+                taskFromDB.get(i).getString("description"),
+                taskFromDB.get(i).getString("location"),
+                start,
+                end
+            });
         }
 
         taskTable.setModel(taskTableModel);
@@ -610,7 +703,8 @@ public class AdminDashboard extends JFrame {
 
         transactionTab.setLayout(null);
 
-        DefaultTableModel transactionTableModel = new DefaultTableModel();
+
+        transactionTableModel = new DefaultTableModel();
         transactionTableModel.setColumnIdentifiers(new String[]{"ID", "Sender", "Amount", "Date", "Time"});
 
         for (int i = 0; i<30; i++) {
@@ -628,7 +722,8 @@ public class AdminDashboard extends JFrame {
 
         vehicleTab.setLayout(null);
 
-        DefaultTableModel vehicleTableModel = new DefaultTableModel();
+
+        vehicleTableModel = new DefaultTableModel();
         vehicleTableModel.setColumnIdentifiers(new String[]{"ID", "Vehicle", "Driver", "Status"});
 
         for (int i = 0; i<30; i++) {
@@ -646,11 +741,10 @@ public class AdminDashboard extends JFrame {
 
         volunteerTab.setLayout(null);
 
-        DefaultTableModel volunteerTableModel = new DefaultTableModel();
+        volunteerTableModel = new DefaultTableModel();
         volunteerTableModel.setColumnIdentifiers(new String[]{"ID", "Volunteer", "Task", "Status"});
 
         for (int i = 0; i<30; i++) {
-            taskTableModel.addRow(new String[]{Integer.toString(i+1), "Task "+i+1, "12:00", "12:30"});
             volunteerTableModel.addRow(new String[]{""+i+1, "Volunteer "+i+1, "Task 1", "Available"});
         }
 
@@ -679,7 +773,6 @@ public class AdminDashboard extends JFrame {
         add(dashboardPanel);
         dashboardPanel.setBounds(240, 0, 700, 750);
 
-        centerCardPanel.add(dashboardPanel, "dashboardPanel");
 
         // End of Dashboard Panel ------------------------------------------------
 
@@ -688,7 +781,7 @@ public class AdminDashboard extends JFrame {
         userPanel.setAutoscrolls(true);
         userPanel.setLayout(null);
 
-        DefaultTableModel userTableModel = new DefaultTableModel();
+        userTableModel = new DefaultTableModel();
         userTableModel.setColumnIdentifiers(new String[]{"ID", "Name", "Email", "Phone", "Address", "User Type"});
 
         for (int i = 0; i<20; i++) {
@@ -735,7 +828,6 @@ public class AdminDashboard extends JFrame {
         userYearList.setBounds(350, 120, 110, 30);
 
 
-        centerCardPanel.add(userPanel, "userPanel");
         // End of User Panel -----------------------------------------------------
 
         // Start of Task Panel ---------------------------------------------------
@@ -743,10 +835,25 @@ public class AdminDashboard extends JFrame {
         taskPanel.setAutoscrolls(true);
         taskPanel.setLayout(null);
 
-        DefaultTableModel userMainTableModel = new DefaultTableModel();
-        userMainTableModel.setColumnIdentifiers(new String[]{"ID", "Project", "Location", "Start On", "Deadline", "Action"});
-        for (int i=0; i<30; i++) {
-            userMainTableModel.addRow(new String[]{""+i+1, "Food Distribution", "Rajshahi", "12/2/22", "5/6/22", null});
+        userMainTableModel = new DefaultTableModel();
+        userMainTableModel.setColumnIdentifiers(new String[]{
+                "Event",
+                "Event Description",
+                "Location",
+                "Start",
+                "Deadline"
+        });
+        for (int i=0; i<taskCountFromDB; i++) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            String start = formatter.format(taskFromDB.get(i).get("start"));
+            String end = formatter.format(taskFromDB.get(i).get("end"));
+            userMainTableModel.addRow(new Object[]{
+                    taskFromDB.get(i).getString("event"),
+                    taskFromDB.get(i).getString("description"),
+                    taskFromDB.get(i).getString("location"),
+                    start,
+                    end
+            });
         }
         userMainTable.setModel(userMainTableModel);
         taskScrollPane.setViewportView(userMainTable);
@@ -762,7 +869,11 @@ public class AdminDashboard extends JFrame {
         taskCountPanel.add(taskCountLabel);
 
         taskCountMainLabel.setFont(new Font("Inter", Font.BOLD, 40));
-        taskCountMainLabel.setText("22");
+        if (taskCountFromDB < 10) {
+            taskCountMainLabel.setText("0"+taskCountFromDB);
+        } else {
+            taskCountMainLabel.setText(""+taskCountFromDB);
+        }
         taskCountPanel.add(taskCountMainLabel);
 
         taskPanel.add(taskCountPanel);
@@ -771,7 +882,7 @@ public class AdminDashboard extends JFrame {
         addTaskBtn.setText("Add Task");
         addTaskBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-//                addTaskBtnActionPerformed(evt);
+                addTaskBtnActionPerformed(evt);
             }
         });
         taskPanel.add(addTaskBtn);
@@ -785,7 +896,6 @@ public class AdminDashboard extends JFrame {
         taskPanel.add(taskYearList);
         taskYearList.setBounds(350, 120, 110, 30);
 
-        centerCardPanel.add(taskPanel, "taskPanel");
         // End of Task Panel -----------------------------------------------------
 
         // Start of Inventory Panel ----------------------------------------------
@@ -823,7 +933,7 @@ public class AdminDashboard extends JFrame {
         inventoryPanel.add(addInventoryBtn);
         addInventoryBtn.setBounds(500, 60, 180, 40);
 
-        DefaultTableModel inventoryTableModel = new DefaultTableModel();
+        inventoryTableModel = new DefaultTableModel();
         inventoryTableModel.setColumnIdentifiers(new Object[] {"ID", "Commodity", "Type", "Quantity", "Price", "Action"});
         for (int i=0; i<30; i++) {
             inventoryTableModel.addRow(new String[] {""+i+1, "Rice "+i+1, "Food", "15KG", "1500", null});
@@ -835,7 +945,6 @@ public class AdminDashboard extends JFrame {
         inventoryPanel.add(inventoryScrollPane);
         inventoryScrollPane.setBounds(10, 160, 680, 530);
 
-        centerCardPanel.add(inventoryPanel, "inventoryPanel");
         // End of Inventory Panel ------------------------------------------------
 
         // Start of Vehicle Panel
@@ -873,7 +982,7 @@ public class AdminDashboard extends JFrame {
         vehiclePanel.add(addVehicleBtn);
         addVehicleBtn.setBounds(500, 60, 180, 40);
 
-        DefaultTableModel vehicleMainTableModel = new DefaultTableModel();
+        vehicleMainTableModel = new DefaultTableModel();
         vehicleMainTableModel.setColumnIdentifiers(new Object[]{"ID", "Model", "Availability", "Date", "Time", "Action"});
         for (int i=0; i<30; i++) {
             vehicleMainTableModel.addRow(new String[] {""+i+1, "Tata "+i+1, "Available", "15/02/22", "13:55", null});
@@ -891,7 +1000,6 @@ public class AdminDashboard extends JFrame {
         vehiclePanel.add(vehicleScrollPane);
         vehicleScrollPane.setBounds(10, 160, 680, 530);
 
-        centerCardPanel.add(vehiclePanel, "vehiclePanel");
         // End of Vehicle Panel ------------------------------------------------
 
         // Start of Transaction Panel
@@ -931,7 +1039,7 @@ public class AdminDashboard extends JFrame {
 
 
 //      Transactions Table
-        DefaultTableModel tnxTableModel = new DefaultTableModel();
+        tnxTableModel = new DefaultTableModel();
         tnxTableModel.setColumnIdentifiers(new Object[]{"ID", "Name", "Method", "Amount", "Date", "Time", "Action"});
 
         for (int i=0; i<30; i++) {
@@ -945,7 +1053,6 @@ public class AdminDashboard extends JFrame {
         bankPanel.add(bankScrollPane);
         bankScrollPane.setBounds(10, 160, 680, 530);
 
-        centerCardPanel.add(bankPanel, "bankPanel");
         // End of Transaction Panel
 
         // Start of Notice Panel
@@ -960,7 +1067,12 @@ public class AdminDashboard extends JFrame {
         noticeCountPane.add(noticeCountLabel);
 
         noticeMainLabel.setFont(new Font("Inter", Font.BOLD, 40));
-        noticeMainLabel.setText("22");
+        int noticeCountFromDB = noticeFromDB.size();
+        if (noticeCountFromDB < 10) {
+            noticeMainLabel.setText("0"+noticeCountFromDB);
+        } else {
+            noticeMainLabel.setText(""+noticeCountFromDB);
+        }
         noticeCountPane.add(noticeMainLabel);
 
         noticePanel.add(noticeCountPane);
@@ -977,18 +1089,30 @@ public class AdminDashboard extends JFrame {
         addNoticeBtn.setText("Add Notice");
         addNoticeBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-//                addNoticeBtnActionPerformed(evt);
+                addNoticeBtnActionPerformed(evt);
             }
         });
         noticePanel.add(addNoticeBtn);
         addNoticeBtn.setBounds(500, 60, 180, 40);
 
 //      Notice Table
-        DefaultTableModel noticeTableModel = new DefaultTableModel();
-        noticeTableModel.setColumnIdentifiers(new Object[]{"ID", "Notice", "Date", "Time", "Action"});
+        noticeTableModel = new DefaultTableModel();
+        noticeTableModel.setColumnIdentifiers(new Object[]{
+                "Notice",
+                "Description",
+                "Date",
+                "Time"
+        });
 
-        for (int i=0; i<30; i++) {
-            noticeTableModel.addRow(new String[] {""+i+1, "Notice "+i+1, "15/02/22", "13:55", null});
+        for (int i=0; i<noticeCountFromDB; i++) {
+            String date = noticeFromDB.get(i).get("date").toString();
+            String time = noticeFromDB.get(i).get("date").toString();
+            noticeTableModel.addRow(new Object[] {
+                noticeFromDB.get(i).getString("notice"),
+                noticeFromDB.get(i).getString("description"),
+                date,
+                time,
+            });
         }
 
         noticeTable.setModel(noticeTableModel);
@@ -998,8 +1122,35 @@ public class AdminDashboard extends JFrame {
         noticePanel.add(noticeScrollPane);
         noticeScrollPane.setBounds(10, 160, 680, 530);
 
-        centerCardPanel.add(noticePanel, "noticePanel");
         // End of Notice Panel
+
+
+//      Card Layout Sequencing
+        Pair<JPanel, String> dashboard = new Pair<>(dashboardPanel, "dashboardPanel");
+        Pair<JPanel, String> user = new Pair<>(userPanel, "userPanel");
+        Pair<JPanel, String> task = new Pair<>(taskPanel, "taskPanel");
+        Pair<JPanel, String> inventory = new Pair<>(inventoryPanel, "inventoryPanel");
+        Pair<JPanel, String> vehicle = new Pair<>(vehiclePanel, "vehiclePanel");
+        Pair<JPanel, String> bank = new Pair<>(bankPanel, "bankPanel");
+        Pair<JPanel, String> notice = new Pair<>(noticePanel, "noticePanel");
+
+        ArrayList<Pair<JPanel, String>> cardPanels = new ArrayList<>();
+        cardPanels.add(dashboard);
+        cardPanels.add(user);
+        cardPanels.add(task);
+        cardPanels.add(inventory);
+        cardPanels.add(vehicle);
+        cardPanels.add(bank);
+        cardPanels.add(notice);
+
+        System.out.println(centerCardIndex);
+        centerCardPanel.add(cardPanels.get(centerCardIndex).fst, cardPanels.get(centerCardIndex).snd);
+        for (int i=0; i<cardPanels.size(); i++) {
+            if (i != centerCardIndex) {
+                centerCardPanel.add(cardPanels.get(i).fst, cardPanels.get(i).snd);
+            }
+        }
+//      Card Layout Sequencing End
 
         centerCardPanel.setBounds(240, 0, 700, 750); // CardLayout for center panel
 //        centerCardPanel.setBackground(new Color(236, 240, 241));
@@ -1029,9 +1180,8 @@ public class AdminDashboard extends JFrame {
         noticePane.setBounds(10, 80, 240, 250);
 //        noticeBodyPanel.setBounds(10, 10, 240, 250);
 
-        for (int i = 0; i < 20; i++) {
-            AdminRightSidebarScrollPane.add(noticeBodyPanel, new JLabel("Notice " + i));
-
+        for (int i = 0; i < noticeCountFromDB && i < 20; i++) {
+            AdminRightSidebarScrollPane.add(noticeBodyPanel, new JLabel(noticeFromDB.get(i).getString("notice")));
         }
 
         noticePane.setViewportView(noticeBodyPanel);
@@ -1055,8 +1205,8 @@ public class AdminDashboard extends JFrame {
 //        taskBodyPanel.setBounds(10, 410, 240, 280);
         taskPane.add(taskBodyPanel);
 
-        for (int i = 0; i < 20; i++) {
-            AdminRightSidebarScrollPane.add(taskBodyPanel, new JLabel("Task " + i));
+        for (int i = 0; i < 20 && i < taskCountFromDB; i++) {
+            AdminRightSidebarScrollPane.add(taskBodyPanel, new JLabel(taskFromDB.get(i).getString("event")));
         }
 
         taskPane.setViewportView(taskBodyPanel);
@@ -1071,4 +1221,51 @@ public class AdminDashboard extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
+    private void addTaskBtnActionPerformed(ActionEvent evt) {
+        TaskAddForm taskAddForm = new TaskAddForm();
+        taskAddForm.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e);
+                dispose();
+                new AdminDashboard(2);
+            }
+        });
+    }
+
+    private void addNoticeBtnActionPerformed(ActionEvent evt) {
+        NoticeAddForm noticeAddForm = new NoticeAddForm();
+        noticeAddForm.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e);
+//                updateNoticeTable(noticeCountFromDB, noticeFromDB);
+                dispose();
+                new AdminDashboard(6);
+//                updateNoticeTable(Notice.noticeCount, new Notice().getNotice());
+//                AdminRightSidebarScrollPane.add(noticeBodyPanel, new JLabel(new Notice().getNotice().get(Notice.noticeCount-1).getString("notice")));
+            }
+        });
+    }
+
+    public static void updateNoticeTable(int noticeCountFromDB, ArrayList<Document> noticeFromDB) {
+        String date = noticeFromDB.get(noticeCountFromDB-1).get("date").toString();
+        String time = noticeFromDB.get(noticeCountFromDB-1).get("time").toString();
+        noticeTableModel.addRow(new String[] {
+                ""+(noticeCountFromDB),
+                noticeFromDB.get(noticeCountFromDB-1).getString("notice"),
+                noticeFromDB.get(noticeCountFromDB-1).getString("description"),
+                date,
+                time,
+                null
+        });
+        noticeTableModel.fireTableDataChanged();
+    }
+
+    public static void deleteNoticeTable(int noticeCountFromDB, ArrayList<Document> noticeFromDB) {
+        noticeTableModel.removeRow(noticeCountFromDB-1);
+        noticeTableModel.fireTableDataChanged();
+    }
+
 }

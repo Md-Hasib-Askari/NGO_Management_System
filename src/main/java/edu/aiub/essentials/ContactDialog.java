@@ -1,5 +1,9 @@
 package edu.aiub.essentials;
 
+import com.toedter.calendar.JDateChooser;
+import edu.aiub.database.Events;
+import edu.aiub.database.Notice;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -11,7 +15,7 @@ public class ContactDialog extends JDialog {
     public ContactDialog() {
         setLayout(new BorderLayout());
         setModal(true);
-        setSize(300, 300);
+        setSize(500, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -21,33 +25,47 @@ public class ContactDialog extends JDialog {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(new ImageIcon("src\\main\\java\\edu\\aiub\\static\\contactDialog_bg.png").getImage(), 0, 0, 286, 300, null);
+//                g.drawImage(new ImageIcon("src\\main\\java\\edu\\aiub\\static\\contactDialog_bg.png").getImage(), 0, 0, 286, 300, null);
             }
         };
         panel.setLayout(null);
-        JLabel contactLabel1 = new JLabel("If you are having problems, contact us.");
-        contactLabel1.setFont(new Font("Inter", Font.PLAIN, 12));
-        contactLabel1.setForeground(new Color(255, 255, 255));
-        contactLabel1.setBounds(20, 90, 280, 30);
-        panel.add(contactLabel1);
 
-        JLabel contactLabel2 = new JLabel("We\'re here to help you.");
-        contactLabel2.setFont(new Font("Inter", Font.PLAIN, 12));
-        contactLabel2.setForeground(new Color(255, 255, 255));
-        contactLabel2.setBounds(20, 110, 280, 30);
-        panel.add(contactLabel2);
+        JLabel mailToLabel = new JLabel("Mail to");
+        mailToLabel.setBounds(40, 50, getWidth()-100, 50);
 
-        JButton btn = new JButton();
-        btn.setBounds(74, 180, 138, 34);
-        btn.setBackground(new Color(44, 62, 80));
-        btn.addActionListener(e -> {
-            btn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/contactBtn_hover.png"));
-            open("https://www.linkedin.com/in/MdHasibAskari/");
+        JTextField mailToField = new JTextField();
+        mailToField.setBounds(40, 90, ((getWidth()-100)), 50);
+
+        JLabel mailSubject = new JLabel("Mail Subject");
+        mailSubject.setBounds(40, 150, (getWidth()-100), 50);
+
+        JTextArea mailSubjectField = new JTextArea();
+        mailSubjectField.setBounds(40, 190, (getWidth()-100), 50);
+
+        JLabel Message = new JLabel("Message");
+        Message.setBounds(40, 230, (getWidth()-100), 50);
+
+        JTextArea taskDescriptionArea = new JTextArea();
+        taskDescriptionArea.setBounds(40, 270, (getWidth()-100), 70);
+
+
+        JButton addTaskButton = new JButton("Send Mail");
+        addTaskButton.addActionListener(e -> {
             dispose();
+            SendMail.sendMail(mailToField.getText(), mailSubjectField.getText(), taskDescriptionArea.getText());
         });
-        btn.setBorder(null);
-        btn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/contactBtn.png"));
-        panel.add(btn);
+        addTaskButton.setBounds(40, 350, (getWidth()-100), 50);
+
+        panel.add(Box.createVerticalStrut(50));
+        panel.add(mailToLabel);
+        panel.add(mailToField);
+        panel.add(Message);
+        panel.add(taskDescriptionArea);
+        panel.add(mailSubject);
+        panel.add(mailSubjectField);
+        panel.add(addTaskButton);
+        panel.add(Box.createVerticalStrut(50));
+
         add(panel, BorderLayout.CENTER);
         setVisible(true);
     }

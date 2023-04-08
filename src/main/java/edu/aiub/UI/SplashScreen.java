@@ -51,7 +51,7 @@ public class SplashScreen extends JFrame {
                     }
                 }
                 dispose();
-                new AdminDashboard();
+                new AdminDashboard(0);
             }
         };
         progressing.start();
