@@ -3,7 +3,7 @@ package edu.aiub;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import edu.aiub.UI.AdminDashboard;
 import edu.aiub.UI.SplashScreen;
-import edu.aiub.UIComponents.NoticeAddForm;
+import edu.aiub.UIComponents.*;
 import edu.aiub.database.Notice;
 import edu.aiub.essentials.*;
 import org.bson.Document;
@@ -26,9 +26,8 @@ public class App
             public void run() {
 //                new SplashScreen();
                 new AdminDashboard(0);
-//                new NoticeAddForm();
 //                new Test();
-//                new ButtonTableExample();
+//                new VehicleAddForm();
 //                SendMail.sendMail("mdhsbaskari@gmail.com", "test", "test");
             }
         };

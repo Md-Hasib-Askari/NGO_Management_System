@@ -8,30 +8,27 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.Date;
 
-public class Test {
+public class Test extends JFrame {
     public Test() {
-        try {
-            MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
-            MongoDatabase database = mongoClient.getDatabase("nms_db");
-            MongoCollection<Document> collection = database.getCollection("notice_collection");
-            System.out.println("Connection created successfully");
-            insertData(collection, "Notice 1", "This is notice 1");
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        setLayout(new BorderLayout());
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(500, 500);
+        setLocationRelativeTo(null);
+        setVisible(true);
+
+
+
+//        add(new JScrollPane(table), BorderLayout.CENTER);
     }
 
-    public void insertData(MongoCollection<Document> document, String notice_title, String notice_description) {
-        Document notice = new Document("notice", notice_title)
-                .append("description", notice_description)
-                .append("date", new Date());
-        document.insertOne(notice);
-        System.out.println("Collection created successfully");
-    }
 
-    public static void main(String[] args) {
-        new Test();
-    }
 }

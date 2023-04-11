@@ -31,7 +31,10 @@ public class NoticeAddForm extends JFrame {
         JButton addNoticeButton = new JButton("Add Notice");
         addNoticeButton.addActionListener(e -> {
             Notice notice = new Notice();
-            notice.addNotice(noticeTitleField.getText(), noticeDescriptionArea.getText());
+            notice.add(new Object[]{
+                    noticeTitleField.getText(),
+                    noticeDescriptionArea.getText()
+            });
             dispose();
         });
         addNoticeButton.setBounds(40, 400, (getWidth()-100), 50);

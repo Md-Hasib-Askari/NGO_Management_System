@@ -4,6 +4,7 @@ import com.toedter.calendar.JDateChooser;
 import edu.aiub.database.Events;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Calendar;
 
 public class TaskAddForm extends JDialog {
@@ -39,6 +40,8 @@ public class TaskAddForm extends JDialog {
         startDate.setBounds(40, 370, (getWidth()-100), 50);
 
 
+        UIManager.put("Button.background", new Color(46, 204, 113));
+        UIManager.put("Button.foreground", new Color(255, 255, 255));
         JDateChooser startDateField = new JDateChooser();
         startDateField.setDateFormatString("dd-MM-yyyy");
         startDateField.setBounds(40, 410, (getWidth()-100), 50);
@@ -53,13 +56,13 @@ public class TaskAddForm extends JDialog {
         JButton addTaskButton = new JButton("Add Task");
         addTaskButton.addActionListener(e -> {
             Events task = new Events();
-            task.addEvent(
+            task.add(new Object[]{
                     taskTitleField.getText(),
                     taskDescriptionArea.getText(),
                     eventLocationField.getText(),
                     startDateField.getDate(),
                     endDateField.getDate()
-            );
+            });
             dispose();
         });
         addTaskButton.setBounds(40, 570, (getWidth()-100), 50);
