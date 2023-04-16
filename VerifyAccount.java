@@ -29,7 +29,7 @@ public class VerifyAccount extends JFrame{
 
     VerifyAccount(){
 
-		verifyAccountPanel =  new JPanel() {
+	        verifyAccountPanel =  new JPanel() {
             @Override
             public void paintComponent(Graphics g) {
                 g.drawImage(new ImageIcon("C:\\Users\\Robin\\Desktop\\NIrmul Project\\mavenproject1\\src\\main\\java\\com\\mycompany\\mavenproject1\\Static\\verifyAccount_bg.png").getImage(), 0,0,getWidth(),getHeight(),null);
@@ -52,8 +52,10 @@ public class VerifyAccount extends JFrame{
         verifyAccountPanel.setBackground(new Color(204, 204, 204));
         verifyAccountPanel.setLayout(null);
 
+        CodePanel1.setBackground(new Color(234, 250, 241));
         CodePanel1.setFont(new Font("Inter", 0, 12)); // NOI18N
 
+        Code1txtF.setBackground(new Color(234, 250, 241));
         Code1txtF.setFont(new Font("Inter", 0, 48)); // NOI18N
         Code1txtF.setBorder(null);
 
@@ -77,6 +79,9 @@ public class VerifyAccount extends JFrame{
         verifyAccountPanel.add(CodePanel1);
         CodePanel1.setBounds(75, 400, 100, 100);
 
+        CodePanel2.setBackground(new Color(234, 250, 241));
+
+        Code2txtF.setBackground(new Color(234, 250, 241));
         Code2txtF.setFont(new Font("Inter", 0, 48)); // NOI18N
         Code2txtF.setBorder(null);
 
@@ -100,11 +105,14 @@ public class VerifyAccount extends JFrame{
         verifyAccountPanel.add(CodePanel2);
         CodePanel2.setBounds(220, 400, 100, 100);
 
+        CodePanel3.setBackground(new Color(234, 250, 241));
+
+        Code3txtF.setBackground(new Color(234, 250, 241));
         Code3txtF.setFont(new Font("Inter", 0, 48)); // NOI18N
         Code3txtF.setBorder(null);
         Code3txtF.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //Code3txtFActionPerformed(evt);
+               // Code3txtFActionPerformed(evt);
             }
         });
 
@@ -128,6 +136,9 @@ public class VerifyAccount extends JFrame{
         verifyAccountPanel.add(CodePanel3);
         CodePanel3.setBounds(365, 400, 100, 100);
 
+        CodePanel4.setBackground(new Color(234, 250, 241));
+
+        Code4txtF.setBackground(new Color(234, 250, 241));
         Code4txtF.setFont(new Font("Inter", 0, 48)); // NOI18N
         Code4txtF.setBorder(null);
 
@@ -144,7 +155,7 @@ public class VerifyAccount extends JFrame{
             CodePanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(CodePanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Code4txtF, GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                .addComponent(Code4txtF, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -159,8 +170,8 @@ public class VerifyAccount extends JFrame{
         verifyAccountPanel.add(SubmitBtn);
         SubmitBtn.setBounds(75, 590, 250, 60);
 
-        verifyAccountLabel.setFont(new Font("Inter Light", 1, 14)); // NOI18N
-        verifyAccountLabel.setText("We've sent an OTP to to your Email, submit the OTP here to verify your account.");
+        verifyAccountLabel.setFont(new Font("Inter", 0, 14)); // NOI18N
+        verifyAccountLabel.setText("We've sent an OTP to to your Email, submit the OTP here to verify your Nirmul account.");
         verifyAccountPanel.add(verifyAccountLabel);
         verifyAccountLabel.setBounds(75, 340, 660, 18);
 
