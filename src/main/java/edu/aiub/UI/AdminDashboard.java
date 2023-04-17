@@ -1,6 +1,5 @@
 package edu.aiub.UI;
 
-import com.sun.tools.javac.util.Pair;
 import edu.aiub.UIComponents.*;
 import edu.aiub.database.*;
 import edu.aiub.essentials.*;
@@ -553,7 +552,7 @@ public class AdminDashboard extends JFrame {
 
         settingsBtn.setIcon(new ImageIcon("src/main/java/edu/aiub/static/leftSidebarBtn/settingsBtn.png"));
 
-        imgHoverList.get(centerCardIndex).fst.setIcon(new ImageIcon(imgHoverList.get(centerCardIndex).snd));
+        imgHoverList.get(centerCardIndex).getFirst().setIcon(new ImageIcon(imgHoverList.get(centerCardIndex).getSecond()));
 
         leftSidePanel.add(dashboardBtn);
 
@@ -1228,10 +1227,10 @@ public class AdminDashboard extends JFrame {
         cardPanels.add(notice);
 
         System.out.println(centerCardIndex);
-        centerCardPanel.add(cardPanels.get(centerCardIndex).fst, cardPanels.get(centerCardIndex).snd);
+        centerCardPanel.add(cardPanels.get(centerCardIndex).getFirst(), cardPanels.get(centerCardIndex).getSecond());
         for (int i=0; i<cardPanels.size(); i++) {
             if (i != centerCardIndex) {
-                centerCardPanel.add(cardPanels.get(i).fst, cardPanels.get(i).snd);
+                centerCardPanel.add(cardPanels.get(i).getFirst(), cardPanels.get(i).getSecond());
             }
         }
 //      Card Layout Sequencing End

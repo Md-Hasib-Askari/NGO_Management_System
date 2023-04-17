@@ -1,4 +1,4 @@
 -> Open Terminal in Project Root Folder
--> Run `mvn compile`
+-> Run `mvn clean compile`
 -> Run `mvn exec:java -Dexec.mainClass="com.example.App"`
 -> Enjoy!
