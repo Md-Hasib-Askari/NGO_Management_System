@@ -72,7 +72,7 @@ public class Signin extends JFrame{
         emailPanel.setBackground(new Color(204, 255, 204)); //TestColor
         emailPanel.setLayout(null);
 
-        emailLabel.setFont(new Font("Inter", Font.BOLD, 12));
+        emailLabel.setFont(new Font("Inter", Font.PLAIN, 12));
         emailLabel.setText("Email");
         emailPanel.add(emailLabel);
         emailLabel.setBounds(20, 10, 50, 15);
@@ -100,7 +100,6 @@ public class Signin extends JFrame{
         passwordLabel.setBounds(20, 10, 70, 20);
 
         PasswordField1.setBackground(new Color(234, 250, 241));
-        PasswordField1.setText("jPasswordField1");
         PasswordField1.setBorder(null);
         passwordPanel.add(PasswordField1);
         PasswordField1.setBounds(20, 40, 480, 16);
@@ -118,8 +117,7 @@ public class Signin extends JFrame{
         loginBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                dispose();
-                new AdminDashboard(0);
+				loginBtnActionPerformed(actionEvent);
             }
         });
 
@@ -144,18 +142,17 @@ public class Signin extends JFrame{
         nirmulPanel.add(signupLabel);
         signupLabel.setBounds(80, 300, 110, 18);
 
-        signupBtn.setBackground(new Color(46, 204, 113));
+        signupBtn.setBackground(new Color(255, 255, 255));
         signupBtn.setFont(new Font("Inter", 1, 14)); 
-        signupBtn.setForeground(new Color(255,255,255));
+        signupBtn.setForeground(new Color(46,204,113));
         signupBtn.setText("Signup");
         signupBtn.setBorder(null);
         nirmulPanel.add(signupBtn);
-        signupBtn.setBounds(190, 290, 90, 40);
+        signupBtn.setBounds(185, 284, 50, 50);
         signupBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                new CreateAccount();
-                dispose();
+				signupBtnActionPerformed(actionEvent);
             }
         });
 
@@ -171,5 +168,53 @@ public class Signin extends JFrame{
         setVisible(true);
 
         }
+		
+		private void loginBtnActionPerformed(ActionEvent actionEvent) {
+			
+			//get username and password
+			String email = EmailTextField.getText();
+			String passWord = PasswordField1.getText();
+			
+			//value from database
+			String EmailFromDB = "abcd@gmail.com";
+			String PasswordFromDB = "12345678";
+			String userType = "Admin";
+			
+			//Login validation
+			//case 1  : if both username and password blanks
+			if(email.equals("")&&passWord.equals("")){
+				//if both null display messege
+				JOptionPane.showMessageDialog(this,"Please Enter Email and Password");
+			}
+			else if (!(email.equals(""))&&passWord.equals("")){
+				JOptionPane.showMessageDialog(this, "Please Enter Password");
+			}
+			else if ((email.equals(""))&&!(passWord.equals(""))){
+				JOptionPane.showMessageDialog(this, "Please Enter Email");
+			}
+			
+			
+			
+			else if ((email.equals(EmailFromDB))&&(passWord.equals(PasswordFromDB))){
+				dispose();
+				if (userType.equals("Admin")) {
+					new AdminDashboard(0);	
+				} else if (userType.equals("Staff")) {
+					new AdminDashboard(0);	
+				} else if (userType.equals("Volunteer")) {
+					new AdminDashboard(0);	
+				} else if (userType.equals("User")) {
+					new AdminDashboard(0);	
+				}
+			} else { 
+				JOptionPane.showMessageDialog(this, "Your Email or Password is wrong!");
+			}
+		}
+		
+		private void signupBtnActionPerformed(ActionEvent actionEvent) {
+			dispose();
+			signupBtn.setVisible(true);
+			new CreateAccount();
+		}
 
     }
