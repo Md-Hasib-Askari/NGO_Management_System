@@ -38,7 +38,7 @@ public class Rocketpin extends JFrame {
         jLabel1 = new JLabel();
         box = new JLabel();
 		
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
 
     
@@ -68,41 +68,36 @@ public class Rocketpin extends JFrame {
         email.setBounds(175, 520, 200, 30);
 
              marchant.setFont(new Font("Inter", Font.BOLD, 14)); 
-        marchant.setForeground(new Color(255, 255, 255));
         marchant.setText("Merchant          :");
         add(marchant);
         marchant.setBounds(160, 210, 120, 30);
 
         marchantname.setFont(new Font("Inter", Font.BOLD, 14)); 
-        marchantname.setForeground(new Color(255, 255, 255));
         marchantname.setText("NIRMUL FOUNDATION");
         add(marchantname);
         marchantname.setBounds(290, 220, 190, 18);
 
         Amount.setFont(new Font("Inter", Font.BOLD, 14)); 
-        Amount.setForeground(new Color(255, 255, 255));
         Amount.setText("Amount             :");
          add(Amount);
         Amount.setBounds(160, 260, 120, 18);
 
         
 		   AmountNumber.setFont(new Font("Inter", Font.BOLD, 14));
-		 AmountNumber.setForeground(new Color(255, 255, 255));
         add(AmountNumber);
         AmountNumber.setBounds(300, 260, 100, 18);
 
         word.setFont(new Font("Inter", Font.BOLD, 14)); 
-        word.setForeground(new Color(255, 255, 255));
         word.setText("Enter your PIN ");
         add(word);
         word.setBounds(210, 465, 210, 40);
-        jLabel1.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (12)\\static\\rocket.png")); 
-        jLabel1.setText("jLabel1");
+        jLabel1.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (4)\\New folder (12)\\static\\rocket.png")); 
         add(jLabel1);
         jLabel1.setBounds(0, 0, 600, 800);
 
         pack();
 		setSize(615, 800);
+		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
     }                      

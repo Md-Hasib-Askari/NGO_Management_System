@@ -36,7 +36,7 @@ public class Rocketotp extends JFrame {
         jLabel1 = new JLabel();
         box = new JLabel();
 		
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
 
     
@@ -45,6 +45,14 @@ public class Rocketotp extends JFrame {
         probutton.setText("PROCEED");
         add(probutton);
         probutton.setBounds(150, 630, 100, 25);
+		probutton.addActionListener(new ActionListener(){
+	    public void actionPerformed(ActionEvent ae){
+				Thank c=new Thank();
+				c.Thanku.setText(Bkashotp.AmountNumber.getText());
+		//		Thank.Amt.setText(Bkashotp.AmountNumber.getText());
+				
+				c.setVisible(true);
+				}});
 
         closebutton.setFont(new Font("Inter", Font.PLAIN, 14));
         closebutton.setText("CLOSE");
@@ -80,13 +88,14 @@ public class Rocketotp extends JFrame {
         add(word);
         word.setBounds(210, 465, 210, 40);
 
-      jLabel1.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (12)\\static\\rocket.png")); 
+      jLabel1.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (4)\\New folder (12)\\static\\rocket.png")); 
        
         add(jLabel1);
         jLabel1.setBounds(0, 0, 600, 800);
 
         pack();
 		setSize(615, 800);
+		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
     }                      

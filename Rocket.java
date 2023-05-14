@@ -38,7 +38,7 @@ public class Rocket extends JFrame {
         jLabel1 = new JLabel();
         box = new JLabel();
 		
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
 
         jCheckBox1.setFont(new Font("Inter", Font.BOLD, 14));
@@ -104,13 +104,14 @@ public class Rocket extends JFrame {
         add(word);
         word.setBounds(190, 420, 210, 40);
 
-        jLabel1.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (12)\\static\\rocket.png")); 
+        jLabel1.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (4)\\New folder (12)\\static\\rocket.png")); 
         
         add(jLabel1);
         jLabel1.setBounds(0, 0, 600, 800);
 
         pack();
 		setSize(615, 800);
+		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
     }                      

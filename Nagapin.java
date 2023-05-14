@@ -38,7 +38,7 @@ public class Nagapin extends JFrame {
         jLabel1 = new JLabel();
         box = new JLabel();
 		
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
 
     
@@ -97,13 +97,14 @@ public class Nagapin extends JFrame {
         add(word);
         word.setBounds(210, 465, 210, 40);
 
-        jLabel1.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (12)\\static\\nagad.png")); 
+        jLabel1.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (4)\\New folder (12)\\static\\nagad.png")); 
         jLabel1.setText("jLabel1");
         add(jLabel1);
         jLabel1.setBounds(0, 0, 600, 800);
 
         pack();
 		setSize(615, 800);
+		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
     }                      

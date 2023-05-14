@@ -2,6 +2,34 @@ import java.awt.*;
 import  java.awt.Image;
 import javax.swing.*;
 import javax.swing.ImageIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import java.io.FileOutputStream;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.io.FileOutputStream;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfWriter;
 
 
 
@@ -45,6 +73,14 @@ public class Bkashotp extends JFrame {
         probutton.setText("PROCEED");
         add(probutton);
         probutton.setBounds(150, 630, 100, 25);
+		probutton.addActionListener(new ActionListener(){
+	    public void actionPerformed(ActionEvent ae){
+				Thank c=new Thank();
+				c.Thanku.setText(Bkashotp.AmountNumber.getText());
+		//		Thank.Amt.setText(Bkashotp.AmountNumber.getText());
+				
+				c.setVisible(true);
+				}});
 
         closebutton.setFont(new Font("Inter", Font.PLAIN, 14));
         closebutton.setText("CLOSE");
@@ -85,13 +121,14 @@ public class Bkashotp extends JFrame {
         add(word);
         word.setBounds(210, 465, 210, 40);
 
-      jLabel1.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (12)\\static\\bKashPayment_bg .png")); 
+      jLabel1.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (4)\\New folder (12)\\static\\bKashPayment_bg .png")); 
        
         add(jLabel1);
         jLabel1.setBounds(0, 0, 600, 800);
 
         pack();
 		setSize(615, 800);
+		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
     }                      

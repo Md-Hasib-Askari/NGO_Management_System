@@ -10,10 +10,12 @@ import javax.swing.ImageIcon;
 public class Bkashpin extends JFrame {
 	private JLabel Amount;
     private JButton closebutton;
-    private JPasswordField email;
+    public static JPasswordField email;
     public static JLabel AmountNumber;
     private JCheckBox jCheckBox1;
     private JLabel jLabel1;
+   // public static JLabel a;
+    //public static JLabel f;
     private JLabel marchant;
     private JLabel marchantname;
     private JButton probutton;
@@ -29,10 +31,12 @@ public class Bkashpin extends JFrame {
         jCheckBox1 = new JCheckBox();
         probutton = new JButton();
         closebutton = new JButton();
-        email = new JPasswordField();
+         email = new JPasswordField();
         marchant = new JLabel();
         marchantname = new JLabel();
         Amount = new JLabel();
+    //    a = new JLabel();
+      //  f = new JLabel();
         AmountNumber = new JLabel();
         word = new JLabel();
         jLabel1 = new JLabel();
@@ -49,10 +53,13 @@ public class Bkashpin extends JFrame {
         probutton.setBounds(150, 630, 100,25);
 		probutton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
+				 
+
 				Bkashotp b=new Bkashotp();
 				b.AmountNumber.setText(Bkashpin.AmountNumber.getText());
 				b.setVisible(true);
 				}});
+			
 
         closebutton.setFont(new Font("Inter", Font.PLAIN, 14));
         closebutton.setText("CLOSE");
@@ -66,6 +73,7 @@ public class Bkashpin extends JFrame {
  
         add(email);
         email.setBounds(175, 520, 200, 30);
+		String f=email.getText();
 
              marchant.setFont(new Font("Inter", Font.BOLD, 14)); 
         marchant.setForeground(new Color(255, 255, 255));
@@ -97,13 +105,14 @@ public class Bkashpin extends JFrame {
         add(word);
         word.setBounds(210, 465, 210, 40);
 
-      jLabel1.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (12)\\static\\bKashPayment_bg .png")); 
+      jLabel1.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (4)\\New folder (12)\\static\\bKashPayment_bg .png")); 
        
         add(jLabel1);
         jLabel1.setBounds(0, 0, 600, 800);
 
         pack();
 		setSize(615, 800);
+		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
     }                      
@@ -113,7 +122,7 @@ public class Bkashpin extends JFrame {
     public static void main(String args[]) {
        
       new Bkashpin();
-    }
+   
 
                
-}
+}}

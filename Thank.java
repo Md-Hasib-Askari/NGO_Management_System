@@ -46,6 +46,7 @@ public class Thank extends  JFrame {
     private JLabel jLabel5;
     private JLabel  m;
 	private JLabel background;
+ public static JLabel Thanku;
 	
     
     public Thank() {
@@ -54,7 +55,8 @@ public class Thank extends  JFrame {
    
                            
 
-        Thank = new JLabel();
+        Thank = new JLabel(); 
+        Thanku = new JLabel();
         The = new JLabel();
         This = new JLabel();
         jLabel4 = new JLabel();
@@ -73,27 +75,31 @@ public class Thank extends  JFrame {
 	    Thank.setFont(new Font("Inter", 0, 14)); 
         Thank.setText("Thank you for your gift !");
         add(Thank);
-        Thank.setBounds(75, 240, 280, 18);
+        Thank.setBounds(75, 240, 280, 20);
+		
+	   Thanku.setFont(new Font("Inter", 0, 14)); 
+        add(Thank);
+       Thank.setBounds(10, 20, 20, 18);
 
         The.setFont(new Font("Inter", 0, 14)); 
-        The.setText("The amount you have given will make a difference will go help");
+        The.setText("The amount you have given will make a difference will go to help the  ");
         add(The);
-        The.setBounds(75, 260, 500, 18);
+        The.setBounds(75, 260, 580, 20);
 
         This.setFont(new Font("Inter", 0, 14)); 
-        This.setText("This receipt is an attestation that we have gratefully received your generous ");
+        This.setText("This receipt is an attestation that we have gratefully received your generous  ");
         add(This);
-        This.setBounds(75, 350, 460, 20);
+        This.setBounds(75, 350,580, 20);
 
         jLabel4.setFont(new Font("Inter", 0, 14)); 
-        jLabel4.setText("jLabel4");
+        jLabel4.setText("people to make them better members of society");
         add(jLabel4);
-        jLabel4.setBounds(75, 370, 480, 20);
+        jLabel4.setBounds(75, 280, 480, 20);
 
         jLabel5.setFont(new Font("Inter", 0, 14)); 
-        jLabel5.setText("jLabel5");
+        jLabel5.setText("contribution to our humble foundation");
         add(jLabel5);
-        jLabel5.setBounds(75, 395, 240, 18);
+        jLabel5.setBounds(75, 370, 480, 20);
 
         ShowBtn.setFont(new Font("Inter", 1, 18)); 
         ShowBtn.setForeground(new Color(46, 204, 113));
@@ -105,8 +111,10 @@ public class Thank extends  JFrame {
 		ShowBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 		     SwingUtilities.invokeLater(() -> {
+				
             JFrame frame = new JFrame("My JFrame");
             JLabel label = new JLabel("Hello, World!");
+		  
 			JLabel received = new JLabel();
             JLabel     sign = new JLabel();
            JLabel     Recipt = new JLabel();
@@ -142,13 +150,13 @@ public class Thank extends  JFrame {
         frame.add(Recipt);
         Recipt.setBounds(100, 80, 370, 50);
 
-        sign1.setText("      --------------------------------------------------------------------------------------------------------------------");
+        sign1.setText("      ------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         frame.add(sign1);
-        sign1.setBounds(10, 176, 560, 20);
+        sign1.setBounds(10, 176, 600, 20);
 
-        sign2.setText("      --------------------------------------------------------------------------------------------------------------------");
+        sign2.setText("      ------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         frame.add(sign2);
-        sign2.setBounds(10, 170, 560, 20);
+        sign2.setBounds(10, 170, 600, 20);
 
         CharityName.setFont(new Font("Inter", 0, 14)); 
         CharityName.setText("Charity name            :");
@@ -168,7 +176,7 @@ public class Thank extends  JFrame {
         Image.setIcon(new ImageIcon("C:\\Users\\DP\\Downloads\\9d134a91-daff-4ade-98e3-6711dab30bec.png")); 
         frame.add(Image);
         Image.setBounds(0, 0, 190, 100);
-        Image.getAccessibleContext().setAccessibleName("");
+       // Image.getAccessibleContext().setAccessibleName("");
 
         DntAmt.setFont(new Font("Inter", 0, 14)); 
         DntAmt.setText("Donation Amount     :");
@@ -176,8 +184,9 @@ public class Thank extends  JFrame {
         DntAmt.setBounds(150, 280, 150, 18);
 
         Amt.setFont(new Font("Inter", 0, 14)); 
+	Amt.setText(Bkashotp.AmountNumber.getText());
         frame.add(Amt);
-        Amt.setBounds(300, 280, 150, 0);
+        Amt.setBounds(300, 280, 150, 20);
 
         DntType.setFont(new Font("Inter", 0, 14)); 
         DntType.setText("Donation Type          :");
@@ -194,7 +203,7 @@ public class Thank extends  JFrame {
          frame.add(CharityAdd);
         CharityAdd.setBounds(150, 340, 150, 18);
 
-        Address.setText("jLabel15");
+        Address.setText("Kuratoli,Khilkhet,Dhaka 1229 ");
         frame.add(Address);
         Address.setBounds(300, 340, 200, 16);
 
@@ -213,7 +222,7 @@ public class Thank extends  JFrame {
 
             try {
                 Document document = new Document(PageSize.A4);
-                PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("abc.pdf"));
+                PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("MUNNAvai.pdf"));
                 document.open();
                 PdfContentByte cb = writer.getDirectContent();
                 Graphics2D g2d = cb.createGraphics(PageSize.A4.getWidth(), PageSize.A4.getHeight());
@@ -231,12 +240,13 @@ public class Thank extends  JFrame {
 
       
 		
-		   background.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (12)\\static\\ba.png")); 
+		   background.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (4)\\New folder (12)\\static\\ba.png")); 
         add(background);
         background.setBounds(0, 0, 1200, 750);
 
         pack();
 		setSize(1200, 750);
+		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
     }                        

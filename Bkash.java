@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 public class Bkash extends JFrame {
 	private JLabel Amount;
     private JButton closebutton;
-    private JTextField email;
+    public static JTextField email;
     public static JLabel AmountNumber;
     private JCheckBox jCheckBox1;
     private JLabel jLabel1;
@@ -59,6 +59,8 @@ public class Bkash extends JFrame {
         probutton.setBounds(150, 630, 100, 25);
 		probutton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
+				
+				
 				Bkashpin b=new Bkashpin();
 				b.AmountNumber.setText(Bkash.AmountNumber.getText());
 				b.setVisible(true);
@@ -108,12 +110,13 @@ public class Bkash extends JFrame {
         add(word);
         word.setBounds(190, 420, 210, 40);
 
-        jLabel1.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (12)\\static\\bKashPayment_bg .png")); 
+        jLabel1.setIcon(new ImageIcon("C:\\Users\\DP\\Desktop\\New folder (4)\\New folder (12)\\static\\bKashPayment_bg .png")); 
         add(jLabel1);
         jLabel1.setBounds(0, 0, 600, 800);
 
         pack();
 		setSize(615, 800);
+		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
     }                      
