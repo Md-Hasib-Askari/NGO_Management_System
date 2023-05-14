@@ -17,7 +17,6 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-//C:\\Users\\robin\\OneDrive\\Desktop\\Java Project\\
 
 public class VerifyAccount extends JFrame{
 	private String root = "C:\\Users\\robin\\OneDrive\\Desktop\\Java Project\\";
@@ -39,7 +38,7 @@ public class VerifyAccount extends JFrame{
 	          verifyAccountPanel =  new JPanel() {
             @Override
             public void paintComponent(Graphics g) {
-                g.drawImage(new ImageIcon("C:\\Users\\robin\\OneDrive\\Desktop\\Java Project\\Static\\verifyAccount_bg.png").getImage(), 0,0,getWidth(),getHeight(),null);
+                g.drawImage(new ImageIcon(root+"Static\\verifyAccount_bg.png").getImage(), 0,0,getWidth(),getHeight(),null);
             }
         };
         CodePanel1 = new javax.swing.JPanel();
@@ -228,14 +227,14 @@ public class VerifyAccount extends JFrame{
         CodePanel4.setBounds(510, 400, 100, 100);
 
         SubmitBtn.setBackground(new java.awt.Color(46, 204, 113));
-        SubmitBtn.setFont(new java.awt.Font("Inter", 1, 24));
+        SubmitBtn.setFont(new java.awt.Font("Inter", 1, 18));
         SubmitBtn.setForeground(new java.awt.Color(255, 255, 255));
         SubmitBtn.setText("Submit");
         SubmitBtn.setBorder(null);
         verifyAccountPanel.add(SubmitBtn);
         SubmitBtn.setBounds(75, 590, 250, 60);
 
-        verifyAccountLabel.setFont(new java.awt.Font("Inter", 0, 14)); 
+        verifyAccountLabel.setFont(new java.awt.Font("Inter", 0, 12)); 
         verifyAccountLabel.setText("We've sent an OTP to to your Email, submit the 4 digit code here to verify your account.");
         verifyAccountPanel.add(verifyAccountLabel);
         verifyAccountLabel.setBounds(75, 340, 660, 18);

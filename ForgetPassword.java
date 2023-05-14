@@ -22,15 +22,11 @@ public class ForgetPassword extends JFrame{
     private JLabel emailLabel;
     private JLabel emailLabel1;
     private JButton sendBtn;
-	
-
 
     ForgetPassword(){
-		
-		
-		
-		        emailLabel = new JLabel();
-        EmailPanel = new JPanel() {
+	
+		    emailLabel = new JLabel();
+			EmailPanel = new JPanel() {
             @Override
             public void paintComponent(Graphics g) {
                 g.drawImage(new ImageIcon(root+"Static\\signinPanel.png").getImage(), 0,0,getWidth(),getHeight(),null);
@@ -81,10 +77,10 @@ public class ForgetPassword extends JFrame{
                 ForgotPasswordPanel.setRequestFocusEnabled(false);
                 ForgotPasswordPanel.setLayout(null);
 
-                ForgetPassVerifyMsgLabel.setFont(new Font("Inter", 0, 14));
+                ForgetPassVerifyMsgLabel.setFont(new Font("Inter", 0, 12));
                 ForgetPassVerifyMsgLabel.setText("We will send a verification code in your email account, enter the code and create a new password");
                 ForgotPasswordPanel.add(ForgetPassVerifyMsgLabel);
-                ForgetPassVerifyMsgLabel.setBounds(80, 270, 640, 18);
+                ForgetPassVerifyMsgLabel.setBounds(80, 300, 640, 18);
 /*
                 cancelBtn.setBackground(new Color(153, 255, 153));
                 cancelBtn.setFont(new Font("Inter", 0, 18)); 

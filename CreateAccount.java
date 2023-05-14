@@ -86,6 +86,7 @@ public class CreateAccount extends JFrame{
             userVolunteerLabel = new JPanel();
             SignUpAsWhatLabel = new JLabel();
             userCbox = new JComboBox<>();
+			
             phoneNumberPanel = new JPanel();
 			
 			phoneNumberPanel=  new JPanel() {
@@ -168,7 +169,7 @@ public class CreateAccount extends JFrame{
             confirmPasswordLabel.setBounds(10, 10, 102, 15);
 
             ConfirmPasswordField.setBackground(new Color(234, 250, 241));
-            ConfirmPasswordField.setText("jPasswordField2");
+            ConfirmPasswordField.setText("");
             ConfirmPasswordField.setBorder(null);
             ConfirmPasswordPanel.add(ConfirmPasswordField);
             ConfirmPasswordField.setBounds(10, 30, 260, 16);
@@ -191,6 +192,17 @@ public class CreateAccount extends JFrame{
                     //dobTxtFieldActionPerformed(evt);
                 }
             });
+			
+			
+			
+			
+			
+			userCbox.setBorder(null);
+			
+			
+			
+			
+			
             dobPanel.add(dobTxtField);
             dobTxtField.setBounds(10, 30, 260, 16);
 
@@ -244,7 +256,7 @@ public class CreateAccount extends JFrame{
             passwordLabel.setBounds(10, 10, 55, 15);
 
             PasswordField.setBackground(new Color(234, 250, 241));
-            PasswordField.setText("jPasswordField1");
+            PasswordField.setText("");
             PasswordField.setBorder(null);
             passwordPanel.add(PasswordField);
             PasswordField.setBounds(10, 30, 242, 16);
@@ -345,8 +357,8 @@ public class CreateAccount extends JFrame{
                 }
             });
             NirmulPanel.add(NirmulTermsCheckbox);
-            NirmulTermsCheckbox.setBounds(70, 600, 337, 20);
-
+            NirmulTermsCheckbox.setBounds(70, 600, 400, 20);
+			NirmulTermsCheckbox.setBackground(new Color(255, 255, 255));
             CreateAccountPanel.add(NirmulPanel);
             NirmulPanel.setBounds(0, 0, 1200, 750);
 
