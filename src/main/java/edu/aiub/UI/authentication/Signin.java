@@ -1,20 +1,22 @@
 package edu.aiub.UI.authentication;
 
-import edu.aiub.UI.AdminDashboard;
+import com.mongodb.client.*;
+import edu.aiub.UI.admin.AdminDashboard;
+import edu.aiub.UI.donation.Guest;
+import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import java.awt.Graphics;
-import javax.swing.ImageIcon;
-import javax.swing.border.EmptyBorder;
 
 
 public class Signin extends JFrame{
@@ -25,6 +27,7 @@ public class Signin extends JFrame{
     private JLabel emailLabel;
     private JPanel emailPanel;
     private JButton signupBtn;
+    private JButton donateBtn;
     private JLabel signupLabel;
     private JButton loginBtn;
     private JButton forgotBtn;
@@ -62,6 +65,7 @@ public class Signin extends JFrame{
         forgotBtn = new JButton();
         signupLabel = new JLabel();
         signupBtn = new JButton();
+        donateBtn = new JButton();
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -107,13 +111,14 @@ public class Signin extends JFrame{
         nirmulPanel.add(passwordPanel);
         passwordPanel.setBounds(75, 457, 525, 80);
 
-        UIManager.put("Button.arc", 50);
+//        loginBtn.putClientProperty("JButton.buttonType", "roundRect");
         loginBtn.setBackground(new Color(46, 204, 113));
         loginBtn.setFont(new Font("Inter", 1, 18));
         loginBtn.setForeground(new Color(255 , 255 , 255));
         loginBtn.setText("Login");
+        UIManager.put("Button.arc", 15);
         nirmulPanel.add(loginBtn);
-        loginBtn.setBounds(360, 575, 240, 60);
+        loginBtn.setBounds(400, 575, 200, 60);
         loginBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -122,13 +127,13 @@ public class Signin extends JFrame{
         });
 
 
-        forgotBtn.setBackground(new Color(46, 204, 113));
-        forgotBtn.setFont(new Font("Inter", 1, 18));
-        forgotBtn.setForeground(new Color(255 , 255 , 255));
+        forgotBtn.setBackground(new Color(255, 238, 238));
+        forgotBtn.setFont(new Font("Inter", 1, 16));
+        forgotBtn.setForeground(new Color(255 , 87, 87));
         forgotBtn.setText("Forgot Password?");
 //        forgotBtn.setBorder(null);
         nirmulPanel.add(forgotBtn);
-        forgotBtn.setBounds(75, 575, 240, 60);
+        forgotBtn.setBounds(75, 575, 200, 60);
         forgotBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -156,6 +161,22 @@ public class Signin extends JFrame{
             }
         });
 
+        donateBtn.putClientProperty("JButton.buttonType", "roundRect");
+        donateBtn.setBackground(new Color(46, 204, 113));
+        donateBtn.setFont(new Font("Inter", 1, 14));
+        donateBtn.setForeground(new Color(255, 255, 255));
+        donateBtn.setText("Donate");
+//        donateBtn.setBorder(null);
+        nirmulPanel.add(donateBtn);
+        donateBtn.setBounds(250, 290, 90, 40);
+        donateBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dispose();
+                new Guest();
+            }
+        });
+
         add(nirmulPanel);
         nirmulPanel.setBounds(0, 0, 1200, 750);
 
@@ -170,40 +191,40 @@ public class Signin extends JFrame{
         }
 		
 		private void loginBtnActionPerformed(ActionEvent actionEvent) {
-			
-			//get username and password
+
+            MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+            MongoDatabase database = mongoClient.getDatabase("nms_db");
+            MongoCollection<Document> collection = database.getCollection("users_collection");
+
+            //get username and password
 			String email = EmailTextField.getText();
-			String passWord = PasswordField1.getText();
-			
+			String password = PasswordField1.getText();
+
+            Document documents = collection.find(new Document("email", email)).first();
+
 			//value from database
-			String EmailFromDB = "abcd@gmail.com";
-			String PasswordFromDB = "12345678";
-			String userType = "Admin";
-			
+			String EmailFromDB = documents.getString("email");
+			String PasswordFromDB = documents.getString("password");
+			String userType = documents.getString("role");
+            String userName = documents.getString("name");
+
 			//Login validation
 			//case 1  : if both username and password blanks
-			if(email.equals("")&&passWord.equals("")){
+			if(email.equals("")&&password.equals("")){
 				//if both null display messege
 				JOptionPane.showMessageDialog(this,"Please Enter Email and Password");
 			}
-			else if (!(email.equals(""))&&passWord.equals("")){
+			else if (!(email.equals(""))&&password.equals("")){
 				JOptionPane.showMessageDialog(this, "Please Enter Password");
 			}
-			else if ((email.equals(""))&&!(passWord.equals(""))){
+			else if ((email.equals(""))&&!(password.equals(""))){
 				JOptionPane.showMessageDialog(this, "Please Enter Email");
 			}
-			
-			
-			
-			else if ((email.equals(EmailFromDB))&&(passWord.equals(PasswordFromDB))){
+			else if ((email.equals(EmailFromDB))&&(password.equals(PasswordFromDB))){
 				dispose();
 				if (userType.equals("Admin")) {
-					new AdminDashboard(0);	
-				} else if (userType.equals("Staff")) {
-					new AdminDashboard(0);	
+					new AdminDashboard(0).setUserName(userName);
 				} else if (userType.equals("Volunteer")) {
-					new AdminDashboard(0);	
-				} else if (userType.equals("User")) {
 					new AdminDashboard(0);	
 				}
 			} else { 

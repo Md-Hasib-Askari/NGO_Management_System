@@ -3,6 +3,7 @@ package edu.aiub.UI.donation;
 import edu.aiub.Static;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import javax.swing.*;
 import javax.swing.ImageIcon;
 
@@ -21,11 +22,13 @@ public class Nagadotp extends JFrame {
     private JButton probutton;
     private JLabel word;
     private JLabel box;
+    private String sender, method, fund;
+    private int amount;
 
-    
-    public Nagadotp() {
 
-    
+    public Nagadotp(String otp, String pin) {
+
+        String OTP = otp;
 
 
         jCheckBox1 = new JCheckBox();
@@ -48,11 +51,13 @@ public class Nagadotp extends JFrame {
         probutton.setFont(new Font("Inter", Font.PLAIN, 14));
         probutton.setText("PROCEED");
         probutton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                String otp = email.getText();
-                if (otp.equals("1234")){
+            public void actionPerformed(ActionEvent evt) {
+                String otp = OTP;
+                if (otp.equals(email.getText())) {
                     dispose();
-                    new Nagapin().AmountNumber.setText(Nagad.AmountNumber.getText());
+                    Nagapin bkashpin = new Nagapin(pin);
+                    bkashpin.AmountNumber.setText(Nagad.AmountNumber.getText());
+                    bkashpin.addTnx(sender, method, fund, amount);
                 } else {
                     JOptionPane.showMessageDialog(null, "Wrong OTP");
                 }
@@ -64,7 +69,7 @@ public class Nagadotp extends JFrame {
         closebutton.setFont(new Font("Inter", Font.PLAIN, 14));
         closebutton.setText("CLOSE");
         closebutton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 dispose();
             }
         });
@@ -111,15 +116,22 @@ public class Nagadotp extends JFrame {
 
         pack();
 		setSize(615, 800);
-		setResizable(false);
+        setLocationRelativeTo(null);
+        setResizable(false);
 		setVisible(true);
-    }                      
+    }
 
+    public void addTnx(String sender, String method, String fund, int amount) {
+        this.sender = sender;
+        this.method = method;
+        this.fund = fund;
+        this.amount = amount;
+    }
    
 
     public static void main(String args[]) {
        
-      new Nagadotp();
+//      new Nagadotp();
     }
 
                

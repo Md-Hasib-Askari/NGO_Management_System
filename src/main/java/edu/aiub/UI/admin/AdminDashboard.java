@@ -1,5 +1,6 @@
-package edu.aiub.UI;
+package edu.aiub.UI.admin;
 
+import edu.aiub.UI.authentication.Signin;
 import edu.aiub.UIComponents.*;
 import edu.aiub.database.*;
 import edu.aiub.essentials.*;
@@ -8,7 +9,6 @@ import org.bson.Document;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,6 +21,7 @@ import java.util.Date;
 
 public class AdminDashboard extends JFrame {
 
+    static String userName = "User";
     static JButton[] leftSidebarBtnList;
     private static DefaultTableModel taskTableModel;
     private static DefaultTableModel transactionTableModel;
@@ -487,6 +488,8 @@ public class AdminDashboard extends JFrame {
             public void actionPerformed(ActionEvent e) {
 //                settingsBtnActionPerformed(e);
                 ButtonHighlighter.highlight(leftSidebarBtnList, settingsBtn);
+                dispose();
+                new Signin();
             }
         });
         settingsBtn.setBounds(20, 470, 200, 45);
@@ -793,9 +796,11 @@ public class AdminDashboard extends JFrame {
         RecentUpdates.setBounds(10, 140, 660, 490);
 
         dashboardGreeting.setFont(new Font("Inter", Font.BOLD, 25));
-        dashboardGreeting.setText("Welcome back, Hasib!");
-        dashboardPanel.add(dashboardGreeting);
-        dashboardGreeting.setBounds(40, 60, 300, 23);
+        setUserName(userName);
+
+
+//        dashboardPanel.add(dashboardGreeting);
+        dashboardGreeting.setBounds(40, 60, 400, 23);
 
         dashboardPanel.add(centerMainPanel);
         centerMainPanel.setBounds(10, 100, 680, 750);
@@ -1240,64 +1245,13 @@ public class AdminDashboard extends JFrame {
         add(centerCardPanel); // CardLayout for center panel
 
 
-//      Right Side Bar
-//        rightSidePanel.setBackground(new Color(204, 255, 255));
-        rightSidePanel.setLayout(null);
+// Right Side Bar
+// Right Side Bar
+        JComponent[] noticeComponents = {noticeHeaderPanel, noticeBodyPanel, noticePanel, noticePane, noticeLabel};
+        JComponent[] taskComponents = {taskHeaderPanel, taskBodyPanel, taskPane, recentTaskLabel};
+        rightSidePanel = new RightSideBar(noticeComponents, taskComponents, noticeFromDB, noticeCountFromDB, taskFromDB, taskCountFromDB);
 
-        noticeHeaderPanel.setMinimumSize(new Dimension(115, 50));
-        noticeHeaderPanel.setLayout(null);
-
-        noticeLabel.setIcon(new ImageIcon("src/main/java/edu/aiub/static/noticeHeader_bg.png"));
-        noticeHeaderPanel.add(noticeLabel);
-        noticeLabel.setBounds(0, 0, 240, 50);
-
-        rightSidePanel.add(noticeHeaderPanel);
-        noticeHeaderPanel.setBounds(10, 25, 240, 50);
-
-//      Notice Body
-        noticeBodyPanel.setLayout(new BoxLayout(noticeBodyPanel, BoxLayout.Y_AXIS));
-        noticeBodyPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        noticeBodyPanel.setBackground(new Color(255, 255, 255));
-        noticePanel.add(noticeBodyPanel);
-
-        noticePane.setBounds(10, 80, 240, 250);
-//        noticeBodyPanel.setBounds(10, 10, 240, 250);
-
-        for (int i = 0; i < noticeCountFromDB && i < 20; i++) {
-            AdminRightSidebarScrollPane.add(noticeBodyPanel, new JLabel(noticeFromDB.get(i).getString("notice")));
-        }
-
-        noticePane.setViewportView(noticeBodyPanel);
-        noticePane.setBorder(new LineBorder(new Color(255, 255, 255), 5, true));
-        rightSidePanel.add(noticePane);
-
-
-        taskHeaderPanel.setMinimumSize(new Dimension(115, 50));
-        taskHeaderPanel.setLayout(null);
-
-        recentTaskLabel.setIcon(new ImageIcon("src/main/java/edu/aiub/static/projectHeader_bg.png"));
-        taskHeaderPanel.add(recentTaskLabel);
-        recentTaskLabel.setBounds(0, 0, 240, 50);
-
-        rightSidePanel.add(taskHeaderPanel);
-        taskHeaderPanel.setBounds(10, 355, 240, 50);
-
-        taskBodyPanel.setLayout(new BoxLayout(taskBodyPanel, BoxLayout.Y_AXIS));
-        taskBodyPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        taskBodyPanel.setBackground(new Color(255, 255, 255));
-//        taskBodyPanel.setBounds(10, 410, 240, 280);
-        taskPane.add(taskBodyPanel);
-
-        for (int i = 0; i < 20 && i < taskCountFromDB; i++) {
-            AdminRightSidebarScrollPane.add(taskBodyPanel, new JLabel(taskFromDB.get(i).getString("event")));
-        }
-
-        taskPane.setViewportView(taskBodyPanel);
-        taskPane.setBounds(10, 410, 240, 320);
-        taskPane.setBorder(new LineBorder(new Color(255, 255, 255), 5, true));
-        rightSidePanel.add(taskPane);
-
-        getContentPane().add(rightSidePanel);
+        add(rightSidePanel);
         rightSidePanel.setBounds(940, 0, 260, 740);
 
         pack();
@@ -1374,6 +1328,12 @@ public class AdminDashboard extends JFrame {
                 new AdminDashboard(6);
             }
         });
+    }
+
+    public void setUserName(String uName) {
+        userName = uName;
+        dashboardGreeting.setText("Welcome back, " + userName + "!");
+        this.dashboardPanel.add(this.dashboardGreeting);
     }
 
     public static void updateNoticeTable(int noticeCountFromDB, ArrayList<Document> noticeFromDB) {

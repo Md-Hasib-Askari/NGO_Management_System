@@ -22,11 +22,13 @@ public class Rocketotp extends JFrame {
     private JButton probutton;
     private JLabel word;
     private JLabel box;
+    private String sender, method, fund;
+    private int amount;
 
     
-    public Rocketotp() {
+    public Rocketotp(String otp, String pin) {
 
-    
+        String OTP = otp;
 
 
         jCheckBox1 = new JCheckBox();
@@ -51,10 +53,12 @@ public class Rocketotp extends JFrame {
         probutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String otp = email.getText();
-                if (otp.equals("1234")){
+                String otp = OTP;
+                if (otp.equals(email.getText())) {
                     dispose();
-                    new Rocketpin().AmountNumber.setText(Rocket.AmountNumber.getText());
+                    Rocketpin bkashpin = new Rocketpin(pin);
+                    bkashpin.AmountNumber.setText(Rocket.AmountNumber.getText());
+                    bkashpin.addTnx(sender, method, fund, amount);
                 } else {
                     JOptionPane.showMessageDialog(null, "Wrong OTP");
                 }
@@ -110,15 +114,21 @@ public class Rocketotp extends JFrame {
 
         pack();
 		setSize(615, 800);
+        setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
-    }                      
+    }
 
-   
+    public void addTnx(String sender, String method, String fund, int amount) {
+        this.sender = sender;
+        this.method = method;
+        this.fund = fund;
+        this.amount = amount;
+    }
 
     public static void main(String args[]) {
        
-      new Rocketotp();
+//      new Rocketotp();
     }
 
                

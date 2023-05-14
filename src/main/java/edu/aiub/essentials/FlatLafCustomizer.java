@@ -12,7 +12,7 @@ public class FlatLafCustomizer {
         UIManager.put("Panel.foreground", new Color(50, 50, 50));
 
 //      Button
-        UIManager.put("Button.arc", 15);
+        UIManager.put("Button.arc", 20);
         UIManager.put("Button.font", new Font("Inter", Font.BOLD, 14));
         UIManager.put("Button.background", new Color(44, 62, 80));
         UIManager.put("Button.foreground", new Color(255,255,255));

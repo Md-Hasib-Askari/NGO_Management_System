@@ -1,6 +1,8 @@
 package edu.aiub.UI.donation;
 
 import edu.aiub.Static;
+import edu.aiub.essentials.RandomOTP;
+import edu.aiub.essentials.SendMail;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,8 +25,10 @@ public class Nagad extends JFrame {
     private JButton probutton;
     private JLabel word;
     private JLabel box;
+    private String sender, method, fund;
+    private int amount;
 
-    
+
     public Nagad() {
 
     
@@ -62,8 +66,14 @@ public class Nagad extends JFrame {
         probutton.setBounds(150, 630, 100, 25);
 		probutton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
+                String nagadEmail = email.getText();
+                String otp = String.valueOf(RandomOTP.generateOTP(4));
+                String pin = String.valueOf(RandomOTP.generateOTP(6));
                 dispose();
-				new Nagadotp().AmountNumber.setText(Nagad.AmountNumber.getText());
+                Nagadotp nagadotp = new Nagadotp(otp, pin);
+                nagadotp.AmountNumber.setText(Nagad.AmountNumber.getText());
+                nagadotp.addTnx(sender, method, fund, amount);
+                SendMail.sendMail(nagadEmail, "Nagad OTP", "Your Nagad OTP is " + otp + "\nYour Nagad pin is " + pin);
 				}});
 
         closebutton.setFont(new Font("Inter", Font.PLAIN, 14));
@@ -116,11 +126,17 @@ public class Nagad extends JFrame {
 
         pack();
 		setSize(615, 800);
+        setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
-    }                      
+    }
 
-   
+    public void addTnx(String sender, String method, String fund, int amount) {
+        this.sender = sender;
+        this.method = method;
+        this.fund = fund;
+        this.amount = amount;
+    }
 
     public static void main(String args[]) {
        

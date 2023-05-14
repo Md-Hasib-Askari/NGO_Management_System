@@ -1,5 +1,9 @@
 package edu.aiub.UI.authentication;
 
+import com.mongodb.client.model.Filters;
+import edu.aiub.database.DatabaseConnectivity;
+import org.bson.Document;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,6 +19,7 @@ import javax.swing.ImageIcon;
 
 
 public class ResetPassword extends JFrame{
+    private String email;
     private String root = "src/main/java/edu/aiub/";
     private JLabel ConfirmPasswordLabel;
     private JPanel ConfirmPasswordPanel;
@@ -24,7 +29,9 @@ public class ResetPassword extends JFrame{
     private JPanel ResetPasswordPanel;
     private JButton SubmitBtn;
     private JPanel newPasswordPanel;
-    public ResetPassword(){
+    public ResetPassword(String email){
+        this.email = email;
+
         ResetPasswordPanel = new JPanel() {
             @Override
             public void paintComponent(Graphics g) {
@@ -61,13 +68,12 @@ public class ResetPassword extends JFrame{
 
         NewPasswordLabel.setBackground(new Color(61, 61, 61));
         NewPasswordLabel.setFont(new Font("Inter", 0, 12)); // NOI18N
-        NewPasswordLabel.setText("NewPassword");
+        NewPasswordLabel.setText("New Password");
         newPasswordPanel.add(NewPasswordLabel);
         NewPasswordLabel.setBounds(20, 20, 170, 15);
 
         NewPasswordPasswordField.setBackground(new Color(234, 250, 241));
         NewPasswordPasswordField.setFont(new Font("Inter", 0, 14)); // NOI18N
-        NewPasswordPasswordField.setText("jPasswordField1");
         NewPasswordPasswordField.setBorder(null);
         newPasswordPanel.add(NewPasswordPasswordField);
         NewPasswordPasswordField.setBounds(20, 50, 440, 40);
@@ -79,13 +85,12 @@ public class ResetPassword extends JFrame{
 
         ConfirmPasswordLabel.setBackground(new Color(61, 61, 61));
         ConfirmPasswordLabel.setFont(new Font("Inter", 0, 12)); // NOI18N
-        ConfirmPasswordLabel.setText("ConfirmPassword");
+        ConfirmPasswordLabel.setText("Confirm Password");
         ConfirmPasswordPanel.add(ConfirmPasswordLabel);
         ConfirmPasswordLabel.setBounds(20, 20, 180, 15);
 
         ConfirmPasswordPasswordField.setBackground(new Color(234, 250, 241));
         ConfirmPasswordPasswordField.setFont(new Font("Inter", 0, 14)); // NOI18N
-        ConfirmPasswordPasswordField.setText("jPasswordField2");
         ConfirmPasswordPasswordField.setBorder(null);
         ConfirmPasswordPanel.add(ConfirmPasswordPasswordField);
         ConfirmPasswordPasswordField.setBounds(20, 50, 440, 40);
@@ -100,7 +105,7 @@ public class ResetPassword extends JFrame{
         SubmitBtn.setBorder(null);
         SubmitBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //SubmitBtnActionPerformed(evt);
+                SubmitBtnActionPerformed(evt);
             }
         });
         ResetPasswordPanel.add(SubmitBtn);
@@ -118,4 +123,40 @@ public class ResetPassword extends JFrame{
 
         }
 
+    private void SubmitBtnActionPerformed(ActionEvent evt) {
+        if (NewPasswordPasswordField.getText().equals("") || ConfirmPasswordPasswordField.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Please fill up all the fields");
+        }
+        else if (NewPasswordPasswordField.getText().equals(ConfirmPasswordPasswordField.getText())){
+            passwordReset(email, NewPasswordPasswordField.getText());
+            JOptionPane.showMessageDialog(null, "Password Reset Successful");
+            new Signin();
+            this.dispose();
+        }
+        else
+            JOptionPane.showMessageDialog(null, "Password Mismatch");
     }
+
+    private void passwordReset(String email, String password){
+        DatabaseConnectivity db = new DatabaseConnectivity("users") {
+            @Override
+            public void add(Object[] column) {
+
+            }
+
+            @Override
+            public void update(int id, Object[] column) {
+
+            }
+        };
+
+        db.collection.find().forEach((Document doc) -> {
+            if (doc.get("email").equals(email)){
+                doc.put("password", password);
+                db.collection.replaceOne(Filters.eq("email", email), doc);
+            }
+        });
+        db.mongoClient.close();
+    }
+
+}

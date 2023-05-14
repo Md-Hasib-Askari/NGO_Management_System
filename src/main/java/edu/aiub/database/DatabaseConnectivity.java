@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public abstract class DatabaseConnectivity {
     protected int Count = 0;
-    protected MongoClient mongoClient;
+    public MongoClient mongoClient;
     protected MongoDatabase db;
     public MongoCollection<Document> collection;
     public String collectionName;

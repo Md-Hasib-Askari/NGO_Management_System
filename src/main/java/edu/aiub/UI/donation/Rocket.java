@@ -1,6 +1,8 @@
 package edu.aiub.UI.donation;
 
 import edu.aiub.Static;
+import edu.aiub.essentials.RandomOTP;
+import edu.aiub.essentials.SendMail;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -24,6 +26,8 @@ public class Rocket extends JFrame {
     private JLabel word;
     private JLabel box;
 
+    private String sender, method, fund;
+    private int amount;
     
     public Rocket() {
 
@@ -62,9 +66,15 @@ public class Rocket extends JFrame {
         probutton.setBounds(150, 630, 100, 25);
 		probutton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
+                String rocketEmail = email.getText();
+                String otp = String.valueOf(RandomOTP.generateOTP(4));
+                String pin = String.valueOf(RandomOTP.generateOTP(6));
                 dispose();
-				new Rocketotp().AmountNumber.setText(Rocket.AmountNumber.getText());
-				}});
+                Rocketotp rocketotp = new Rocketotp(otp, pin);
+                rocketotp.AmountNumber.setText(Rocket.AmountNumber.getText());
+                rocketotp.addTnx(sender, method, fund, amount);
+                SendMail.sendMail(rocketEmail, "Rocket OTP", "Your Rocket OTP is " + otp + "\nYour Rocket pin is " + pin);
+            }});
 
         closebutton.setFont(new Font("Inter", Font.PLAIN, 14));
         closebutton.setText("CLOSE");
@@ -114,6 +124,7 @@ public class Rocket extends JFrame {
 
         pack();
 		setSize(615, 800);
+        setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
     }                      
@@ -122,8 +133,14 @@ public class Rocket extends JFrame {
 
     public static void main(String args[]) {
        
-      new Rocket();
+//      new Rocket();
     }
 
-               
+
+    public void addTnx(String sender, String method, String fund, int amount) {
+        this.sender = sender;
+        this.method = method;
+        this.fund = fund;
+        this.amount = amount;
+    }
 }

@@ -1,6 +1,8 @@
 package edu.aiub.UI.donation;
 
 import edu.aiub.Static;
+import edu.aiub.essentials.RandomOTP;
+import edu.aiub.essentials.SendMail;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +13,9 @@ import javax.swing.ImageIcon;
 
 
 public class Bkash extends JFrame {
+    String sender, method, fund;
+    int amount;
+
 	private JLabel Amount;
     private JButton closebutton;
     private JTextField email;
@@ -25,9 +30,6 @@ public class Bkash extends JFrame {
 
     
     public Bkash() {
-
-    
-
 
         jCheckBox1 = new JCheckBox();
         probutton = new JButton();
@@ -62,8 +64,14 @@ public class Bkash extends JFrame {
         probutton.setBounds(150, 630, 100, 25);
 		probutton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
+                String bkashEmail = email.getText();
+                String otp = String.valueOf(RandomOTP.generateOTP(4));
+                String pin = String.valueOf(RandomOTP.generateOTP(6));
                 dispose();
-				new Bkashotp().AmountNumber.setText(Bkash.AmountNumber.getText());
+                Bkashotp bkashotp = new Bkashotp(otp, pin);
+                bkashotp.AmountNumber.setText(Bkash.AmountNumber.getText());
+                bkashotp.addTnx(sender, method, fund, amount);
+                SendMail.sendMail(bkashEmail, "bKash OTP", "Your bKash OTP is " + otp + "\nYour bKash pin is " + pin);
             }});
 
         closebutton.setFont(new Font("Inter", Font.PLAIN, 14));
@@ -107,7 +115,7 @@ public class Bkash extends JFrame {
 
         word.setFont(new Font("Inter", Font.PLAIN, 14)); 
         word.setForeground(new Color(255, 255, 255));
-        word.setText("Your bKash account number");
+        word.setText("Your bKash email");
         add(word);
         word.setBounds(190, 420, 210, 40);
 
@@ -117,10 +125,17 @@ public class Bkash extends JFrame {
 
         pack();
 		setSize(615, 800);
-		setResizable(false);
+        setLocationRelativeTo(null);
+        setResizable(false);
 		setVisible(true);
-    }                      
+    }
 
+    public void addTnx(String sender, String method, String fund, int amount) {
+        this.sender = sender;
+        this.method = method;
+        this.fund = fund;
+        this.amount = amount;
+    }
    
 
     public static void main(String args[]) {

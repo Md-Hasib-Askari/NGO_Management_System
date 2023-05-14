@@ -3,12 +3,17 @@ package edu.aiub.UI.donation;
 import edu.aiub.Static;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.ImageIcon;
 
 
 
 public class Bkashotp extends JFrame {
+    String sender, method, fund;
+    int amount;
+
 	private JLabel Amount;
     private JButton closebutton;
     private JTextField email;
@@ -22,10 +27,9 @@ public class Bkashotp extends JFrame {
     private JLabel box;
 
     
-    public Bkashotp() {
-
+    public Bkashotp(String otp, String pin) {
     
-
+        String OTP = otp;
 
         jCheckBox1 = new JCheckBox();
         probutton = new JButton();
@@ -48,10 +52,12 @@ public class Bkashotp extends JFrame {
         probutton.setText("PROCEED");
         probutton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                String otp = "1234";
+                String otp = OTP;
                 if (otp.equals(email.getText())) {
                     dispose();
-                    new Bkashpin().AmountNumber.setText(Bkash.AmountNumber.getText());
+                    Bkashpin bkashpin = new Bkashpin(pin);
+                    bkashpin.AmountNumber.setText(Bkash.AmountNumber.getText());
+                    bkashpin.addTnx(sender, method, fund, amount);
                 } else {
                     JOptionPane.showMessageDialog(null, "Wrong OTP");
                 }
@@ -62,6 +68,12 @@ public class Bkashotp extends JFrame {
 
         closebutton.setFont(new Font("Inter", Font.PLAIN, 14));
         closebutton.setText("CLOSE");
+        closebutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dispose();
+            }
+        });
         add(closebutton);
         closebutton.setBounds(300, 630, 100, 25);
 
@@ -106,15 +118,23 @@ public class Bkashotp extends JFrame {
 
         pack();
 		setSize(615, 800);
-		setResizable(false);
+        setLocationRelativeTo(null);
+        setResizable(false);
 		setVisible(true);
-    }                      
+    }
+
+    public void addTnx(String sender, String method, String fund, int amount) {
+        this.sender = sender;
+        this.method = method;
+        this.fund = fund;
+        this.amount = amount;
+    }
 
    
 
     public static void main(String args[]) {
        
-      new Bkashotp();
+      new Bkashotp("1234", "123456");
     }
 
                

@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
+
+import edu.aiub.UI.donation.Guest;
 import edu.aiub.essentials.*;
 
 
@@ -48,6 +50,7 @@ public class CreateAccount extends JFrame{
     private JButton signupBtn;
     private JComboBox<String> userCbox;
     private JPanel userVolunteerLabel;
+	private JButton donateBtn;
 
     public CreateAccount(){
 
@@ -123,6 +126,7 @@ public class CreateAccount extends JFrame{
 	    signinbtn = new JButton();
 		signupBtn = new JButton();
 		NirmulTermsCheckbox = new JCheckBox();
+		donateBtn = new JButton();
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
@@ -179,7 +183,7 @@ public class CreateAccount extends JFrame{
 		SignUpAsWhatLabel.setBounds(10, 10, 178, 15);
 
 		userCbox.setBackground(new Color(234, 250, 241));
-		userCbox.setModel(new DefaultComboBoxModel<>(new String[] { "User", "Volunteer", "Staff", "Admin" }));
+		userCbox.setModel(new DefaultComboBoxModel<>(new String[] { "Volunteer", "Admin" }));
 		userCbox.setBorder(null);
 		userCbox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -187,7 +191,7 @@ public class CreateAccount extends JFrame{
 			}
 		});
 		userVolunteerLabel.add(userCbox);
-		userCbox.setBounds(10, 30, 83, 20);
+		userCbox.setBounds(10, 30, 250, 20);
 
 		NirmulPanel.add(userVolunteerLabel);
 		userVolunteerLabel.setBounds(370, 510, 280, 60);
@@ -296,13 +300,31 @@ public class CreateAccount extends JFrame{
 		NirmulPanel.add(signinbtn);
 		signinbtn.setBounds(200, 231, 50, 20);
 
+
+		donateBtn.putClientProperty("JButton.buttonType", "roundRect");
+		donateBtn.setBackground(new Color(46, 204, 113));
+		donateBtn.setFont(new Font("Inter", 1, 14));
+		donateBtn.setForeground(new Color(255, 255, 255));
+		donateBtn.setText("Donate");
+//		donateBtn.setBorder(null);
+		NirmulPanel.add(donateBtn);
+		donateBtn.setBounds(260, 220, 90, 40);
+		donateBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				dispose();
+				new Guest();
+			}
+		});
+
+
 		signupBtn.setBackground(new Color(46, 204, 113));
 		signupBtn.setFont(new Font("Inter", 1, 18));
 		signupBtn.setForeground(new Color(255, 255, 255));
 		signupBtn.setText("Sign up");
-		signupBtn.setBorder(null);
+//		signupBtn.setBorder(null);
 		NirmulPanel.add(signupBtn);
-		signupBtn.setBounds(75, 640, 110, 40);
+		signupBtn.setBounds(75, 640, 150, 50);
 		signupBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
@@ -358,7 +380,8 @@ public class CreateAccount extends JFrame{
 			if (password.equals(confirmPassword)) {
 				// Email and password match, dispose current window and open new one
 				dispose();
-				new VerifyAccount();
+				String[] otpEmail = {otp, email};
+				new VerifyAccount(otpEmail, "CreateAccount");
 				SendMail.sendMail(
 					email,
 					"OTP for Account Verification",

@@ -1,5 +1,10 @@
 package edu.aiub.UI.authentication;
 
+import edu.aiub.database.DatabaseConnectivity;
+import edu.aiub.essentials.RandomOTP;
+import edu.aiub.essentials.SendMail;
+import org.bson.Document;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.Graphics;
+import java.util.Date;
 import javax.swing.ImageIcon;
 
 
@@ -111,8 +117,6 @@ public class ForgetPassword extends JFrame{
 				@Override
 				public void actionPerformed(ActionEvent actionEvent) {
 					sendBtnActionPerformed(actionEvent);
-					dispose();
-					new VerifyAccount();
 				}
 			});
 
@@ -134,25 +138,56 @@ public class ForgetPassword extends JFrame{
 		String email = EmailTextField.getText();
 		
 		// Value from database
-		String EmailFromDB = "abcd@gmail.com";
+		boolean emailExist = emailCheck(email);
 		
 		// Check if email is empty
 		if (email.isEmpty()) {
 			JOptionPane.showMessageDialog(this, "Please enter your email.");
 		} 
 		// Check if email matches the one in the database
-		else if (email.equals(EmailFromDB)) {
+		else if (emailExist) {
 			// Email is valid, dispose current GUI and open the VerifyAccount GUI
+			String otp = String.valueOf(RandomOTP.generateOTP(4));
+			// Send OTP to email
+			SendMail.sendMail(email, "OTP for password reset", "Your OTP is: " + otp);
+
 			dispose();
-			
-			new VerifyAccount(); // Send otp
-			
-			
-		} 
+			String[] otpEmail = { otp, email };
+			new VerifyAccount(otpEmail, "ForgetPassword");
+
+		}
 		// Email is not valid
 		else {
 			JOptionPane.showMessageDialog(this, "Invalid email.");
 		}
+	}
+
+	private boolean emailCheck(String email) {
+		DatabaseConnectivity db = new DatabaseConnectivity("users") {
+			@Override
+			public void add(Object[] column) {
+
+			}
+
+			@Override
+			public void update(int id, Object[] column) {
+
+			}
+		};
+
+		try {
+			Document emailFromDB = db.collection.find(new Document("email", email)).first();
+			db.mongoClient.close();
+			if (!emailFromDB.isEmpty()) {
+				return true;
+			} else {
+				return false;
+			}
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return false;
 	}
 
 }

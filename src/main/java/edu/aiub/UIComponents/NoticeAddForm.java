@@ -1,6 +1,5 @@
 package edu.aiub.UIComponents;
 
-import edu.aiub.UI.AdminDashboard;
 import edu.aiub.database.Notice;
 
 import javax.swing.*;

@@ -1,4 +1,4 @@
-package edu.aiub.UI;
+package edu.aiub.UI.admin;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -10,7 +10,15 @@ public class AdminRightSidebarScrollPane {
         JPanel componentPanel = new JPanel();
         componentPanel.setLayout(new BoxLayout(componentPanel, BoxLayout.Y_AXIS));
         componentPanel.setBackground(new Color(255, 255, 255));
-        componentPanel.add(component);
+
+        JPanel components = new JPanel();
+        components.setLayout(new BorderLayout());
+        components.add(component, BorderLayout.WEST);
+
+        JButton viewBtn = new JButton("View");
+        components.add(viewBtn, BorderLayout.EAST);
+
+        componentPanel.add(components);
         componentPanel.add(Box.createVerticalStrut(10));
         componentPanel.add(new JSeparator());
         componentPanel.add(Box.createVerticalStrut(10));

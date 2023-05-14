@@ -1,10 +1,13 @@
 package edu.aiub.UI.donation;
 
 import edu.aiub.Static;
+import edu.aiub.database.DatabaseConnectivity;
+import org.bson.Document;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import javax.swing.*;
 import javax.swing.ImageIcon;
 
@@ -23,13 +26,15 @@ public class Nagapin extends JFrame {
     private JButton probutton;
     private JLabel word;
     private JLabel box;
+    private String sender, method, fund;
+    private int amount;
+
+
+    public Nagapin(String pin) {
 
     
-    public Nagapin() {
 
-    
-
-
+        String emailPin = pin;
         jCheckBox1 = new JCheckBox();
         probutton = new JButton();
         closebutton = new JButton();
@@ -54,11 +59,16 @@ public class Nagapin extends JFrame {
 		probutton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
                 String pin = email.getText();
-				if (pin.equals("1234")) {
-                    JOptionPane.showMessageDialog(null, "Payment Successful.\nThank you for supporting Nirmul Foundation.");
+                if (pin.equals(emailPin)){
                     dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Wrong PIN. Please try again.");
+                    JOptionPane.showMessageDialog(null, "Payment Successful.\nThank you for supporting Nirmul Foundation.");
+                    addTnxToDB();
+                    Thank c=new Thank(Nagadotp.AmountNumber.getText());
+                    c.Thanku.setText(Nagadotp.AmountNumber.getText());
+                    c.setVisible(true);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Wrong Pin");
                 }
             }});
 
@@ -112,15 +122,53 @@ public class Nagapin extends JFrame {
 
         pack();
 		setSize(615, 800);
-		setResizable(false);
+        setLocationRelativeTo(null);
+        setResizable(false);
 		setVisible(true);
-    }                      
+    }
 
+    private void addTnxToDB() {
+        DatabaseConnectivity db = new DatabaseConnectivity("transaction") {
+            @Override
+            public void add(Object[] column) {
+
+            }
+
+            @Override
+            public void update(int id, Object[] column) {
+
+            }
+        };
+
+        int Count = (int) db.collection.countDocuments();
+        try {
+            Document tnx = new Document();
+            tnx.append("id", ++Count);
+            tnx.append("sender", this.sender);
+            tnx.append("method", this.method);
+            tnx.append("fund", this.fund);
+            tnx.append("amount", String.valueOf(this.amount));
+            tnx.append("date", new Date());
+
+            db.collection.insertOne(tnx);
+
+            db.mongoClient.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void addTnx(String sender, String method, String fund, int amount) {
+        this.sender = sender;
+        this.method = method;
+        this.fund = fund;
+        this.amount = amount;
+    }
    
 
     public static void main(String args[]) {
        
-      new Nagapin();
+//      new Nagapin();
     }
 
                
