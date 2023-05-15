@@ -1,9 +1,14 @@
 package edu.aiub.UI.volunteer.essentials;
 
 import edu.aiub.Static;
+import edu.aiub.database.Events;
+import org.bson.Document;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class RecentProjectInfo extends JPanel {
     private JLabel recentTittle;
@@ -46,70 +51,41 @@ public class RecentProjectInfo extends JPanel {
         rProjectWorkingDay2 = new JLabel();
         rProjectPerformance2 = new JLabel();
 
-        recentTittle.setFont(new Font("Inter", Font.BOLD, 18));
-        recentTittle.setText("Recent Project Information");
+        Events events = new Events();
+        ArrayList<Document> eventList = events.getAll();
+        Document latestEvent = eventList.get(eventList.size()-1);
+
+        DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+        String projectName = "<html><p><b>Project name: </b>" + latestEvent.getString("event") +"</p></html>";
+        String projectLocation = "<html><p><b>Project Location: </b>" + latestEvent.getString("location") +"</p></html>";
+        String projectStart = "<html><p><b>Project Starting On: </b>" + sdf.format(latestEvent.getDate("start")) +"</p></html>";
+        String projectEnd = "<html><p><b>Project Ending On: </b>" + sdf.format(latestEvent.getDate("end")) +"</p></html>";
+
+        recentTittle.setFont(new Font("Inter", Font.PLAIN, 18));
+        recentTittle.setText("<html><b>Recent Project Information</b></html>");
         recentTittle.setBounds(25, 20, 500, 25);
         add(recentTittle);
 
-
-        rProjectName.setFont(new Font("Inter", Font.BOLD, 16));
-        rProjectName.setText("Project name: ");
-        rProjectName.setBounds(25, 70, 240, 25);
+        rProjectName.setFont(new Font("Inter", Font.PLAIN, 16));
+        rProjectName.setText(projectName);
+        rProjectName.setBounds(25, 70, 500, 25);
         add(rProjectName);
 
-        rProjectName2.setFont(new Font("Inter", Font.PLAIN, 16));
-        rProjectName2.setText("Winter Clothes Distribution");
-        rProjectName2.setBounds(270, 70, 400, 25);
-        add(rProjectName2);
-
-        rProjectLeader.setFont(new Font("Inter", Font.BOLD, 16));
-        rProjectLeader.setText("Project leader: ");
-        rProjectLeader.setBounds(25, 100, 240, 25);
+        rProjectLeader.setFont(new Font("Inter", Font.PLAIN, 16));
+        rProjectLeader.setText(projectLocation);
+        rProjectLeader.setBounds(25, 120, 500, 25);
         add(rProjectLeader);
 
-        rProjectLeader2.setFont(new Font("Inter", Font.PLAIN, 16));
-        rProjectLeader2.setText("Md. Osman Ali");
-        rProjectLeader2.setBounds(270, 100, 400, 25);
-        add(rProjectLeader2);
 
-        rProjectWorkingDay.setFont(new Font("Inter", Font.BOLD, 16));
-        rProjectWorkingDay.setText("Project working day: ");
-        rProjectWorkingDay.setBounds(25, 130, 240, 25);
+        rProjectWorkingDay.setFont(new Font("Inter", Font.PLAIN, 16));
+        rProjectWorkingDay.setText(projectStart);
+        rProjectWorkingDay.setBounds(25, 170, 500, 25);
         add(rProjectWorkingDay);
 
-        rProjectWorkingDay2.setFont(new Font("Inter", Font.PLAIN, 16));
-        rProjectWorkingDay2.setText("13");
-        rProjectWorkingDay2.setBounds(270, 130, 400, 25);
-        add(rProjectWorkingDay2);
-
-        rProjectLocation.setFont(new Font("Inter", Font.BOLD, 16));
-        rProjectLocation.setText("Your working location: ");
-        rProjectLocation.setBounds(25, 160, 240, 25);
+        rProjectLocation.setFont(new Font("Inter", Font.PLAIN, 16));
+        rProjectLocation.setText(projectEnd);
+        rProjectLocation.setBounds(25, 220, 500, 25);
         add(rProjectLocation);
-
-        rProjectLocation2.setFont(new Font("Inter", Font.PLAIN, 16));
-        rProjectLocation2.setText("Gazipur");
-        rProjectLocation2.setBounds(270, 160, 400, 25);
-        add(rProjectLocation2);
-
-        rProjectDonation.setFont(new Font("Inter", Font.BOLD, 16));
-        rProjectDonation.setText("Your project donation: ");
-        rProjectDonation.setBounds(25, 190, 240, 25);
-        add(rProjectDonation);
-
-        rProjectDonation2.setFont(new Font("Inter", Font.PLAIN, 16));
-        rProjectDonation2.setText("2700");
-        rProjectDonation2.setBounds(270, 190, 400, 25);
-        add(rProjectDonation2);
-
-        rProjectPerformance.setFont(new Font("Inter", Font.BOLD, 16));
-        rProjectPerformance.setText("Your project performance: ");
-        rProjectPerformance.setBounds(25, 220, 240, 25);
-        add(rProjectPerformance);
-
-        rProjectPerformance2.setFont(new Font("Inter", Font.PLAIN, 16));
-        rProjectPerformance2.setText("69%");
-        rProjectPerformance2.setBounds(270, 220, 400, 25);
-        add(rProjectPerformance2);
     }
 }

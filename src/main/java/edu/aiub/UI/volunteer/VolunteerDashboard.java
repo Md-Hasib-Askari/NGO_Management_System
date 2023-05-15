@@ -4,22 +4,28 @@ import edu.aiub.Static;
 import edu.aiub.UI.admin.AdminRightSidebarScrollPane;
 import edu.aiub.UI.authentication.Signin;
 import edu.aiub.UI.donation.Guest;
+import edu.aiub.UI.volunteer.essentials.EventApplyForm;
 import edu.aiub.UI.volunteer.essentials.RecentProjectInfo;
 import edu.aiub.database.DatabaseConnectivity;
 import edu.aiub.database.Events;
+import edu.aiub.database.Notice;
+import edu.aiub.database.Transaction;
 import edu.aiub.essentials.ContactDialog;
 import edu.aiub.essentials.VolunteerButtonHighlighter;
 import org.bson.Document;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,7 +33,6 @@ import java.util.Date;
 
 
 public class VolunteerDashboard extends JFrame {
-	private JScrollPane exploreProjectInfoPane;
 	private JButton[] leftSidebarBtnList;
 
     private String root = Static.VOLUNTEER_ROOT;
@@ -225,78 +230,19 @@ public class VolunteerDashboard extends JFrame {
 	private JTextField eventPhone;
 	private JButton eventapplyBtn;
 	private JScrollPane eventApplyScroll;
-	
+
+
 	
 	private String[] noticeColumn = new String[]{"Subject", "Date"};
-	private String[][] noticeRow = new String[][]{
-		
-		{"     Packing and distributing meal", "16-02-2023"},
-		{"     Blood collection", "20-02-2023"},
-		{"     Participating in tree seedling propagation", "29-02-2023"},
-		{"     Providing support and companionship", "10-03-2023"},
-		{"     Participating in medical missions", "27-03-2023"},
-		{"     Sorting and organizing donated food", "07-04-2023"},
-		{"     Food Packeging", "16-04-2023"},
-		{"     Participating in food drives", "26-04-2023"},
-		{"     Packing and distributing meal", "16-02-2023"},
-		{"     Blood collection", "20-02-2023"},
-		{"     Participating in tree seedling propagation", "29-02-2023"},
-		{"     Providing support and companionship", "10-03-2023"},
-		{"     Participating in medical missions", "27-03-2023"},
-		{"     Sorting and organizing donated food", "07-04-2023"},
-		{"     Food Packeging", "16-04-2023"}
-		
-		
-	};
-	
-	
+	private String[][] noticeRow;
+
+
 	private String[] transanctionColumn = new String[]{"Date", "Project", "Amount"};
-	private String[][] transanctionRow = new String[][]{
-		
-		{"16-02-2023", "Tree Forestation", "120"},
-		{"20-02-2023", "Dengue", "150"},
-		{"29-02-2023", "Food Distribution", "500"},
-		{"10-03-2023", "Health Campaign", "300"},
-		{"27-03-2023", "Dengue", "180"},
-		{"07-04-2023", "Tree Forestation", "150"},
-		{"16-04-2023", "Health Campaign", "350"},
-		{"26-04-2023", "Food Distribution", "400"},
-		{"16-02-2023", "Tree Forestation", "120"},
-		{"20-02-2023", "Dengue", "150"},
-		{"29-02-2023", "Food Distribution", "500"},
-		{"10-03-2023", "Health Campaign", "300"},
-		{"27-03-2023", "Dengue", "180"},
-		{"07-04-2023", "Tree Forestation", "150"},
-		{"16-04-2023", "Health Campaign", "350"},
-		{"26-04-2023", "Food Distribution", "400"}
-		
-		
-	};
+	private String[][] transanctionRow;
 	
 	
-	private String[] completePrColumn = new String[]{"Completed Project"};
-	private String[][] completePrRow = new String[][]{
-		
-		{"     Tree Forestation"},
-		{"     Dengue"},
-		{"     Food Distribution"},
-		{"     Health Campaign"},
-		{"     Dengue"},
-		{"     Tree Forestation"},
-		{"     Health Campaign"},
-		{"     Food Distribution"},
-		{"     Tree Forestation"},
-		{"     Tree Forestation"},
-		{"     Dengue"},
-		{"     Food Distribution"},
-		{"     Health Campaign"},
-		{"     Dengue"},
-		{"     Tree Forestation"},
-		{"     Health Campaign"},
-		{"     Food Distribution"},
-		{"     Tree Forestation"}		
-		
-	};
+	private String[] completePrColumn = new String[]{"Available Project"};
+	private String[][] completePrRow;
 	
 	
 	private String[] runningPrColumn = new String[]{"Running Project"};
@@ -317,6 +263,43 @@ public class VolunteerDashboard extends JFrame {
     public VolunteerDashboard() {
 
 //		Database Section
+		//	Notice Table
+//		DB
+		Notice notice = new Notice();
+		ArrayList<Document> noticeList = notice.getAll();
+		int noticeListSize = noticeList.size();
+
+//		DB end
+		noticeRow = new String[noticeListSize][2];
+		for(int i=0; i<noticeListSize; i++) {
+			noticeRow[i][0] = noticeList.get(i).getString("notice");
+			noticeRow[i][1] = noticeList.get(i).getString("date");
+		}
+
+		//		Transaction Table
+		Transaction transaction = new Transaction();
+		ArrayList<Document> transactionList = transaction.getAll();
+		int transactionListSize = transactionList.size();
+
+		DateFormat spf = new SimpleDateFormat("dd-MM-yyyy");
+
+
+		transanctionRow = new String[transactionListSize][3];
+		for (int i=0; i<transactionListSize; i++) {
+			transanctionRow[i][0] = spf.format(transactionList.get(i).getDate("date"));
+			transanctionRow[i][1] = transactionList.get(i).getString("fund");
+			transanctionRow[i][2] = transactionList.get(i).getString("amount");
+		}
+
+		//		Project Table
+		Events events = new Events();
+		ArrayList<Document> projects = events.getAll();
+		int projectCountDB = projects.size();
+
+		completePrRow = new String[projectCountDB][1];
+		for(int i=0; i<projectCountDB; i++) {
+			completePrRow[i][0] = projects.get(i).getString("event");
+		}
 
 //		Database Section End
         
@@ -521,6 +504,10 @@ public class VolunteerDashboard extends JFrame {
 		nextProjectInfoPanel.setBounds(21, 0, 543, 188);
 		
         //Next Project Info
+
+		Document latestProject = projects.get(projectCountDB-1);
+		String latestProjectName = latestProject.getString("event");
+		String latestProjectDetails = latestProject.getString("description");
 		
         nextProjectLabelTittle.setFont(new Font("Inter", Font.BOLD, 20));
         nextProjectLabelTittle.setText("Next Project");
@@ -530,14 +517,14 @@ public class VolunteerDashboard extends JFrame {
         
 		
 		nextProjectLabelHeadline.setFont(new Font("Inter", Font.BOLD, 16));
-        nextProjectLabelHeadline.setText("Winter Clothes Distribution");
+        nextProjectLabelHeadline.setText(latestProjectName);
 		nextProjectLabelHeadline.setBounds(20, 45, 229, 25);
 		nextProjectLabelHeadline.setForeground(new Color(255,255,255));
         nextProjectInfoPanel.add(nextProjectLabelHeadline);
         
 		
 		nextProjectLabelDetails.setFont(new Font("Inter", Font.PLAIN, 12));
-        nextProjectLabelDetails.setText("<html>" + "<p>" + "Like every year, we plan to distribute special " + "winter survival kits among underprivileged " + "communities to save them from the cold." + "<p>" + "<html>");
+        nextProjectLabelDetails.setText("<html>" + "<p>" + latestProjectDetails + "<p>" + "<html>");
 		nextProjectLabelDetails.setBounds(20, 70, 254, 50);
 		nextProjectLabelDetails.setForeground(new Color(255,255,255));
         nextProjectInfoPanel.add(nextProjectLabelDetails);
@@ -600,298 +587,7 @@ public class VolunteerDashboard extends JFrame {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				
-                JDialog prApplyDialog = new JDialog();
-				
-				
-				prApplyDialogPanel = new JPanel();
-                prApplyDialogPanel.setSize(1060,1480);
-                JLabel prApplyDialogLabel = new JLabel(new ImageIcon(root + "project_applyBG.png"));
-                prApplyDialogLabel.setSize(1060,1480);
-				
-
-                prAdLabel = new JLabel(new ImageIcon(root + "applicationAd.png"));
-				prAdLabel.setBounds(40,30,979,332);
-				prApplyDialogLabel.add(prAdLabel);
-				
-				prTitleLabel = new JLabel();
-				prTitleLabel.setFont(new Font("Inter", Font.BOLD, 18));
-				prTitleLabel.setText("Winter Clothes Distribution");
-				prTitleLabel.setBounds(40, 392, 500, 35);
-				prTitleLabel.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prTitleLabel);
-				
-				prDetailsLabel = new JLabel();
-				prDetailsLabel.setFont(new Font("Inter", Font.PLAIN, 15));
-				prDetailsLabel.setText("<html>" + "<p>" + "As you know, every year the winter comes with cold waves and as a disaster for the needy/poor people in Bangladesh. With your generous donation, Nirmul Foundation distributes thousands of winter clothes including blankets to help those who are greatly in need of warm cloth to survive the winter season. " + "We normally distribute in remote areas where not many relief activities can be observed. As usual, Ankur international is taking this opportunity to help these people with your generous donation. only a few dollars (the price of a burger) can help save one’s life from the cruel impact of cold waves. " + "You can decide how many lives you want to touch through this effort. This year it is much severe than previous years. Some areas of North Bengal still has flood water. Please come forward and contribute generously as you have done for the last several years. We humbly request everyone to donate generously for this good cause." + "<p>" + "<html>");
-				prDetailsLabel.setBounds(40, 432, 979, 150);
-				prDetailsLabel.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prDetailsLabel);
-				
-				prConditionTitleLabel = new JLabel();
-				prConditionTitleLabel.setFont(new Font("Inter", Font.BOLD, 18));
-				prConditionTitleLabel.setText("Condition to participate on this Project");
-				prConditionTitleLabel.setBounds(40, 612, 500, 35);
-				prConditionTitleLabel.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prConditionTitleLabel);
-				
-				prCondition1Label = new JLabel();
-				prCondition1Label.setFont(new Font("Inter", Font.PLAIN, 15));
-				prCondition1Label.setText("Must be present on first and last day.");
-				prCondition1Label.setBounds(40, 652, 500, 35);
-				prCondition1Label.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prCondition1Label);
-				
-				prCondition2Label = new JLabel();
-				prCondition2Label.setFont(new Font("Inter", Font.PLAIN, 15));
-				prCondition2Label.setText("Must be present on time.");
-				prCondition2Label.setBounds(40, 687, 500, 35);
-				prCondition2Label.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prCondition2Label);
-				
-				prCondition3Label = new JLabel();
-				prCondition3Label.setFont(new Font("Inter", Font.PLAIN, 15));
-				prCondition3Label.setText("try to timely attend on this project.");
-				prCondition3Label.setBounds(40, 722, 500, 35);
-				prCondition3Label.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prCondition3Label);
-				
-				prCondition4Label = new JLabel();
-				prCondition4Label.setFont(new Font("Inter", Font.PLAIN, 15));
-				prCondition4Label.setText("Must be present on time.");
-				prCondition4Label.setBounds(40, 757, 500, 35);
-				prCondition4Label.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prCondition4Label);
-				
-				
-				prInformationTitleLabel = new JLabel();
-				prInformationTitleLabel.setFont(new Font("Inter", Font.BOLD, 20));
-				prInformationTitleLabel.setText("Fill Information");
-				prInformationTitleLabel.setBounds(460, 847, 200, 35);
-				prInformationTitleLabel.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prInformationTitleLabel);
-				
-				
-				
-				nameLable = new JLabel();
-				nameLable.setFont(new Font("Inter", Font.PLAIN, 15));
-				nameLable.setText("Your Full Name");
-				nameLable.setBounds(40, 925, 100, 35);
-				nameLable.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(nameLable);
-				
-				name = new JTextField() 
-				{
-				
-					public void paintComponent(Graphics g) 
-					{
-						int w = getWidth();
-						int h = getHeight();
-						Graphics2D g2 = (Graphics2D)g.create();
-						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-						g.setColor(getBackground());
-						g.fillRoundRect(0, 0, w-1, h-1, 25, 25);
-						g2.setColor(new Color(65,65,65));
-						g2.drawRoundRect(0, 0, w-1, h-1, 25, 25);
-						super.paintComponent(g);
-					}
-				};
-				//name.setText("Your Full Name");
-				name.setFont(new Font("Inter", Font.PLAIN, 18));
-				name.setForeground(new Color(65,65,65));
-				name.setBounds(40, 960, 446, 60);
-				name.setOpaque(false);
-				name.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-				
-				prApplyDialogLabel.add(name);
-				
-				
-				emailLable = new JLabel();
-				emailLable.setFont(new Font("Inter", Font.PLAIN, 15));
-				emailLable.setText("E-mail");
-				emailLable.setBounds(574, 925, 100, 35);
-				emailLable.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(emailLable);
-				
-				email = new JTextField() 
-				{
-				
-					public void paintComponent(Graphics g) 
-					{
-						int w = getWidth();
-						int h = getHeight();
-						Graphics2D g2 = (Graphics2D)g.create();
-						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-						g.setColor(getBackground());
-						g.fillRoundRect(0, 0, w-1, h-1, 25, 25);
-						g2.setColor(new Color(65,65,65));
-						g2.drawRoundRect(0, 0, w-1, h-1, 25, 25);
-						super.paintComponent(g);
-					}
-				};
-				//email.setText(" ");
-				email.setFont(new Font("Inter", Font.PLAIN, 18));
-				email.setForeground(new Color(65,65,65));
-				email.setBounds(574, 960, 446, 60);
-				email.setOpaque(false);
-				email.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-				
-				prApplyDialogLabel.add(email);
-				
-				
-				addressLable = new JLabel();
-				addressLable.setFont(new Font("Inter", Font.PLAIN, 15));
-				addressLable.setText("Your Address ");
-				addressLable.setBounds(40, 1040, 100, 35);
-				addressLable.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(addressLable);
-				
-				address = new JTextField() 
-				{
-				
-					public void paintComponent(Graphics g) 
-					{
-						int w = getWidth();
-						int h = getHeight();
-						Graphics2D g2 = (Graphics2D)g.create();
-						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-						g.setColor(getBackground());
-						g.fillRoundRect(0, 0, w-1, h-1, 25, 25);
-						g2.setColor(new Color(65,65,65));
-						g2.drawRoundRect(0, 0, w-1, h-1, 25, 25);
-						super.paintComponent(g);
-					}
-				};
-				//address.setText(" ");
-				address.setFont(new Font("Inter", Font.PLAIN, 18));
-				address.setForeground(new Color(65,65,65));
-				address.setBounds(40, 1075, 446, 60);
-				address.setOpaque(false);
-				address.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-				
-				prApplyDialogLabel.add(address);
-				
-				
-				workPlaceLable = new JLabel();
-				workPlaceLable.setFont(new Font("Inter", Font.PLAIN, 15));
-				workPlaceLable.setText("Interested Workplace");
-				workPlaceLable.setBounds(574, 1040, 200, 35);
-				workPlaceLable.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(workPlaceLable);
-				
-				workplace = new JTextField() 
-				{
-				
-					public void paintComponent(Graphics g) 
-					{
-						int w = getWidth();
-						int h = getHeight();
-						Graphics2D g2 = (Graphics2D)g.create();
-						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-						g.setColor(getBackground());
-						g.fillRoundRect(0, 0, w-1, h-1, 25, 25);
-						g2.setColor(new Color(65,65,65));
-						g2.drawRoundRect(0, 0, w-1, h-1, 25, 25);
-						super.paintComponent(g);
-					}
-				};
-				//workplace.setText(" ");
-				workplace.setFont(new Font("Inter", Font.PLAIN, 18));
-				workplace.setForeground(new Color(65,65,65));
-				workplace.setBounds(574, 1075, 446, 60);
-				workplace.setOpaque(false);
-				workplace.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-				
-				prApplyDialogLabel.add(workplace);
-				
-				
-				phoneLable = new JLabel();
-				phoneLable.setFont(new Font("Inter", Font.PLAIN, 15));
-				phoneLable.setText("Phone Number");
-				phoneLable.setBounds(40, 1155, 200, 35);
-				phoneLable.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(phoneLable);
-				
-				phone = new JTextField() 
-				{
-				
-					public void paintComponent(Graphics g) 
-					{
-						int w = getWidth();
-						int h = getHeight();
-						Graphics2D g2 = (Graphics2D)g.create();
-						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-						g.setColor(getBackground());
-						g.fillRoundRect(0, 0, w-1, h-1, 25, 25);
-						g2.setColor(new Color(65,65,65));
-						g2.drawRoundRect(0, 0, w-1, h-1, 25, 25);
-						super.paintComponent(g);
-					}
-				};
-				//phone.setText(" ");
-				phone.setFont(new Font("Inter", Font.PLAIN, 18));
-				phone.setForeground(new Color(65,65,65));
-				phone.setBounds(40, 1190, 446, 60);
-				phone.setOpaque(false);
-				phone.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-				
-				prApplyDialogLabel.add(phone);
-				
-				
-				prapplyBtn = new JButton(new ImageIcon(root + "prApplyBtn.png"));
-				prapplyBtn.setBorder(null);
-				prapplyBtn.setBounds(415, 1350, 209, 51);
-				//prapplyBtn.setBackground(new Color(172,203,255));
-		
-				prapplyBtn.setOpaque(false);
-				prapplyBtn.setFocusPainted(false);
-				prapplyBtn.setBorderPainted(false);
-				prapplyBtn.setContentAreaFilled(false);
-				prapplyBtn.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
-		
-		
-				prApplyDialogLabel.add(prapplyBtn);
-		
-				prapplyBtn.addActionListener(new ActionListener()
-				{
-					public void actionPerformed(ActionEvent e)
-					{
-						String getName = name.getText();
-						String getEmail = email.getText();
-						String getAddress = address.getText();
-						String getWorkplace = workplace.getText();
-						String getPhone = phone.getText();
-						
-						if(getName.equals("") || getEmail.equals("") || getAddress.equals("") || getWorkplace.equals("") || getPhone.equals(""))
-						{
-							JOptionPane.showMessageDialog(null, "Please ensure all information is filled in!", "Warning Message", JOptionPane.WARNING_MESSAGE);
-						}
-						else
-						{
-							prApplyDialog.dispose();
-						}
-					}
-				});
-				
-
-                prApplyDialogPanel.add(prApplyDialogLabel);
-
-                applyScroll = new JScrollPane(prApplyDialogPanel);
-
-
-                
-                prApplyDialog.setTitle("Next Project Application");
-                prApplyDialog.setVisible(true);
-                prApplyDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                prApplyDialog.setSize(1106,708);
-                prApplyDialog.setLocationRelativeTo(null);
-                prApplyDialog.add(applyScroll);
-                
+				new EventApplyForm(latestProject);
 			}
 		});
 		
@@ -920,11 +616,22 @@ public class VolunteerDashboard extends JFrame {
 		donationTittle.setBounds(20, 10, 200, 25);
         donationInfoPanel.add(donationTittle);
         middleInfo.add(donationInfoPanel);
-		
+
+		Transaction donation = new Transaction();
+		ArrayList<Document> donationList = donation.getAll();
+		int totalDonation = donationList.size();
+		int totalDonationAmount = 0;
+
+		for (int i = 0; i < totalDonation - 5; i++) {
+			Document donationDoc = donationList.get(i);
+			int amount = Integer.parseInt(donationDoc.getString("amount"));
+			totalDonationAmount += amount;
+		}
+
 		donateAmount.setFont(new Font("Inter", Font.BOLD, 30));
 		donateAmount.setForeground(new Color(82,99,255));
-        donateAmount.setText("6050");
-		donateAmount.setBounds(100, 60, 200, 25);
+        donateAmount.setText("<html>&#2547 "+totalDonationAmount + "</html>");
+		donateAmount.setBounds(50, 60, 200, 25);
         donationInfoPanel.add(donateAmount);
         middleInfo.add(donationInfoPanel);
 		
@@ -945,14 +652,14 @@ public class VolunteerDashboard extends JFrame {
 		
         
         taskTittle.setFont(new Font("Inter", Font.BOLD, 18));
-        taskTittle.setText("Working Performance");
+        taskTittle.setText("Overall Donations");
 		taskTittle.setBounds(20, 10, 200, 25);
         taskInfoPanel.add(taskTittle);
         middleInfo.add(taskInfoPanel);
-		
+
 		task.setFont(new Font("Inter", Font.BOLD, 30));
 		task.setForeground(new Color(82,99,255));
-        task.setText("73%");
+        task.setText(""+(totalDonation - 5));
 		task.setBounds(100, 60, 200, 25);
         taskInfoPanel.add(task);
         middleInfo.add(taskInfoPanel);
@@ -1104,7 +811,6 @@ public class VolunteerDashboard extends JFrame {
 		
 		// Notice Panel
 		
-		
 		noticePanel = new JPanel();
 		noticePanel.setLayout(null);
 		
@@ -1123,7 +829,7 @@ public class VolunteerDashboard extends JFrame {
 		noticeHeader.setFont(new Font("Inter", Font.BOLD, 18));
 		noticeHeader.setBackground(new Color(65,136,255));
 		noticeHeader.setForeground(new Color(255,255,255));
-		
+
 		noticeModel = new DefaultTableModel(noticeRow, noticeColumn);
 		centerRenderer = new DefaultTableCellRenderer();
 		noticeTable.setModel(noticeModel);
@@ -1132,7 +838,7 @@ public class VolunteerDashboard extends JFrame {
 		noticeTable.setBackground(new Color(255,255,255));
 		noticeTable.setSelectionBackground(new Color(111,165,255));
 		noticeTable.setRowHeight(50);
-		noticeTable.getColumnModel().getColumn(0).setPreferredWidth(410);
+		noticeTable.getColumnModel().getColumn(0).setPreferredWidth(350);
 		//noticeTable.setEnabled(false);
 		
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
@@ -1140,6 +846,7 @@ public class VolunteerDashboard extends JFrame {
 		noticeTable.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
 		
 		noticeScroll = new JScrollPane(noticeTable);
+		noticeScroll.setBorder(new EmptyBorder(new Insets(20,20,20,20)));
 		noticeScroll.setBounds(0,60,545,540);
 		noticeLabel.add(noticeScroll);
 		
@@ -1236,15 +943,14 @@ public class VolunteerDashboard extends JFrame {
 		
 
         exploreProjectsPanel = new JPanel() {
-            @Override
-            public void paintComponent(Graphics g) {
-                g.drawImage(new ImageIcon(root + "donationBar.png").getImage(), 0,0,getWidth(),getHeight(),null);
-            }
-        };
+			@Override
+			public void paintComponent(Graphics g) {
+				g.drawImage(new ImageIcon(root + "donationBar.png").getImage(), 0,0,getWidth(),getHeight(),null);
+			}
+		};
 		
 		
 		exploreProjectsInfo = new JPanel();
-		exploreProjectInfoPane = new JScrollPane();
 		exploreProjectsTittle = new JLabel();
         projectName1 = new JLabel();
         projectName2 = new JLabel();
@@ -1258,157 +964,156 @@ public class VolunteerDashboard extends JFrame {
         projectDetails5 = new JLabel();
 		
 		
-//		exploreProjectsPanel.setLayout(null);
-		exploreProjectsPanel.setBounds(35, 0, 350, 430);
+		exploreProjectsPanel.setLayout(new BoxLayout(exploreProjectsPanel, BoxLayout.Y_AXIS));
+		exploreProjectsPanel.setBackground(null);
+		exploreProjectsPanel.setBorder(new EmptyBorder(new Insets(20,20,20,20)));
+//		exploreProjectsPanel.setBounds(50, 50, 300, 350);
 
-		JScrollPane exploreProjectsPane = new JScrollPane(exploreProjectsPanel);
+		JScrollPane exploreProjectsPane = new JScrollPane() ;
 		exploreProjectsPane.setBounds(35, 0, 350, 430);
+		exploreProjectsPane.setBorder(null);
+		exploreProjectsPane.setBackground(null);
 
         exploreProjectsTittle.setFont(new Font("Inter", Font.BOLD, 20));
         exploreProjectsTittle.setText("Explore Projects");
-		exploreProjectsTittle.setBounds(20, 10, 200, 30);
-        exploreProjectsPanel.add(exploreProjectsTittle);
+		exploreProjectsTittle.setBounds(55, 10, 200, 30);
+//        rightSidePanel.add(exploreProjectsTittle);
         
-
-
-//		Database
-		Events events = new Events();
-		ArrayList<Document> projects = events.getAll();
-		int projectCountDB = projects.size();
 
 
 
 		//Projects Name
 		for (int i = 0; i < projectCountDB && i < 20; i++) {
 //            AdminRightSidebarScrollPane.add(noticeBodyPanel, new JLabel(noticeFromDB.get(i).getString("notice")));
-			VolunteerRightSidebarScrollPane.add(exploreProjectsPanel, new JLabel(projects.get(i).getString("event")));
+			VolunteerRightSidebarScrollPane.add(exploreProjectsPanel, projects.get(i).getString("event"));
 		}
+		exploreProjectsPane.setViewportView(exploreProjectsPanel);
 
-		projectName1.setFont(new Font("Inter", Font.BOLD, 16));
-        projectName1.setText("Tree Forestation");
-		projectName1.setBounds(20, 65, 200, 25);
-        exploreProjectsPanel.add(projectName1);
-        
-		projectDetails1.setFont(new Font("Inter", Font.PLAIN, 10));
-        projectDetails1.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
-		projectDetails1.setBounds(20, 91, 226, 25);
-        exploreProjectsPanel.add(projectDetails1);
-		
-		donateBtn = new JButton();
-		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
-        donateBtn.setBorder(null);
-		donateBtn.setBackground(new Color(255,255,255));
-		exploreProjectsPanel.add(donateBtn);
-		donateBtn.setBounds(251, 78, 82, 36);
-		
-		donateBtn.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				JOptionPane.showMessageDialog(null, "This is Donation Button 1");
-			}
-		});
-		
-		
-		projectName2.setFont(new Font("Inter", Font.BOLD, 16));
-        projectName2.setText("Health Campaign");
-		projectName2.setBounds(20, 135, 200, 25);
-        exploreProjectsPanel.add(projectName2);
-        
-		projectDetails2.setFont(new Font("Inter", Font.PLAIN, 10));
-        projectDetails2.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
-		projectDetails2.setBounds(20, 161, 226, 25);
-        exploreProjectsPanel.add(projectDetails2);
-		
-		donateBtn = new JButton();
-		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
-        donateBtn.setBorder(null);
-		donateBtn.setBackground(new Color(255,255,255));
-		exploreProjectsPanel.add(donateBtn);
-		donateBtn.setBounds(251, 148, 82, 36);
-		
-		donateBtn.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				JOptionPane.showMessageDialog(null, "This is Donation Button 2");
-			}
-		});
-		
-		projectName3.setFont(new Font("Inter", Font.BOLD, 16));
-        projectName3.setText("Dengue");
-		projectName3.setBounds(20, 205, 200, 25);
-        exploreProjectsPanel.add(projectName3);
-        
-		projectDetails3.setFont(new Font("Inter", Font.PLAIN, 10));
-        projectDetails3.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
-		projectDetails3.setBounds(20, 231, 226, 25);
-        exploreProjectsPanel.add(projectDetails3);
-		
-		donateBtn = new JButton();
-		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
-        donateBtn.setBorder(null);
-		donateBtn.setBackground(new Color(255,255,255));
-		exploreProjectsPanel.add(donateBtn);
-		donateBtn.setBounds(251, 218, 82, 36);
-		
-		donateBtn.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				JOptionPane.showMessageDialog(null, "This is Donation Button 3");
-			}
-		});
-		
-		projectName4.setFont(new Font("Inter", Font.BOLD, 16));
-        projectName4.setText("Food Distribution");
-		projectName4.setBounds(20, 275, 200, 25);
-        exploreProjectsPanel.add(projectName4);
-        
-		projectDetails4.setFont(new Font("Inter", Font.PLAIN, 10));
-        projectDetails4.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
-		projectDetails4.setBounds(20, 301, 226, 25);
-        exploreProjectsPanel.add(projectDetails4);
-		
-		donateBtn = new JButton();
-		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
-        donateBtn.setBorder(null);
-		donateBtn.setBackground(new Color(255,255,255));
-		exploreProjectsPanel.add(donateBtn);
-		donateBtn.setBounds(251, 288, 82, 36);
-		
-		donateBtn.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				JOptionPane.showMessageDialog(null, "This is Donation Button 4");
-			}
-		});
-		
-		projectName5.setFont(new Font("Inter", Font.BOLD, 16));
-        projectName5.setText("Health Campaign");
-		projectName5.setBounds(20, 345, 200, 25);
-        exploreProjectsPanel.add(projectName5);
-        
-		projectDetails5.setFont(new Font("Inter", Font.PLAIN, 10));
-        projectDetails5.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
-		projectDetails5.setBounds(20, 371, 226, 25);
-        exploreProjectsPanel.add(projectDetails5);
-		
-		donateBtn = new JButton();
-		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
-        donateBtn.setBorder(null);
-		donateBtn.setBackground(new Color(255,255,255));
-		exploreProjectsPanel.add(donateBtn);
-		donateBtn.setBounds(251, 358, 82, 36);
-		
-		donateBtn.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				JOptionPane.showMessageDialog(null, "This is Donation Button 5");
-			}
-		});
+//		projectName1.setFont(new Font("Inter", Font.BOLD, 16));
+//        projectName1.setText("Tree Forestation");
+//		projectName1.setBounds(20, 65, 200, 25);
+//        exploreProjectsPanel.add(projectName1);
+//
+//		projectDetails1.setFont(new Font("Inter", Font.PLAIN, 10));
+//        projectDetails1.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
+//		projectDetails1.setBounds(20, 91, 226, 25);
+//        exploreProjectsPanel.add(projectDetails1);
+//
+//		donateBtn = new JButton();
+//		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
+//        donateBtn.setBorder(null);
+//		donateBtn.setBackground(new Color(255,255,255));
+//		exploreProjectsPanel.add(donateBtn);
+//		donateBtn.setBounds(251, 78, 82, 36);
+//
+//		donateBtn.addActionListener(new ActionListener()
+//		{
+//			public void actionPerformed(ActionEvent e)
+//			{
+//				JOptionPane.showMessageDialog(null, "This is Donation Button 1");
+//			}
+//		});
+//
+//
+//		projectName2.setFont(new Font("Inter", Font.BOLD, 16));
+//        projectName2.setText("Health Campaign");
+//		projectName2.setBounds(20, 135, 200, 25);
+//        exploreProjectsPanel.add(projectName2);
+//
+//		projectDetails2.setFont(new Font("Inter", Font.PLAIN, 10));
+//        projectDetails2.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
+//		projectDetails2.setBounds(20, 161, 226, 25);
+//        exploreProjectsPanel.add(projectDetails2);
+//
+//		donateBtn = new JButton();
+//		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
+//        donateBtn.setBorder(null);
+//		donateBtn.setBackground(new Color(255,255,255));
+//		exploreProjectsPanel.add(donateBtn);
+//		donateBtn.setBounds(251, 148, 82, 36);
+//
+//		donateBtn.addActionListener(new ActionListener()
+//		{
+//			public void actionPerformed(ActionEvent e)
+//			{
+//				JOptionPane.showMessageDialog(null, "This is Donation Button 2");
+//			}
+//		});
+//
+//		projectName3.setFont(new Font("Inter", Font.BOLD, 16));
+//        projectName3.setText("Dengue");
+//		projectName3.setBounds(20, 205, 200, 25);
+//        exploreProjectsPanel.add(projectName3);
+//
+//		projectDetails3.setFont(new Font("Inter", Font.PLAIN, 10));
+//        projectDetails3.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
+//		projectDetails3.setBounds(20, 231, 226, 25);
+//        exploreProjectsPanel.add(projectDetails3);
+//
+//		donateBtn = new JButton();
+//		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
+//        donateBtn.setBorder(null);
+//		donateBtn.setBackground(new Color(255,255,255));
+//		exploreProjectsPanel.add(donateBtn);
+//		donateBtn.setBounds(251, 218, 82, 36);
+//
+//		donateBtn.addActionListener(new ActionListener()
+//		{
+//			public void actionPerformed(ActionEvent e)
+//			{
+//				JOptionPane.showMessageDialog(null, "This is Donation Button 3");
+//			}
+//		});
+//
+//		projectName4.setFont(new Font("Inter", Font.BOLD, 16));
+//        projectName4.setText("Food Distribution");
+//		projectName4.setBounds(20, 275, 200, 25);
+//        exploreProjectsPanel.add(projectName4);
+//
+//		projectDetails4.setFont(new Font("Inter", Font.PLAIN, 10));
+//        projectDetails4.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
+//		projectDetails4.setBounds(20, 301, 226, 25);
+//        exploreProjectsPanel.add(projectDetails4);
+//
+//		donateBtn = new JButton();
+//		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
+//        donateBtn.setBorder(null);
+//		donateBtn.setBackground(new Color(255,255,255));
+//		exploreProjectsPanel.add(donateBtn);
+//		donateBtn.setBounds(251, 288, 82, 36);
+//
+//		donateBtn.addActionListener(new ActionListener()
+//		{
+//			public void actionPerformed(ActionEvent e)
+//			{
+//				JOptionPane.showMessageDialog(null, "This is Donation Button 4");
+//			}
+//		});
+//
+//		projectName5.setFont(new Font("Inter", Font.BOLD, 16));
+//        projectName5.setText("Health Campaign");
+//		projectName5.setBounds(20, 345, 200, 25);
+//        exploreProjectsPanel.add(projectName5);
+//
+//		projectDetails5.setFont(new Font("Inter", Font.PLAIN, 10));
+//        projectDetails5.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
+//		projectDetails5.setBounds(20, 371, 226, 25);
+//        exploreProjectsPanel.add(projectDetails5);
+//
+//		donateBtn = new JButton();
+//		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
+//        donateBtn.setBorder(null);
+//		donateBtn.setBackground(new Color(255,255,255));
+//		exploreProjectsPanel.add(donateBtn);
+//		donateBtn.setBounds(251, 358, 82, 36);
+//
+//		donateBtn.addActionListener(new ActionListener()
+//		{
+//			public void actionPerformed(ActionEvent e)
+//			{
+//				JOptionPane.showMessageDialog(null, "This is Donation Button 5");
+//			}
+//		});
 		
 		rightSidePanel.add(exploreProjectsPane);
 		
@@ -1505,12 +1210,12 @@ public class VolunteerDashboard extends JFrame {
         projectDetails3 = new JLabel();
         projectDetails4 = new JLabel();
         projectDetails5 = new JLabel();
-		
-		
+
+
 		exploreProjectsPanel.setLayout(null);
 		exploreProjectsPanel.setBounds(35, 0, 350, 430);
 
-		
+
         exploreProjectsTittle.setFont(new Font("Inter", Font.BOLD, 20));
         exploreProjectsTittle.setText("Explore Projects");
 		exploreProjectsTittle.setBounds(20, 10, 200, 30);
@@ -1522,19 +1227,19 @@ public class VolunteerDashboard extends JFrame {
         projectName1.setText("Tree Forestation");
 		projectName1.setBounds(20, 65, 200, 25);
         exploreProjectsPanel.add(projectName1);
-        
+
 		projectDetails1.setFont(new Font("Inter", Font.PLAIN, 10));
         projectDetails1.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
 		projectDetails1.setBounds(20, 91, 226, 25);
         exploreProjectsPanel.add(projectDetails1);
-		
+
 		donateBtn = new JButton();
 		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
         donateBtn.setBorder(null);
 		donateBtn.setBackground(new Color(255,255,255));
 		exploreProjectsPanel.add(donateBtn);
 		donateBtn.setBounds(251, 78, 82, 36);
-		
+
 		donateBtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -1542,25 +1247,25 @@ public class VolunteerDashboard extends JFrame {
 				JOptionPane.showMessageDialog(null, "This is Donation Button 1");
 			}
 		});
-		
-		
+
+
 		projectName2.setFont(new Font("Inter", Font.BOLD, 16));
         projectName2.setText("Health Campaign");
 		projectName2.setBounds(20, 135, 200, 25);
         exploreProjectsPanel.add(projectName2);
-        
+
 		projectDetails2.setFont(new Font("Inter", Font.PLAIN, 10));
         projectDetails2.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
 		projectDetails2.setBounds(20, 161, 226, 25);
         exploreProjectsPanel.add(projectDetails2);
-		
+
 		donateBtn = new JButton();
 		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
         donateBtn.setBorder(null);
 		donateBtn.setBackground(new Color(255,255,255));
 		exploreProjectsPanel.add(donateBtn);
 		donateBtn.setBounds(251, 148, 82, 36);
-		
+
 		donateBtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -1568,24 +1273,24 @@ public class VolunteerDashboard extends JFrame {
 				JOptionPane.showMessageDialog(null, "This is Donation Button 2");
 			}
 		});
-		
+
 		projectName3.setFont(new Font("Inter", Font.BOLD, 16));
         projectName3.setText("Dengue");
 		projectName3.setBounds(20, 205, 200, 25);
         exploreProjectsPanel.add(projectName3);
-        
+
 		projectDetails3.setFont(new Font("Inter", Font.PLAIN, 10));
         projectDetails3.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
 		projectDetails3.setBounds(20, 231, 226, 25);
         exploreProjectsPanel.add(projectDetails3);
-		
+
 		donateBtn = new JButton();
 		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
         donateBtn.setBorder(null);
 		donateBtn.setBackground(new Color(255,255,255));
 		exploreProjectsPanel.add(donateBtn);
 		donateBtn.setBounds(251, 218, 82, 36);
-		
+
 		donateBtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -1593,24 +1298,24 @@ public class VolunteerDashboard extends JFrame {
 				JOptionPane.showMessageDialog(null, "This is Donation Button 3");
 			}
 		});
-		
+
 		projectName4.setFont(new Font("Inter", Font.BOLD, 16));
         projectName4.setText("Food Distribution");
 		projectName4.setBounds(20, 275, 200, 25);
         exploreProjectsPanel.add(projectName4);
-        
+
 		projectDetails4.setFont(new Font("Inter", Font.PLAIN, 10));
         projectDetails4.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
 		projectDetails4.setBounds(20, 301, 226, 25);
         exploreProjectsPanel.add(projectDetails4);
-		
+
 		donateBtn = new JButton();
 		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
         donateBtn.setBorder(null);
 		donateBtn.setBackground(new Color(255,255,255));
 		exploreProjectsPanel.add(donateBtn);
 		donateBtn.setBounds(251, 288, 82, 36);
-		
+
 		donateBtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -1618,24 +1323,24 @@ public class VolunteerDashboard extends JFrame {
 				JOptionPane.showMessageDialog(null, "This is Donation Button 4");
 			}
 		});
-		
+
 		projectName5.setFont(new Font("Inter", Font.BOLD, 16));
         projectName5.setText("Health Campaign");
 		projectName5.setBounds(20, 345, 200, 25);
         exploreProjectsPanel.add(projectName5);
-        
+
 		projectDetails5.setFont(new Font("Inter", Font.PLAIN, 10));
         projectDetails5.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
 		projectDetails5.setBounds(20, 371, 226, 25);
         exploreProjectsPanel.add(projectDetails5);
-		
+
 		donateBtn = new JButton();
 		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
         donateBtn.setBorder(null);
 		donateBtn.setBackground(new Color(255,255,255));
 		exploreProjectsPanel.add(donateBtn);
 		donateBtn.setBounds(251, 358, 82, 36);
-		
+
 		donateBtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -1732,12 +1437,12 @@ public class VolunteerDashboard extends JFrame {
         projectDetails3 = new JLabel();
         projectDetails4 = new JLabel();
         projectDetails5 = new JLabel();
-		
-		
+
+
 		exploreProjectsPanel.setLayout(null);
 		exploreProjectsPanel.setBounds(35, 0, 350, 430);
-		
-		
+
+
         exploreProjectsTittle.setFont(new Font("Inter", Font.BOLD, 20));
         exploreProjectsTittle.setText("Explore Projects");
 		exploreProjectsTittle.setBounds(20, 10, 200, 30);
@@ -1749,19 +1454,19 @@ public class VolunteerDashboard extends JFrame {
         projectName1.setText("Tree Forestation");
 		projectName1.setBounds(20, 65, 200, 25);
         exploreProjectsPanel.add(projectName1);
-        
+
 		projectDetails1.setFont(new Font("Inter", Font.PLAIN, 10));
         projectDetails1.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
 		projectDetails1.setBounds(20, 91, 226, 25);
         exploreProjectsPanel.add(projectDetails1);
-		
+
 		donateBtn = new JButton();
 		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
         donateBtn.setBorder(null);
 		donateBtn.setBackground(new Color(255,255,255));
 		exploreProjectsPanel.add(donateBtn);
 		donateBtn.setBounds(251, 78, 82, 36);
-		
+
 		donateBtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -1769,25 +1474,25 @@ public class VolunteerDashboard extends JFrame {
 				JOptionPane.showMessageDialog(null, "This is Donation Button 1");
 			}
 		});
-		
-		
+
+
 		projectName2.setFont(new Font("Inter", Font.BOLD, 16));
         projectName2.setText("Health Campaign");
 		projectName2.setBounds(20, 135, 200, 25);
         exploreProjectsPanel.add(projectName2);
-        
+
 		projectDetails2.setFont(new Font("Inter", Font.PLAIN, 10));
         projectDetails2.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
 		projectDetails2.setBounds(20, 161, 226, 25);
         exploreProjectsPanel.add(projectDetails2);
-		
+
 		donateBtn = new JButton();
 		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
         donateBtn.setBorder(null);
 		donateBtn.setBackground(new Color(255,255,255));
 		exploreProjectsPanel.add(donateBtn);
 		donateBtn.setBounds(251, 148, 82, 36);
-		
+
 		donateBtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -1795,24 +1500,24 @@ public class VolunteerDashboard extends JFrame {
 				JOptionPane.showMessageDialog(null, "This is Donation Button 2");
 			}
 		});
-		
+
 		projectName3.setFont(new Font("Inter", Font.BOLD, 16));
         projectName3.setText("Dengue");
 		projectName3.setBounds(20, 205, 200, 25);
         exploreProjectsPanel.add(projectName3);
-        
+
 		projectDetails3.setFont(new Font("Inter", Font.PLAIN, 10));
         projectDetails3.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
 		projectDetails3.setBounds(20, 231, 226, 25);
         exploreProjectsPanel.add(projectDetails3);
-		
+
 		donateBtn = new JButton();
 		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
         donateBtn.setBorder(null);
 		donateBtn.setBackground(new Color(255,255,255));
 		exploreProjectsPanel.add(donateBtn);
 		donateBtn.setBounds(251, 218, 82, 36);
-		
+
 		donateBtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -1820,24 +1525,24 @@ public class VolunteerDashboard extends JFrame {
 				JOptionPane.showMessageDialog(null, "This is Donation Button 3");
 			}
 		});
-		
+
 		projectName4.setFont(new Font("Inter", Font.BOLD, 16));
         projectName4.setText("Food Distribution");
 		projectName4.setBounds(20, 275, 200, 25);
         exploreProjectsPanel.add(projectName4);
-        
+
 		projectDetails4.setFont(new Font("Inter", Font.PLAIN, 10));
         projectDetails4.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
 		projectDetails4.setBounds(20, 301, 226, 25);
         exploreProjectsPanel.add(projectDetails4);
-		
+
 		donateBtn = new JButton();
 		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
         donateBtn.setBorder(null);
 		donateBtn.setBackground(new Color(255,255,255));
 		exploreProjectsPanel.add(donateBtn);
 		donateBtn.setBounds(251, 288, 82, 36);
-		
+
 		donateBtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -1845,24 +1550,24 @@ public class VolunteerDashboard extends JFrame {
 				JOptionPane.showMessageDialog(null, "This is Donation Button 4");
 			}
 		});
-		
+
 		projectName5.setFont(new Font("Inter", Font.BOLD, 16));
         projectName5.setText("Health Campaign");
 		projectName5.setBounds(20, 345, 200, 25);
         exploreProjectsPanel.add(projectName5);
-        
+
 		projectDetails5.setFont(new Font("Inter", Font.PLAIN, 10));
         projectDetails5.setText("<html>" + "<p>" + "Lorem Ipsum is simply dummy text of the printing and typesetting industry." + "<p>" + "<html>");
 		projectDetails5.setBounds(20, 371, 226, 25);
         exploreProjectsPanel.add(projectDetails5);
-		
+
 		donateBtn = new JButton();
 		donateBtn.setIcon(new ImageIcon(root + "donationBtn.png"));
         donateBtn.setBorder(null);
 		donateBtn.setBackground(new Color(255,255,255));
 		exploreProjectsPanel.add(donateBtn);
 		donateBtn.setBounds(251, 358, 82, 36);
-		
+
 		donateBtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -1963,7 +1668,10 @@ public class VolunteerDashboard extends JFrame {
 		nextProjectInfoPanel.setBounds(21, 0, 543, 188);
 		
         //Next Project Info
-		
+
+
+
+
         nextProjectLabelTittle.setFont(new Font("Inter", Font.BOLD, 20));
         nextProjectLabelTittle.setText("Next Project");
 		nextProjectLabelTittle.setBounds(20, 10, 200, 25);
@@ -1972,14 +1680,14 @@ public class VolunteerDashboard extends JFrame {
         
 		
 		nextProjectLabelHeadline.setFont(new Font("Inter", Font.BOLD, 16));
-        nextProjectLabelHeadline.setText("Winter Clothes Distribution");
+        nextProjectLabelHeadline.setText(latestProjectName);
 		nextProjectLabelHeadline.setBounds(20, 45, 229, 25);
 		nextProjectLabelHeadline.setForeground(new Color(255,255,255));
         nextProjectInfoPanel.add(nextProjectLabelHeadline);
         
 		
 		nextProjectLabelDetails.setFont(new Font("Inter", Font.PLAIN, 12));
-        nextProjectLabelDetails.setText("<html>" + "<p>" + "Like every year, we plan to distribute special " + "winter survival kits among underprivileged " + "communities to save them from the cold." + "<p>" + "<html>");
+        nextProjectLabelDetails.setText(latestProjectDetails);
 		nextProjectLabelDetails.setBounds(20, 70, 254, 50);
 		nextProjectLabelDetails.setForeground(new Color(255,255,255));
         nextProjectInfoPanel.add(nextProjectLabelDetails);
@@ -2003,299 +1711,7 @@ public class VolunteerDashboard extends JFrame {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				
-                JDialog prApplyDialog = new JDialog();
-				
-				
-				prApplyDialogPanel = new JPanel();
-                prApplyDialogPanel.setSize(1060,1480);
-                JLabel prApplyDialogLabel = new JLabel(new ImageIcon(root + "project_applyBG.png"));
-                prApplyDialogLabel.setSize(1060,1480);
-				
-
-                prAdLabel = new JLabel(new ImageIcon(root + "applicationAd.png"));
-				prAdLabel.setBounds(40,30,979,332);
-				prApplyDialogLabel.add(prAdLabel);
-				
-				prTitleLabel = new JLabel();
-				prTitleLabel.setFont(new Font("Inter", Font.BOLD, 18));
-				prTitleLabel.setText("Winter Clothes Distribution");
-				prTitleLabel.setBounds(40, 392, 500, 35);
-				prTitleLabel.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prTitleLabel);
-				
-				prDetailsLabel = new JLabel();
-				prDetailsLabel.setFont(new Font("Inter", Font.PLAIN, 15));
-				prDetailsLabel.setText("<html>" + "<p>" + "As you know, every year the winter comes with cold waves and as a disaster for the needy/poor people in Bangladesh. With your generous donation, Nirmul Foundation distributes thousands of winter clothes including blankets to help those who are greatly in need of warm cloth to survive the winter season. " + "We normally distribute in remote areas where not many relief activities can be observed. As usual, Ankur international is taking this opportunity to help these people with your generous donation. only a few dollars (the price of a burger) can help save one’s life from the cruel impact of cold waves. " + "You can decide how many lives you want to touch through this effort. This year it is much severe than previous years. Some areas of North Bengal still has flood water. Please come forward and contribute generously as you have done for the last several years. We humbly request everyone to donate generously for this good cause." + "<p>" + "<html>");
-				prDetailsLabel.setBounds(40, 432, 979, 150);
-				prDetailsLabel.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prDetailsLabel);
-				
-				prConditionTitleLabel = new JLabel();
-				prConditionTitleLabel.setFont(new Font("Inter", Font.BOLD, 18));
-				prConditionTitleLabel.setText("Condition to participate on this Project");
-				prConditionTitleLabel.setBounds(40, 612, 500, 35);
-				prConditionTitleLabel.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prConditionTitleLabel);
-				
-				prCondition1Label = new JLabel();
-				prCondition1Label.setFont(new Font("Inter", Font.PLAIN, 15));
-				prCondition1Label.setText("Must be present on first and last day.");
-				prCondition1Label.setBounds(40, 652, 500, 35);
-				prCondition1Label.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prCondition1Label);
-				
-				prCondition2Label = new JLabel();
-				prCondition2Label.setFont(new Font("Inter", Font.PLAIN, 15));
-				prCondition2Label.setText("Must be present on time.");
-				prCondition2Label.setBounds(40, 687, 500, 35);
-				prCondition2Label.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prCondition2Label);
-				
-				prCondition3Label = new JLabel();
-				prCondition3Label.setFont(new Font("Inter", Font.PLAIN, 15));
-				prCondition3Label.setText("try to timely attend on this project.");
-				prCondition3Label.setBounds(40, 722, 500, 35);
-				prCondition3Label.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prCondition3Label);
-				
-				prCondition4Label = new JLabel();
-				prCondition4Label.setFont(new Font("Inter", Font.PLAIN, 15));
-				prCondition4Label.setText("Must be present on time.");
-				prCondition4Label.setBounds(40, 757, 500, 35);
-				prCondition4Label.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prCondition4Label);
-				
-				
-				prInformationTitleLabel = new JLabel();
-				prInformationTitleLabel.setFont(new Font("Inter", Font.BOLD, 20));
-				prInformationTitleLabel.setText("Fill Information");
-				prInformationTitleLabel.setBounds(460, 847, 200, 35);
-				prInformationTitleLabel.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(prInformationTitleLabel);
-				
-				
-				
-				nameLable = new JLabel();
-				nameLable.setFont(new Font("Inter", Font.PLAIN, 15));
-				nameLable.setText("Your Full Name");
-				nameLable.setBounds(40, 925, 100, 35);
-				nameLable.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(nameLable);
-				
-				name = new JTextField() 
-				{
-				
-					public void paintComponent(Graphics g) 
-					{
-						int w = getWidth();
-						int h = getHeight();
-						Graphics2D g2 = (Graphics2D)g.create();
-						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-						g.setColor(getBackground());
-						g.fillRoundRect(0, 0, w-1, h-1, 25, 25);
-						g2.setColor(new Color(65,65,65));
-						g2.drawRoundRect(0, 0, w-1, h-1, 25, 25);
-						super.paintComponent(g);
-					}
-				};
-				//name.setText("Your Full Name");
-				name.setFont(new Font("Inter", Font.PLAIN, 18));
-				name.setForeground(new Color(65,65,65));
-				name.setBounds(40, 960, 446, 60);
-				name.setOpaque(false);
-				name.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-				
-				prApplyDialogLabel.add(name);
-				
-				
-				emailLable = new JLabel();
-				emailLable.setFont(new Font("Inter", Font.PLAIN, 15));
-				emailLable.setText("E-mail");
-				emailLable.setBounds(574, 925, 100, 35);
-				emailLable.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(emailLable);
-				
-				email = new JTextField() 
-				{
-				
-					public void paintComponent(Graphics g) 
-					{
-						int w = getWidth();
-						int h = getHeight();
-						Graphics2D g2 = (Graphics2D)g.create();
-						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-						g.setColor(getBackground());
-						g.fillRoundRect(0, 0, w-1, h-1, 25, 25);
-						g2.setColor(new Color(65,65,65));
-						g2.drawRoundRect(0, 0, w-1, h-1, 25, 25);
-						super.paintComponent(g);
-					}
-				};
-				//email.setText(" ");
-				email.setFont(new Font("Inter", Font.PLAIN, 18));
-				email.setForeground(new Color(65,65,65));
-				email.setBounds(574, 960, 446, 60);
-				email.setOpaque(false);
-				email.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-				
-				prApplyDialogLabel.add(email);
-				
-				
-				addressLable = new JLabel();
-				addressLable.setFont(new Font("Inter", Font.PLAIN, 15));
-				addressLable.setText("Your Address ");
-				addressLable.setBounds(40, 1040, 100, 35);
-				addressLable.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(addressLable);
-				
-				address = new JTextField() 
-				{
-				
-					public void paintComponent(Graphics g) 
-					{
-						int w = getWidth();
-						int h = getHeight();
-						Graphics2D g2 = (Graphics2D)g.create();
-						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-						g.setColor(getBackground());
-						g.fillRoundRect(0, 0, w-1, h-1, 25, 25);
-						g2.setColor(new Color(65,65,65));
-						g2.drawRoundRect(0, 0, w-1, h-1, 25, 25);
-						super.paintComponent(g);
-					}
-				};
-				//address.setText(" ");
-				address.setFont(new Font("Inter", Font.PLAIN, 18));
-				address.setForeground(new Color(65,65,65));
-				address.setBounds(40, 1075, 446, 60);
-				address.setOpaque(false);
-				address.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-				
-				prApplyDialogLabel.add(address);
-				
-				
-				workPlaceLable = new JLabel();
-				workPlaceLable.setFont(new Font("Inter", Font.PLAIN, 15));
-				workPlaceLable.setText("Interested Workplace");
-				workPlaceLable.setBounds(574, 1040, 200, 35);
-				workPlaceLable.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(workPlaceLable);
-				
-				workplace = new JTextField() 
-				{
-				
-					public void paintComponent(Graphics g) 
-					{
-						int w = getWidth();
-						int h = getHeight();
-						Graphics2D g2 = (Graphics2D)g.create();
-						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-						g.setColor(getBackground());
-						g.fillRoundRect(0, 0, w-1, h-1, 25, 25);
-						g2.setColor(new Color(65,65,65));
-						g2.drawRoundRect(0, 0, w-1, h-1, 25, 25);
-						super.paintComponent(g);
-					}
-				};
-				//workplace.setText(" ");
-				workplace.setFont(new Font("Inter", Font.PLAIN, 18));
-				workplace.setForeground(new Color(65,65,65));
-				workplace.setBounds(574, 1075, 446, 60);
-				workplace.setOpaque(false);
-				workplace.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-				
-				prApplyDialogLabel.add(workplace);
-				
-				
-				phoneLable = new JLabel();
-				phoneLable.setFont(new Font("Inter", Font.PLAIN, 15));
-				phoneLable.setText("Phone Number");
-				phoneLable.setBounds(40, 1155, 200, 35);
-				phoneLable.setForeground(new Color(65,65,65));
-				prApplyDialogLabel.add(phoneLable);
-				
-				phone = new JTextField() 
-				{
-				
-				
-					public void paintComponent(Graphics g) 
-					{
-						int w = getWidth();
-						int h = getHeight();
-						Graphics2D g2 = (Graphics2D)g.create();
-						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-						g.setColor(getBackground());
-						g.fillRoundRect(0, 0, w-1, h-1, 25, 25);
-						g2.setColor(new Color(65,65,65));
-						g2.drawRoundRect(0, 0, w-1, h-1, 25, 25);
-						super.paintComponent(g);
-					}
-				};
-				//phone.setText(" ");
-				phone.setFont(new Font("Inter", Font.PLAIN, 18));
-				phone.setForeground(new Color(65,65,65));
-				phone.setBounds(40, 1190, 446, 60);
-				phone.setOpaque(false);
-				phone.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-				
-				prApplyDialogLabel.add(phone);
-				
-				
-				prapplyBtn = new JButton(new ImageIcon(root + "prApplyBtn.png"));
-				prapplyBtn.setBorder(null);
-				prapplyBtn.setBounds(415, 1350, 209, 51);
-				//prapplyBtn.setBackground(new Color(172,203,255));
-		
-				prapplyBtn.setOpaque(false);
-				prapplyBtn.setFocusPainted(false);
-				prapplyBtn.setBorderPainted(false);
-				prapplyBtn.setContentAreaFilled(false);
-				prapplyBtn.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
-		
-		
-				prApplyDialogLabel.add(prapplyBtn);
-		
-				prapplyBtn.addActionListener(new ActionListener()
-				{
-					public void actionPerformed(ActionEvent e)
-					{
-						String getName = name.getText();
-						String getEmail = email.getText();
-						String getAddress = address.getText();
-						String getWorkplace = workplace.getText();
-						String getPhone = phone.getText();
-						
-						if(getName.equals("") || getEmail.equals("") || getAddress.equals("") || getWorkplace.equals("") || getPhone.equals(""))
-						{
-							JOptionPane.showMessageDialog(null, "Please ensure all information is filled in!", "Warning Message", JOptionPane.WARNING_MESSAGE);
-						}
-						else
-						{
-							prApplyDialog.dispose();
-						}
-					}
-				});
-				
-
-                prApplyDialogPanel.add(prApplyDialogLabel);
-
-                applyScroll = new JScrollPane(prApplyDialogPanel);
-
-
-                
-                prApplyDialog.setTitle("Next Project Application");
-                prApplyDialog.setVisible(true);
-                prApplyDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                prApplyDialog.setSize(1106,708);
-                prApplyDialog.setLocationRelativeTo(null);
-                prApplyDialog.add(applyScroll);
-                
+				new EventApplyForm(latestProject);
 			}
 		});
 		
@@ -2387,8 +1803,8 @@ public class VolunteerDashboard extends JFrame {
 		
 		//ImageIcon runningIcon = new ImageIcon(root + "runningProjectBtn.png");
 		
-		eventTabbedPane.add("Running Project", projectRunningPanel);
-		eventTabbedPane.setBackgroundAt(0, new Color(65,136,255));
+//		eventTabbedPane.add("Running Project", projectRunningPanel);
+//		eventTabbedPane.setBackgroundAt(0, new Color(65,136,255));
 		
 		
 		completePrTable = new JTable();
@@ -2413,15 +1829,17 @@ public class VolunteerDashboard extends JFrame {
 		projectCompletePanel.setBounds(0,200,543,400);
 		
 		
-		eventTabbedPane.add("Completed Project", projectCompletePanel);
-		eventTabbedPane.setBackgroundAt(1, new Color(65,136,255));
+		eventTabbedPane.add("Available Project", projectCompletePanel);
+		eventTabbedPane.setBackgroundAt(0, new Color(65,136,255));
 		
 		
 		
 		projectTablePanel.add(eventTabbedPane);
 		projectTablePanel.setLayout(null);
 		projectTablePanel.setBounds(21,212,543,428);
-		
+		projectTablePanel.setBorder(new EmptyBorder(new Insets(20,20,20,20)));
+
+
 		eventPanel.add(projectTablePanel);
 		
 		
@@ -2796,19 +2214,5 @@ public class VolunteerDashboard extends JFrame {
 		profileBtn.setText(uName);
 		this.add(profileBtn);
 //		this.dashboardPanel.add(this.dashboardGreeting);
-	}
-
-	private void DatabaseConnect(String collection) {
-		DatabaseConnectivity db = new DatabaseConnectivity(collection) {
-			@Override
-			public void add(Object[] column) {
-
-			}
-
-			@Override
-			public void update(int id, Object[] column) {
-
-			}
-		};
 	}
 }

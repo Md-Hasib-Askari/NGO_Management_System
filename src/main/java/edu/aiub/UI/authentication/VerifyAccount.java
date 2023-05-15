@@ -26,7 +26,7 @@ import java.beans.PropertyChangeListener;
 //C:\\Users\\robin\\OneDrive\\Desktop\\Java Project\\
 
 public class VerifyAccount extends JFrame{
-    private String otp, source, email;
+    private String otp, source;
     String[] data;
 
     private JTextField Code1txtF;
@@ -41,10 +41,10 @@ public class VerifyAccount extends JFrame{
     private JLabel verifyAccountLabel;
     private JPanel verifyAccountPanel;
 
-    VerifyAccount(Object[] data, String source){
+    VerifyAccount(String[] data, String source){
 //        this.otpEmail = otpEmail;
-        this.data = (String[]) data; // otp, email, password, name, phone, role
-        this.otp = (String) data[0];
+        this.data = data; // otp, email, password, name, phone, role
+        this.otp = data[0];
         this.source = source;
         verifyAccountPanel =  new JPanel() {
             @Override
