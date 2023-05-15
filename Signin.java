@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import java.util.regex.Pattern;
-import javax.swing.ImageIcon;
 
 
 public class Signin extends JFrame {
@@ -23,8 +22,8 @@ public class Signin extends JFrame {
     private JPanel passwordPanel;
     private JToggleButton eyeTBtn;
 	private JCheckBox rememberMeCheckBox;
-
 	private JLabel EmailIconLabel;
+	
 
     Signin() {
 		
@@ -32,7 +31,7 @@ public class Signin extends JFrame {
         nirmulPanel = new JPanel() {
             @Override
             public void paintComponent(Graphics g) {
-                g.drawImage(new ImageIcon(root + "Static\\login_bg.png\\").getImage(), 0, 0, getWidth(), getHeight(), null);
+                g.drawImage(new ImageIcon(root + "Static\\login_bg.png").getImage(), 0, 0, getWidth(), getHeight(), null);
             }
         };
 
@@ -52,16 +51,14 @@ public class Signin extends JFrame {
             }
         };
 
-		
-		
-		EmailIconLabel = new JLabel();
-		ImageIcon emailIcon = new ImageIcon(root+"Static\\email_icon.png");
-		EmailIconLabel.setIcon(emailIcon);
-		EmailIconLabel.setBounds(10, 10, 20, 20);
-
         passwordLabel = new JLabel();
 		PasswordField1 = new JPasswordField();
 	
+		// Create the EmailIconLabel
+EmailIconLabel = new JLabel();
+ImageIcon emailIcon = new ImageIcon(root+"Static\\email_icon.png"); // Replace with the path to your email icon image file
+EmailIconLabel.setIcon(emailIcon);
+EmailIconLabel.setBounds(10, 10, 20, 20); // Adjust the position and size as desired
 
         loginBtn = new JButton();
         signupLabel = new JLabel();
@@ -82,16 +79,19 @@ public class Signin extends JFrame {
         emailLabel.setFont(new Font("Inter", 0, 12));
         emailLabel.setText("Email");
         emailPanel.add(emailLabel);
-        emailLabel.setBounds(20, 10, 70, 20);
-		
-	
+        emailLabel.setBounds(20, 10, 50, 15);
+
+		// Add the EmailIconLabel to the email panel
 		emailPanel.setLayout(null);
 		emailPanel.add(EmailIconLabel);
-		EmailIconLabel.setBounds(480, 40, 30, 20);
 		emailPanel.add(emailLabel);
-
 		emailPanel.add(EmailTextField);
+		
+		EmailIconLabel.setBounds(480, 40, 30, 20);
+		
 		EmailTextField.setBounds(40, 42, 480, 20);
+	
+
 
         EmailTextField.setBackground(new Color(234, 250, 241));
         EmailTextField.setFont(new Font("Inter", 0, 14));
@@ -115,7 +115,8 @@ public class Signin extends JFrame {
         passwordLabel.setText("Password");
         passwordPanel.add(passwordLabel);
         passwordLabel.setBounds(20, 10, 70, 20);
-
+		
+		
         PasswordField1.setBackground(new Color(234, 250, 241));
 		PasswordField1.setText("");
         PasswordField1.setText("");
@@ -139,10 +140,6 @@ public class Signin extends JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-
-
-
-
 
         signupLabel.setFont(new Font("Inter", 0, 14));
         signupLabel.setText("New to Nirmul? ");
@@ -181,9 +178,7 @@ public class Signin extends JFrame {
 		nirmulPanel.add(rememberMeCheckBox);
 		rememberMeCheckBox.setBackground(new Color(255, 255, 255));
 		rememberMeCheckBox.setFont(new Font("Inter", Font.PLAIN, 12));
-		
-		
-		
+
 
         setTitle("NGO Management System");
         // setIconImage(new ImageIcon(root + "Stack\\titleIcon.png").getImage());
@@ -193,43 +188,43 @@ public class Signin extends JFrame {
         setLocationRelativeTo(null);
     }
 
-		private void eyeTBtnActionPerformed(ActionEvent evt) {
-			if (PasswordField1.getEchoChar() == '\u2022') {
-		// Password is currently hidden, show it
-		PasswordField1.setEchoChar((char) 0);
+	private void eyeTBtnActionPerformed(ActionEvent evt) {
+    if (PasswordField1.getEchoChar() == '\u2022') {
+        // Password is currently hidden, show it
+        PasswordField1.setEchoChar((char) 0);
 
         // Set image icon for the eye button to show/hide icon
         ImageIcon hideIcon = new ImageIcon(root+"Static\\hideEye.png");
         eyeTBtn.setIcon(hideIcon);
-			} else {
+    } else {
         // Password is currently shown, hide it
         PasswordField1.setEchoChar('\u2022');
 
         // Set image icon for the eye button to see icon
         ImageIcon seeIcon = new ImageIcon(root+"Static\\SeeEye.png");
         eyeTBtn.setIcon(seeIcon);
-			}
-	
-	
 		}
 	
+	
+	}
 
-		private void jButton1ActionPerformed(ActionEvent evt) {
-		String email = EmailTextField.getText();
-		String passWord = PasswordField1.getText();
-		String EmailFromDB = "abcd@gmail.com";
-		String PasswordFromDB = "12345678";
-		boolean rememberMe = rememberMeCheckBox.isSelected();
+
+	private void jButton1ActionPerformed(ActionEvent evt) {
+    String email = EmailTextField.getText();
+    String passWord = PasswordField1.getText();
+    String EmailFromDB = "abcd@gmail.com";
+    String PasswordFromDB = "12345678"; // Add this line
+	boolean rememberMe = rememberMeCheckBox.isSelected();
 	
 	    if (rememberMe) {
         // Store the login credentials securely for future sessions
 		}
 	
-		if ((email.equals(EmailFromDB)) && (passWord.equals(PasswordFromDB))) {
-			dispose();
-			new VerifyAccount();
-		} else {
-			JOptionPane.showMessageDialog(this, "Invalid email or password. Please try again.");
+    if ((email.equals(EmailFromDB)) && (passWord.equals(PasswordFromDB))) {
+        dispose();
+        new VerifyAccount();
+    } else {
+        JOptionPane.showMessageDialog(this, "Invalid email or password. Please try again.");
 		}
 	}
 
