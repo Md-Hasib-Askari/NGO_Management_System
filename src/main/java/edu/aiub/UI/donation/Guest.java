@@ -154,13 +154,14 @@ public class Guest extends  JFrame {
         donationMethodPanel.setBackground(new Color(255, 255, 255));
         donationMethodPanel.setLayout(null);
 
-        donationMethodLabel.setFont(new java.awt.Font("Inter", 0, 14)); 
+        donationMethodLabel.setFont(new Font("Inter", 0, 14));
         donationMethodLabel.setText("Payment Method");
         donationMethodPanel.add(donationMethodLabel);
         donationMethodLabel.setBounds(20, 10, 160, 18);
 
         donationComboBox.putClientProperty("JComboBox.arc", 20);
         donationComboBox.setBackground(new Color(234, 250, 241));
+        donationComboBox.setBorder(null);
         donationMethodPanel.add(donationComboBox);
         donationComboBox.setBounds(20, 35, 220, 40);
 
@@ -197,7 +198,7 @@ public class Guest extends  JFrame {
 
         fundComboBox.putClientProperty("JComboBox.arc", 20);
         fundComboBox.setBackground(new Color(234, 250, 241, 255));
-//        fundComboBox.setBorder(null);
+        fundComboBox.setBorder(null);
         fundPanel.add(fundComboBox);
         fundComboBox.setBounds(20, 30, 485, 40);
 

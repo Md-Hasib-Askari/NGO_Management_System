@@ -1,6 +1,7 @@
 package edu.aiub.UI;
 
 import edu.aiub.UI.authentication.Signin;
+import edu.aiub.UI.donation.Guest;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -54,7 +55,8 @@ public class SplashScreen extends JFrame {
                 }
                 dispose();
 //                new AdminDashboard(0);
-                new Signin();
+//                new Signin();
+                new Guest();
             }
         };
         progressing.start();

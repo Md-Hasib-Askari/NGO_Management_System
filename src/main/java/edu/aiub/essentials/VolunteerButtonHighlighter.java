@@ -1,28 +1,26 @@
 package edu.aiub.essentials;
 
+import edu.aiub.Static;
+
 import javax.swing.*;
 
-public class ButtonHighlighter {	
-    private static String root = "src\\main\\java\\edu\\aiub\\static\\leftSidebarBtn\\";
+public class VolunteerButtonHighlighter {
+    private static String root = Static.VOLUNTEER_ROOT+"leftSidebarBtn\\";
     private static String[] btnDefaultIcons = new String[] {
             root + "dashboardBtn.png",
-            root + "userBtn.png",
-            root + "taskBtn.png",
-            root + "inventoryBtn.png",
-            root + "vehicleBtn.png",
-            root + "bankBtn.png",
+            root + "eventBtn.png",
+            root + "transactionBtn.png",
+            root + "donationBtn.png",
             root + "noticeBtn.png",
-            root + "settingsBtn.png"
+            root + "logOutBtn.png"
     };
     private static String[] btnHoverIcons = new String[] {
             root + "dashboardBtn_hover.png",
-            root + "userBtn_hover.png",
-            root + "taskBtn_hover.png",
-            root + "inventoryBtn_hover.png",
-            root + "vehicleBtn_hover.png",
-            root + "bankBtn_hover.png",
+            root + "eventBtn_hover.png",
+            root + "transactionBtn_hover.png",
+            root + "donationBtn_hover.png",
             root + "noticeBtn_hover.png",
-            root + "settingsBtn_hover.png"
+            root + "logOutBtn_hover.png"
     };
     public static void highlight(JButton[] btnList, JButton clickedBtn) {
         int count = 0;

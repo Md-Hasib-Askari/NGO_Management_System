@@ -3,6 +3,7 @@ package edu.aiub.UI.authentication;
 import com.mongodb.client.*;
 import edu.aiub.UI.admin.AdminDashboard;
 import edu.aiub.UI.donation.Guest;
+import edu.aiub.UI.volunteer.VolunteerDashboard;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -225,7 +226,7 @@ public class Signin extends JFrame{
 				if (userType.equals("Admin")) {
 					new AdminDashboard(0).setUserName(userName);
 				} else if (userType.equals("Volunteer")) {
-					new AdminDashboard(0);	
+					new VolunteerDashboard().setUserName(userName);
 				}
 			} else { 
 				JOptionPane.showMessageDialog(this, "Your Email or Password is wrong!");

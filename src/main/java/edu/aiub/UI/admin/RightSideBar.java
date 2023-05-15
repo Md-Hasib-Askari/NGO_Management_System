@@ -1,5 +1,6 @@
 package edu.aiub.UI.admin;
 
+import edu.aiub.Static;
 import org.bson.Document;
 
 import javax.swing.*;
@@ -39,7 +40,7 @@ public class RightSideBar extends JPanel {
         noticeHeaderPanel.setMinimumSize(new Dimension(115, 50));
         noticeHeaderPanel.setLayout(null);
 
-        noticeLabel.setIcon(new ImageIcon("src/main/java/edu/aiub/static/noticeHeader_bg.png"));
+        noticeLabel.setIcon(new ImageIcon(Static.ADMIN_ROOT+"noticeHeader_bg.png"));
         noticeHeaderPanel.add(noticeLabel);
         noticeLabel.setBounds(0, 0, 240, 50);
 
@@ -56,7 +57,8 @@ public class RightSideBar extends JPanel {
 //        noticeBodyPanel.setBounds(10, 10, 240, 250);
 
         for (int i = 0; i < noticeCountFromDB && i < 20; i++) {
-            AdminRightSidebarScrollPane.add(noticeBodyPanel, new JLabel(noticeFromDB.get(i).getString("notice")));
+//            AdminRightSidebarScrollPane.add(noticeBodyPanel, new JLabel(noticeFromDB.get(i).getString("notice")));
+            AdminRightSidebarScrollPane.add(noticeBodyPanel, noticeFromDB.get(i), "notice");
         }
 
         noticePane.setViewportView(noticeBodyPanel);
@@ -67,7 +69,7 @@ public class RightSideBar extends JPanel {
         taskHeaderPanel.setMinimumSize(new Dimension(115, 50));
         taskHeaderPanel.setLayout(null);
 
-        recentTaskLabel.setIcon(new ImageIcon("src/main/java/edu/aiub/static/projectHeader_bg.png"));
+        recentTaskLabel.setIcon(new ImageIcon(Static.ADMIN_ROOT+"projectHeader_bg.png"));
         taskHeaderPanel.add(recentTaskLabel);
         recentTaskLabel.setBounds(0, 0, 240, 50);
 
@@ -81,7 +83,7 @@ public class RightSideBar extends JPanel {
         taskPane.add(taskBodyPanel);
 
         for (int i = 0; i < 20 && i < taskCountFromDB; i++) {
-            AdminRightSidebarScrollPane.add(taskBodyPanel, new JLabel(taskFromDB.get(i).getString("event")));
+            AdminRightSidebarScrollPane.add(taskBodyPanel, taskFromDB.get(i), "event");
         }
 
         taskPane.setViewportView(taskBodyPanel);

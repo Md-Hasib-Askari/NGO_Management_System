@@ -65,7 +65,7 @@ public class Thank extends  JFrame {
         background =new JLabel();
 
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         setLayout(null);
 
@@ -114,6 +114,7 @@ public class Thank extends  JFrame {
 
                                               JFrame frame = new JFrame("Donation Receipt");
                                               JLabel label = new JLabel("Hello, World!");
+                                              frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
                                               JLabel received = new JLabel();
                                               JLabel     sign = new JLabel();

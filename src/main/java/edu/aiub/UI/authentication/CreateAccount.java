@@ -14,7 +14,9 @@ import java.awt.Graphics;
 import javax.swing.ImageIcon;
 
 import edu.aiub.UI.donation.Guest;
+import edu.aiub.database.DatabaseConnectivity;
 import edu.aiub.essentials.*;
+import org.bson.Document;
 
 
 public class CreateAccount extends JFrame{
@@ -178,7 +180,7 @@ public class CreateAccount extends JFrame{
 		userVolunteerLabel.setLayout(null);
 
 		SignUpAsWhatLabel.setFont(new Font("Inter", 0, 12)); 
-		SignUpAsWhatLabel.setText("Sign up as an user or volunteer?");
+		SignUpAsWhatLabel.setText("Role");
 		userVolunteerLabel.add(SignUpAsWhatLabel);
 		SignUpAsWhatLabel.setBounds(10, 10, 178, 15);
 
@@ -356,7 +358,11 @@ public class CreateAccount extends JFrame{
 		setVisible(true);
 	}
 	
-	private void signupBtnActionPerformed(java.awt.event.ActionEvent evt) {                                         
+	private void signupBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		if (!NirmulTermsCheckbox.isSelected()) {
+			JOptionPane.showMessageDialog(null, "Please agree to the terms and conditions");
+			return;
+		}
 		// Get input values from text fields
 		String email = emailTxtF.getText();
 		String password = PasswordField.getText();
@@ -364,32 +370,36 @@ public class CreateAccount extends JFrame{
 		String lastName = lastNameTxtField.getText();
 		String confirmPassword = ConfirmPasswordField.getText();
 		String phoneNumber = phoneNumTxtF.getText();
-		
+		String role = userCbox.getSelectedItem().toString();
+
 		// Constants from database
-		String emailFromDB = "rnadoha@gmail.com";
-		String passwordFromDB = "12345678";
-		String confirmPasswordFromDB = "12345678";
-		String otp = "1234";
-		
+		String otp = String.valueOf(RandomOTP.generateOTP(4));
+		System.out.println(otp);
+
 		// Check if any fields are empty
-		if (email.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || 
-				confirmPassword.isEmpty() || phoneNumber.isEmpty()) {
-			JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+		if (isEmailExist(email)) {
+			JOptionPane.showMessageDialog(this, "Email already exists.");
 		} else {
-			// Check if email and password match database values
-			if (password.equals(confirmPassword)) {
-				// Email and password match, dispose current window and open new one
-				dispose();
-				String[] otpEmail = {otp, email};
-				new VerifyAccount(otpEmail, "CreateAccount");
-				SendMail.sendMail(
-					email,
-					"OTP for Account Verification",
-					"Hello "+firstName+", Your OTP is " + otp
-				);
+
+			if (email.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty() ||
+					confirmPassword.isEmpty() || phoneNumber.isEmpty()) {
+				JOptionPane.showMessageDialog(this, "Please fill in all fields.");
 			} else {
-				// Email and/or password do not match database values, display error message
-				JOptionPane.showMessageDialog(this, "Invalid email or password.");
+				// Check if email and password match database values
+				if (password.equals(confirmPassword)) {
+					// Email and password match, dispose current window and open new one
+					dispose();
+					String[] data = {otp, email, password, firstName+" "+lastName, phoneNumber, role};
+					new VerifyAccount(data, "CreateAccount");
+					SendMail.sendMail(
+							email,
+							"OTP for Account Verification",
+							"Hello "+firstName+", Your OTP is " + otp
+					);
+				} else {
+					// Email and/or password do not match database values, display error message
+					JOptionPane.showMessageDialog(this, "Passwords do not match.");
+				}
 			}
 		}
 	}
@@ -404,6 +414,27 @@ public class CreateAccount extends JFrame{
 		// Display the sign-in form to the user
 		signin.setVisible(true);
 		
+	}
+
+	public boolean isEmailExist(String email) {
+		DatabaseConnectivity db = new DatabaseConnectivity("users") {
+			@Override
+			public void add(Object[] column) {
+
+			}
+
+			@Override
+			public void update(int id, Object[] column) {
+
+			}
+		};
+		Document emailDoc = db.collection.find(new Document("email", email)).first();
+		if (emailDoc != null)
+			return true;
+
+		return false;
+	}
+	public void addUserToDB() {
 	}
 
 }

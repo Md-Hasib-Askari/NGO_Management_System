@@ -2,7 +2,8 @@ package edu.aiub;
 
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import edu.aiub.UI.admin.AdminDashboard;
-import edu.aiub.UI.donation.Guest;
+import edu.aiub.UI.volunteer.VolunteerDashboard;
+import edu.aiub.UI.SplashScreen;
 import edu.aiub.essentials.*;
 
 import java.awt.*;
@@ -25,7 +26,8 @@ public class App
 //                new VehicleAddForm();
 //                SendMail.sendMail("mdhsbaskari@gmail.com", "test", "test");
 //                new CreateAccount();
-                new Guest();
+//                new Guest();
+                new VolunteerDashboard();
             }
         };
         EventQueue.invokeLater(runner);

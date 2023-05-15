@@ -1,6 +1,8 @@
 package edu.aiub.UI.authentication;
 
 import edu.aiub.Static;
+import edu.aiub.database.DatabaseConnectivity;
+import org.bson.Document;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +27,7 @@ import java.beans.PropertyChangeListener;
 
 public class VerifyAccount extends JFrame{
     private String otp, source, email;
-    private String[] otpEmail;
+    String[] data;
 
     private JTextField Code1txtF;
     private JTextField Code2txtF;
@@ -39,9 +41,10 @@ public class VerifyAccount extends JFrame{
     private JLabel verifyAccountLabel;
     private JPanel verifyAccountPanel;
 
-    VerifyAccount(String[] otpEmail, String source){
-        this.otpEmail = otpEmail;
-        this.otp = otpEmail[0];
+    VerifyAccount(Object[] data, String source){
+//        this.otpEmail = otpEmail;
+        this.data = (String[]) data; // otp, email, password, name, phone, role
+        this.otp = (String) data[0];
         this.source = source;
         verifyAccountPanel =  new JPanel() {
             @Override
@@ -270,17 +273,31 @@ public class VerifyAccount extends JFrame{
 
     private void SubmitBtnActionPerformed(ActionEvent evt) {
         String name = this.source;
+        String otp = data[0];
+        String email = data[1];
+        String password = "";
+        String fullName = "";
+        String phone = "";
+        String role = "";
+        if (name.equals("CreateAccount")) {
+            password = data[2];
+            fullName = data[3];
+            phone = data[4];
+            role = data[5];
+        }
+
 
         if (Code1txtF.getText().equals("") || Code2txtF.getText().equals("") || Code3txtF.getText().equals("") || Code4txtF.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Please enter the 4 digit code sent to your email.");
         }else{
             String code = Code1txtF.getText()+Code2txtF.getText()+Code3txtF.getText()+Code4txtF.getText();
-            if (code.equals("1234")){
+            if (code.equals(otp)){
                 JOptionPane.showMessageDialog(null, "Account Verified Successfully!");
                 dispose();
                 if (name.equals("ForgetPassword")) {
-                    new ResetPassword(otpEmail[1]);
+                    new ResetPassword(email);
                 } else if (name.equals("CreateAccount")) {
+                    addUsertoDB(email, password, fullName, phone, role);
                     new Signin();
                 }
             }else{
@@ -289,6 +306,29 @@ public class VerifyAccount extends JFrame{
         }
     }
 
+    public void addUsertoDB(String email, String password, String fullName, String phone, String role) {
+        DatabaseConnectivity db = new DatabaseConnectivity("users") {
+            @Override
+            public void add(Object[] column) {
+                Document user = new Document();
+                user.append("id", ++Count);
+                user.append("name", column[2]);
+                user.append("email", column[0]);
+                user.append("password", column[1]);
+                user.append("phone", column[3]);
+                user.append("role", column[4]);
+
+                collection.insertOne(user);
+            }
+
+            @Override
+            public void update(int id, Object[] column) {
+
+            }
+        };
+        db.add(new Object[]{email, password, fullName, phone, role});
+        db.mongoClient.close();
+    }
 
     public static void main (String[] args){
         System.setProperty("sun.java2d.uiScale", "1.0");

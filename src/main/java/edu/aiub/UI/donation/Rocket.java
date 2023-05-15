@@ -66,6 +66,11 @@ public class Rocket extends JFrame {
         probutton.setBounds(150, 630, 100, 25);
 		probutton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
+                if (jCheckBox1.isSelected() == false) {
+                    JOptionPane.showMessageDialog(null, "Please agree to the terms and conditions");
+                    return;
+                }
+
                 String rocketEmail = email.getText();
                 String otp = String.valueOf(RandomOTP.generateOTP(4));
                 String pin = String.valueOf(RandomOTP.generateOTP(6));
