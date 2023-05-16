@@ -2,6 +2,7 @@ package edu.aiub;
 
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import edu.aiub.UI.admin.AdminDashboard;
+import edu.aiub.UI.authentication.Signin;
 import edu.aiub.UI.volunteer.VolunteerDashboard;
 import edu.aiub.UI.SplashScreen;
 import edu.aiub.essentials.*;
@@ -20,14 +21,14 @@ public class App
         Runnable runner = new Runnable() {
             @Override
             public void run() {
-//                new SplashScreen();
+                new SplashScreen();
 //                new AdminDashboard(0);
 //                new Test();
 //                new VehicleAddForm();
 //                SendMail.sendMail("mdhsbaskari@gmail.com", "test", "test");
 //                new CreateAccount();
-//                new Guest();
-                new VolunteerDashboard();
+//                new Signin();
+//                new VolunteerDashboard();
             }
         };
         EventQueue.invokeLater(runner);

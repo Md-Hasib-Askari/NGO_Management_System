@@ -217,13 +217,14 @@ public class Thank extends  JFrame {
                                               Number.setText("For Any Query     Contact Number :+8801313643812,+880160888254");
                                               frame.add(Number);
                                               Number.setBounds(30, 790, 530, 16);
-                                              frame.pack();
+//                                              frame.pack();
                                               frame.setLocationRelativeTo(null);
                                               frame.setVisible(true);
 
                                               try {
+                                                  FileOutputStream file = new FileOutputStream(Static.DONATION_ROOT+"pdf/abc.pdf");
                                                   Document document = new Document(PageSize.A4);
-                                                  PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(Static.DONATION_ROOT+"pdf/receipt.pdf"));
+                                                  PdfWriter writer = PdfWriter.getInstance(document, file);
                                                   document.open();
                                                   PdfContentByte cb = writer.getDirectContent();
                                                   Graphics2D g2d = cb.createGraphics(PageSize.A4.getWidth(), PageSize.A4.getHeight());
@@ -231,6 +232,7 @@ public class Thank extends  JFrame {
                                                   frame.getContentPane().print(g2d);
                                                   g2d.dispose();
                                                   document.close();
+                                                  file.close();
                                               } catch (Exception w) {
                                                   w.printStackTrace();
                                               }

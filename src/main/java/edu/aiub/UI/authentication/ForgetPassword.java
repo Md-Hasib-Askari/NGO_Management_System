@@ -91,11 +91,11 @@ public class ForgetPassword extends JFrame{
 			ForgotPasswordPanel.add(ForgetPassVerifyMsgLabel);
 			ForgetPassVerifyMsgLabel.setBounds(80, 270, 640, 18);
 
-			cancelBtn.setBackground(new Color(153, 255, 153));
+			cancelBtn.setBackground(new Color(231, 76, 60));
 			cancelBtn.setFont(new Font("Inter", 0, 18)); 
 			cancelBtn.setForeground(new Color(255, 255, 255));
 			cancelBtn.setText("Cancel");
-			cancelBtn.setBorder(null);
+//			cancelBtn.setBorder(null);
 			ForgotPasswordPanel.add(cancelBtn);
 			cancelBtn.setBounds(450, 460, 100, 40);
 			cancelBtn.addActionListener(new ActionListener() {
@@ -106,13 +106,13 @@ public class ForgetPassword extends JFrame{
 				}
 			});
 
-			sendBtn.setBackground(new Color(153, 255, 153));
+			sendBtn.setBackground(new Color(46, 204, 113));
 			sendBtn.setFont(new Font("Inter", 0, 18)); 
 			sendBtn.setForeground(new Color(255, 255, 255));
 			sendBtn.setText("Send");
 			ForgotPasswordPanel.add(sendBtn);
 			sendBtn.setBounds(75, 460, 100, 40);
-			sendBtn.setBorder(null);
+//			sendBtn.setBorder(null);
 			sendBtn.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent actionEvent) {

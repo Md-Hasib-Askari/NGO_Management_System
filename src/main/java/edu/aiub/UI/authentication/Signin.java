@@ -35,6 +35,9 @@ public class Signin extends JFrame{
     private JPanel nirmulPanel;
     private JLabel passwordLabel;
     private JPanel passwordPanel;
+    private JToggleButton eyeTBtn;
+    private JCheckBox rememberMeCheckBox;
+    private JLabel EmailIconLabel;
 
     public Signin(){
 
@@ -44,14 +47,12 @@ public class Signin extends JFrame{
                 g.drawImage(new ImageIcon(root+"auth_static\\login_bg.png").getImage(), 0,0,getWidth(),getHeight(),null);
             }
         };
-        ;
         emailPanel =  new JPanel() {
             @Override
             public void paintComponent(Graphics g) {
                 g.drawImage(new ImageIcon(root+"auth_static\\signinPanel.png").getImage(), 0,0,getWidth(),getHeight(),null);
             }
         };
-        ;
         emailLabel = new JLabel();
         EmailTextField = new JTextField();
         passwordPanel =  new JPanel() {
@@ -61,6 +62,18 @@ public class Signin extends JFrame{
             }
         };
         passwordLabel = new JLabel();
+
+        // Create the EmailIconLabel
+        EmailIconLabel = new JLabel();
+        ImageIcon emailIcon = new ImageIcon(root+"auth_static\\email_icon.png"); // Replace with the path to your email icon image file
+        EmailIconLabel.setIcon(emailIcon);
+        EmailIconLabel.setBounds(10, 10, 20, 20); // Adjust the position and size as desired
+
+        eyeTBtn = new JToggleButton();
+        ImageIcon seeIcon = new ImageIcon(root+"auth_static\\SeeEye.png");
+        eyeTBtn.setIcon(seeIcon);
+
+
         PasswordField1 = new JPasswordField();
         loginBtn = new JButton();
         forgotBtn = new JButton();
@@ -81,6 +94,17 @@ public class Signin extends JFrame{
         emailLabel.setText("Email");
         emailPanel.add(emailLabel);
         emailLabel.setBounds(20, 10, 50, 15);
+
+
+        // Add the EmailIconLabel to the email panel
+        emailPanel.setLayout(null);
+        emailPanel.add(EmailIconLabel);
+        emailPanel.add(emailLabel);
+        emailPanel.add(EmailTextField);
+
+        EmailIconLabel.setBounds(480, 40, 30, 20);
+
+        EmailTextField.setBounds(40, 42, 480, 20);
 
         EmailTextField.setBackground(new Color(234, 250, 241));
         EmailTextField.setFont(new Font("Inter", 0, 14)); 
@@ -107,7 +131,7 @@ public class Signin extends JFrame{
         PasswordField1.setBackground(new Color(234, 250, 241));
         PasswordField1.setBorder(null);
         passwordPanel.add(PasswordField1);
-        PasswordField1.setBounds(20, 40, 480, 16);
+        PasswordField1.setBounds(20, 40, 450, 16);
 
         nirmulPanel.add(passwordPanel);
         passwordPanel.setBounds(75, 457, 525, 80);
@@ -155,6 +179,22 @@ public class Signin extends JFrame{
         signupBtn.setBorder(null);
         nirmulPanel.add(signupBtn);
         signupBtn.setBounds(185, 284, 50, 50);
+
+        eyeTBtn.setBorder(null);
+        eyeTBtn.setBackground(new Color(234, 250, 241));
+        eyeTBtn.setBounds(480, 40, 30, 20);
+        eyeTBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                eyeTBtnActionPerformed(evt);
+            }
+        });
+        passwordPanel.add(eyeTBtn);
+        rememberMeCheckBox = new JCheckBox("Remember Me");
+        rememberMeCheckBox.setBounds(75, 550, 150, 16);
+//        nirmulPanel.add(rememberMeCheckBox);
+        rememberMeCheckBox.setBackground(new Color(255, 255, 255));
+        rememberMeCheckBox.setFont(new Font("Inter", Font.PLAIN, 12));
+
         signupBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -239,4 +279,24 @@ public class Signin extends JFrame{
 			new CreateAccount();
 		}
 
+        private void eyeTBtnActionPerformed(ActionEvent evt) {
+            if (PasswordField1.getEchoChar() == '\u2022') {
+                // Password is currently hidden, show it
+                PasswordField1.setEchoChar((char) 0);
+
+                // Set image icon for the eye button to show/hide icon
+                ImageIcon hideIcon = new ImageIcon(root+"auth_static\\hideEye.png");
+                eyeTBtn.setIcon(hideIcon);
+            } else {
+                // Password is currently shown, hide it
+                PasswordField1.setEchoChar('\u2022');
+
+                // Set image icon for the eye button to see icon
+                ImageIcon seeIcon = new ImageIcon(root+"auth_static\\SeeEye.png");
+                eyeTBtn.setIcon(seeIcon);
+        }
+
+
     }
+
+}

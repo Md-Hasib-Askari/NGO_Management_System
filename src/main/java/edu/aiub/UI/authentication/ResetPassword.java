@@ -29,6 +29,10 @@ public class ResetPassword extends JFrame{
     private JPanel ResetPasswordPanel;
     private JButton SubmitBtn;
     private JPanel newPasswordPanel;
+
+    private JToggleButton toggleNewPasswordBtn;
+    private JToggleButton toggleConfirmPasswordBtn;
+
     public ResetPassword(String email){
         this.email = email;
 
@@ -58,6 +62,20 @@ public class ResetPassword extends JFrame{
         ConfirmPasswordPasswordField = new JPasswordField();
         SubmitBtn = new JButton();
 
+        toggleNewPasswordBtn = new JToggleButton();
+        toggleConfirmPasswordBtn = new JToggleButton();
+
+        ImageIcon seeIcon1 = new ImageIcon(root + "auth_static\\SeeEye.png");
+        ImageIcon seeIcon2 = new ImageIcon(root + "auth_static\\SeeEye.png");
+
+        toggleNewPasswordBtn.setIcon(seeIcon1); // Change from setIcon1 to setIcon
+        toggleConfirmPasswordBtn.setIcon(seeIcon2); // Change from setIcon2 to setIcon
+
+
+
+        newPasswordPanel.add(toggleNewPasswordBtn);
+        ConfirmPasswordPanel.add(toggleConfirmPasswordBtn);
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
 
@@ -76,7 +94,7 @@ public class ResetPassword extends JFrame{
         NewPasswordPasswordField.setFont(new Font("Inter", 0, 14)); // NOI18N
         NewPasswordPasswordField.setBorder(null);
         newPasswordPanel.add(NewPasswordPasswordField);
-        NewPasswordPasswordField.setBounds(20, 50, 440, 40);
+        NewPasswordPasswordField.setBounds(20, 50, 380, 40);
 
         ResetPasswordPanel.add(newPasswordPanel);
         newPasswordPanel.setBounds(75, 340, 480, 100);
@@ -93,7 +111,9 @@ public class ResetPassword extends JFrame{
         ConfirmPasswordPasswordField.setFont(new Font("Inter", 0, 14)); // NOI18N
         ConfirmPasswordPasswordField.setBorder(null);
         ConfirmPasswordPanel.add(ConfirmPasswordPasswordField);
-        ConfirmPasswordPasswordField.setBounds(20, 50, 440, 40);
+        ConfirmPasswordPasswordField.setBounds(20, 50, 380, 40);
+
+        ConfirmPasswordPanel.add(toggleConfirmPasswordBtn);
 
         ResetPasswordPanel.add(ConfirmPasswordPanel);
         ConfirmPasswordPanel.setBounds(75, 460, 480, 100);
@@ -108,6 +128,29 @@ public class ResetPassword extends JFrame{
                 SubmitBtnActionPerformed(evt);
             }
         });
+
+        // Set properties for toggleNewPasswordBtn
+        toggleNewPasswordBtn.setBorder(null);
+        toggleNewPasswordBtn.setBackground(new Color(234, 250, 241));
+        toggleNewPasswordBtn.setBounds(430, 50, 24, 24);
+        toggleNewPasswordBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                toggleNewPasswordBtnActionPerformed(evt);
+            }
+        });
+        newPasswordPanel.add(toggleNewPasswordBtn);
+
+        // Set properties for toggleConfirmPasswordBtn
+        toggleConfirmPasswordBtn.setBorder(null);
+        toggleConfirmPasswordBtn.setBackground(new Color(234, 250, 241));
+        toggleConfirmPasswordBtn.setBounds(430, 50, 24, 24);
+        toggleConfirmPasswordBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                toggleConfirmPasswordBtnActionPerformed(evt);
+            }
+        });
+        ConfirmPasswordPanel.add(toggleConfirmPasswordBtn);
+
         ResetPasswordPanel.add(SubmitBtn);
         SubmitBtn.setBounds(80, 590, 250, 60);
 
@@ -157,6 +200,42 @@ public class ResetPassword extends JFrame{
             }
         });
         db.mongoClient.close();
+    }
+
+    private void toggleNewPasswordBtnActionPerformed(ActionEvent evt) {
+        if (NewPasswordPasswordField.getEchoChar() == '\u2022') {
+            // Password is currently hidden, show it
+            NewPasswordPasswordField.setEchoChar((char) 0);
+
+            // Set image icon for the toggleNewPasswordBtn to hide icon
+            ImageIcon hideIcon = new ImageIcon(root + "auth_static\\HideEye.png");
+            toggleNewPasswordBtn.setIcon(hideIcon);
+        } else {
+            // Password is currently shown, hide it
+            NewPasswordPasswordField.setEchoChar('\u2022');
+
+            // Set image icon for the toggleNewPasswordBtn to see icon
+            ImageIcon seeIcon = new ImageIcon(root + "auth_static\\SeeEye.png");
+            toggleNewPasswordBtn.setIcon(seeIcon);
+        }
+    }
+
+    private void toggleConfirmPasswordBtnActionPerformed(ActionEvent evt) {
+        if (ConfirmPasswordPasswordField.getEchoChar() == '\u2022') {
+            // Password is currently hidden, show it
+            ConfirmPasswordPasswordField.setEchoChar((char) 0);
+
+            // Set image icon for the toggleConfirmPasswordBtn to hide icon
+            ImageIcon hideIcon = new ImageIcon(root + "auth_static\\HideEye.png");
+            toggleConfirmPasswordBtn.setIcon(hideIcon);
+        } else {
+            // Password is currently shown, hide it
+            ConfirmPasswordPasswordField.setEchoChar('\u2022');
+
+            // Set image icon for the toggleConfirmPasswordBtn to see icon
+            ImageIcon seeIcon = new ImageIcon(root + "auth_static\\SeeEye.png");
+            toggleConfirmPasswordBtn.setIcon(seeIcon);
+        }
     }
 
 }

@@ -263,7 +263,7 @@ public class VerifyAccount extends JFrame{
 
 
         setTitle("NGO Management System");
-        setIconImage(new ImageIcon(Static.AUTH_ROOT+"titleIcon.png").getImage());
+        setIconImage(new ImageIcon("src/main/java/edu/aiub/static/titleIcon.png").getImage());
         setResizable(false);
         setSize(1200,750);
         setLocationRelativeTo(null);

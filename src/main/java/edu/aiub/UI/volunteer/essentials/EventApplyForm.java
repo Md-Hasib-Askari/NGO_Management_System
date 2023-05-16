@@ -51,7 +51,7 @@ public class EventApplyForm{
         prCondition1Label.setFont(new Font("Inter", Font.PLAIN, 15));
         prCondition1Label.setText("Must be present on first and last day.");
         prCondition1Label.setBounds(40, 260, 500, 35);
-        prCondition1Label.setForeground(new Color(250,65,65));
+        prCondition1Label.setForeground(new Color(65,65,65));
         prApplyDialogLabel.add(prCondition1Label);
 
         JLabel prCondition2Label = new JLabel();
@@ -91,7 +91,7 @@ public class EventApplyForm{
         JLabel nameLable = new JLabel();
         nameLable.setFont(new Font("Inter", Font.PLAIN, 15));
         nameLable.setText("Your Full Name");
-        nameLable.setBounds(40, 925-y2, 100, 35);
+        nameLable.setBounds(40, 925-y2, 150, 35);
         nameLable.setForeground(new Color(65,65,65));
         prApplyDialogLabel.add(nameLable);
 
@@ -155,7 +155,7 @@ public class EventApplyForm{
         JLabel addressLable = new JLabel();
         addressLable.setFont(new Font("Inter", Font.PLAIN, 15));
         addressLable.setText("Your Address ");
-        addressLable.setBounds(40, 1040-y2, 100, 35);
+        addressLable.setBounds(40, 1040-y2, 150, 35);
         addressLable.setForeground(new Color(65,65,65));
         prApplyDialogLabel.add(addressLable);
 
@@ -282,10 +282,13 @@ public class EventApplyForm{
                 }
                 else
                 {
+                    String projectName = event.getString("event");
                     prApplyDialog.dispose();
                     SendMail.sendMail(getEmail, "Next Project Application",
-                            "Dear " + getName + ",\n\nThank you for applying to "+ event.getString("title") +". We will get back to you as soon as possible.\n\nRegards,\nNirmul Foundation." +
+                            "Dear " + getName + ",\n\nThank you for applying to "+ projectName +". We will get back to you as soon as possible.\n\nRegards,\nNirmul Foundation." +
                                     "\n\nYour Information:\n\nName: " + getName + "\nEmail: " + getEmail + "\nAddress: " + getAddress + "\nInterested Workplace: " + getWorkplace + "\nPhone Number: " + getPhone);
+//                    new ProjectInfoDialog(projectName, getName, getEmail, getAddress, getWorkplace, getPhone);
+
                 }
             }
         });
